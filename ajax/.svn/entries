@@ -1,0 +1,70 @@
+10
+
+dir
+0
+https://forge.indepnet.net/svn/bestmanagement/bestmanagement-1.6/ajax
+https://forge.indepnet.net/svn/bestmanagement
+add
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+5284b4af-0556-46cc-90d5-6ae08f30af22
+
+bestmanagement.php
+file
+
+
+
+add
+
+xajax_js
+dir
+
+
+
+add
+
+xajaxResponse.inc.php
+file
+
+
+
+add
+
+xajax.inc.php
+file
+
+
+
+add
+
+xajaxCompress.php
+file
+
+
+
+add
+
+textfield.php
+file
+
+
+
+add
+

@@ -1,0 +1,112 @@
+10
+
+dir
+0
+https://forge.indepnet.net/svn/bestmanagement/bestmanagement-1.6/inc
+https://forge.indepnet.net/svn/bestmanagement
+add
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+5284b4af-0556-46cc-90d5-6ae08f30af22
+
+allcontrats.class.php
+file
+
+
+
+add
+
+pdf.class.php
+file
+
+
+
+add
+
+plugin_bestmanagement_display.php
+file
+
+
+
+add
+
+bestmanagement.class.php
+file
+
+
+
+add
+
+contrat.class.php
+file
+
+
+
+add
+
+font
+dir
+
+
+
+add
+
+alltickets.class.php
+file
+
+
+
+add
+
+fpdf.class.php
+file
+
+
+
+add
+
+profile.class.php
+file
+
+
+
+add
+
+function.php
+file
+
+
+
+add
+
+sauverMod.php
+file
+
+
+
+add
+
+ticket.class.php
+file
+
+
+
+add
+
