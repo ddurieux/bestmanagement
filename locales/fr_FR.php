@@ -158,7 +158,7 @@ $LANG["bestmanagement"]["msg"][26] = "Aucun contrat";
 $LANG["bestmanagement"]["msg"][27] = "Attention, vous n'avez pas saisi de cat&eacute;gorie pour la tache.";
 $LANG["bestmanagement"]["msg"][28] = "Attention, le contrat n'a pas été reconduit";
 $LANG["bestmanagement"]["msg"][29] = "Pas de contrat sélectionné";
-$LANG["bestmanagement"]["msg"][30] = "Date trop ancienne pour �tre prise en consid�ration";
+$LANG["bestmanagement"]["msg"][30] = "Date trop ancienne pour �tre prise en consid�ration";
 $LANG["bestmanagement"]["msg"][31] = "Contrat illimit&eacute, pas d'achat";
 
 $LANG["bestmanagement"]["pdf"][0] = "Générer le rapport d'intervention en PDF";
@@ -231,8 +231,9 @@ $LANG["bestmanagement"]["sort"][2] = "Trier les lignes par ";
 $LANG["bestmanagement"]["sort"][3] = "Unité pour les colonnes";
 $LANG["bestmanagement"]["sort"][4] = "catégorie";
 $LANG["bestmanagement"]["sort"][5] = "priorité de ticket";
-$LANG["bestmanagement"]["sort"][6] = "Heures";
+$LANG["bestmanagement"]["sort"][6] = "Nombre d'heures";
 $LANG["bestmanagement"]["sort"][7] = "Nombre de tickets";
+$LANG["bestmanagement"]["sort"][8] = "Nombre de demi-journées";
 
 $LANG["bestmanagement"]["sql"][0] = "Fichier de sauvegarde créé";
 $LANG["bestmanagement"]["sql"][1] = "Problème dans la sauvegarde";
