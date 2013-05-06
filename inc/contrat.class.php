@@ -23,9 +23,9 @@ class PluginBestmanagementContrat extends CommonDBTM
 	
 	/**
 	 * Affiche l'historique des achats 
-	 * Les périodes sont séparées par des lignes vierges
+	 * Les pï¿½riodes sont sï¿½parï¿½es par des lignes vierges
 	 *
-	 ** @param onlyone : if true => une seule période (+ les achats des anciens non facturés)
+	 ** @param onlyone : if true => une seule pï¿½riode (+ les achats des anciens non facturï¿½s)
 	 *
 	 * @return Nothing(Display)
 	**/
@@ -48,7 +48,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 			
 			if ($info_compteur["compteur"] == "category")
 			{
-				$cat_name = $this->tabCatName(); // association id<->nom de la catégorie
+				$cat_name = $this->tabCatName(); // association id<->nom de la catï¿½gorie
 				array_push($colonnes, $LANG['common'][36]);		// cat
 			}
 			else
@@ -70,7 +70,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 			
 			$colspan = count($colonnes);
 			
-			// Donne le nom du contrat dans le cas où
+			// Donne le nom du contrat dans le cas oï¿½
 			// on ne se trouve pas sous la fiche contrat
 			if ($presentcontrat)
 			{
@@ -85,7 +85,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 			if ($onlyone)
 			{
 				$UNSEUL = "AND achat.date_deb = contrat.begin_date";
-				// + les achats non facturés
+				// + les achats non facturï¿½s
 				$UNION = "UNION
 						  SELECT achat.id IDA, date_deb, ID_Compteur, etat_fact, contrat.duration duration,
 								 avenant, UnitBought, comments, num_fact_api, date_save
@@ -97,7 +97,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 							AND etat_fact = 1";
 			}
 			
-			// requête sur l'historique des achats du contrat
+			// requï¿½te sur l'historique des achats du contrat
 			$query_historique = "SELECT achat.id IDA, date_deb, ID_Compteur, etat_fact, contrat.duration duration,
 										avenant, UnitBought, comments, num_fact_api, date_save
 								 FROM glpi_plugin_bestmanagement_achat achat
@@ -110,7 +110,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 								 ORDER BY date_deb, date_save";
 			
 			echo "<script type='text/javascript' >";
-			//On ne pourra éditer qu'une valeur à la fois
+			//On ne pourra ï¿½diter qu'une valeur ï¿½ la fois
 			echo "var editionEnCours = false;";
 			echo "</script>";
 						
@@ -120,10 +120,10 @@ class PluginBestmanagementContrat extends CommonDBTM
 					{
 						$key = $row["ID_Compteur"];
 						
-						// si l'achat est facturé on ne l'affiche pas (que cas général, pas sous la fiche)
+						// si l'achat est facturï¿½ on ne l'affiche pas (que cas gï¿½nï¿½ral, pas sous la fiche)
 						if (isset($presentcontrat) && !$row["etat_fact"]) continue;
 						
-						// rappel En-Tête période du contrat
+						// rappel En-Tï¿½te pï¿½riode du contrat
 						if (!isset($date_deb) || $date_deb != $row["date_deb"])
 						{
 							if (isset($date_deb))
@@ -148,25 +148,25 @@ class PluginBestmanagementContrat extends CommonDBTM
 							$id_achat = $row["IDA"];
 							
 							echo "<td>";
-							// checkbox si pas facturé
+							// checkbox si pas facturï¿½
 							echo ($row["etat_fact"]) ? "<input type='checkbox' name='CBFact_$id_achat'></td>" : "</td>";
 						}
 						
 						echo $td . Html::convDate($row["date_save"]) ."</td>";			// Date
 
-						echo $td;	// Détails
+						echo $td;	// Dï¿½tails
 						echo ($row["avenant"] == 0) ? $LANG["bestmanagement"]["historical"][2]." - " : "";
 						echo $LANG["bestmanagement"]["facturation_contrat"][$row["etat_fact"]]."</td>";
 
 						$name = $this->giveCompteurName($key, $info_compteur);
 
-						// adapte la couleur du fond selon la priorité
+						// adapte la couleur du fond selon la prioritï¿½
 						if ($info_compteur["compteur"] == "priority" && isBgColor())
 							$td_compteur = "<td align='center' style=\"background-color:".$_SESSION["glpipriority_$key"]."\">";
 
 						echo $td_compteur . $name . "</td>";		// Compteur
 						
-						echo $td . $this->arrangeIfHours($row["UnitBought"], $info_compteur["unit"])."</td>";	// Unités achetées
+						echo $td . $this->arrangeIfHours($row["UnitBought"], $info_compteur["unit"])."</td>";	// Unitï¿½s achetï¿½es
 						
 						if (plugin_bestmanagement_haveRight("bestmanagement","facturationcontrat", 1))
 						{
@@ -221,7 +221,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 	} // historical()
 	
 	/**
-	 * Définition du tri
+	 * Dï¿½finition du tri
 	 *
 	 * @return Nothing(Display)
 	**/
@@ -243,10 +243,11 @@ class PluginBestmanagementContrat extends CommonDBTM
 				echo "<option value='priority'> "	. $LANG["bestmanagement"]["sort"][5] . "</option>";
 			echo "</select>";
 			echo "</td>";
-			echo $td . $LANG["bestmanagement"]["sort"][3]." :</td>";	// unité
+			echo $td . $LANG["bestmanagement"]["sort"][3]." :</td>";	// unitï¿½
 			echo $td . "<select name='unit'>";
 				echo "<option value='hour'> "		. $LANG["bestmanagement"]["sort"][6] . "</option>";
 				echo "<option value='nbtickets'> "	. $LANG["bestmanagement"]["sort"][7] . "</option>";
+  				echo "<option value='nbhalfday'> "	. $LANG["bestmanagement"]["sort"][8] . "</option>";
 			echo "</select>";
 			echo "</td>";
 			echo "<td colspan= '2' align='center'><input type=\"submit\" name=\"addSort\" class=\"submit\" value=\"".$LANG["buttons"][51]."\" ></td>";
@@ -284,7 +285,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 					}
 				}
 				else
-				{ // XMLHttpRequest non supporté par le navigateur 
+				{ // XMLHttpRequest non supportï¿½ par le navigateur 
 					alert(\"Votre navigateur ne supporte pas les objets XMLHTTPRequest...\"); 
 					xhr = false; 
 				} 
@@ -292,14 +293,14 @@ class PluginBestmanagementContrat extends CommonDBTM
 			}
 			
 			/**
-			* Méthode qui sera appelée sur le clic du bouton
+			* Mï¿½thode qui sera appelï¿½e sur le clic du bouton
 			*/
 			function go()
 			{
 				var xhr = getXhr();
-				// On défini ce qu'on va faire quand on aura la réponse
+				// On dï¿½fini ce qu'on va faire quand on aura la rï¿½ponse
 				xhr.onreadystatechange = function(){
-					// On ne fait quelque chose que si on a tout reçu et que le serveur est ok
+					// On ne fait quelque chose que si on a tout reï¿½u et que le serveur est ok
 					if(xhr.readyState == 4 && xhr.status == 200){
 						leselect = xhr.responseText;
 						// On se sert de innerHTML pour rajouter les options a la liste
@@ -309,7 +310,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 
 				// Ici on va voir comment faire du post
 				xhr.open(\"POST\",\"../plugins/bestmanagement/tabrecap.php\",true);
-				// ne pas oublier ça pour le post
+				// ne pas oublier ï¿½a pour le post
 				xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 				// ne pas oublier de poster les arguments
 				// ici, l'id de l'auteur
@@ -335,15 +336,15 @@ class PluginBestmanagementContrat extends CommonDBTM
 				echo ($info_compteur["compteur"] == "category")	? $LANG["bestmanagement"]["achat"][3] : $LANG["bestmanagement"]["achat"][4];
 				echo"</th></tr>";	// fin Titre
 				
-				echo $tr . $td;		// Choisir une catégorie || Choisir une priorité
+				echo $tr . $td;		// Choisir une catï¿½gorie || Choisir une prioritï¿½
 				echo ($info_compteur["compteur"] == "category")	? $LANG["bestmanagement"]["achat"][5] : $LANG["bestmanagement"]["achat"][6];
 				echo " :</td>";						
 				echo "<td style='padding:0.2em 0.5em;' align=center colspan='4'>";
 				
 				if ($info_compteur["compteur"] == "category")
-					Dropdown::show('TaskCategory');				// dropdown des catégories
+					Dropdown::show('TaskCategory');				// dropdown des catï¿½gories
 				else
-					Ticket::dropdownPriority("priority",3);		// dropdown des priorités
+					Ticket::dropdownPriority("priority",3);		// dropdown des prioritï¿½s
 				echo "</td></tr>";
 				
 				// Achat
@@ -380,16 +381,16 @@ class PluginBestmanagementContrat extends CommonDBTM
 	} // AddPurchase()
 
 	/**
-	 * Vérifie si les périodes sont vides
+	 * Vï¿½rifie si les pï¿½riodes sont vides
 	 *
-	 * @return boolean : true si zéro achat
+	 * @return boolean : true si zï¿½ro achat
 	**/
 	function checkEmptyPeriode()
 	{
 		global $DB;
 		
 		$date_deb = $this->dateDeb();
-		// requête sur l'historique des achats du contrat
+		// requï¿½te sur l'historique des achats du contrat
 		$query = "SELECT COUNT(*) Total
 				  FROM glpi_plugin_bestmanagement_achat
 				  WHERE ID_Compteur IS NOT NULL
@@ -401,7 +402,9 @@ class PluginBestmanagementContrat extends CommonDBTM
 
 		return ($row["Total"] == 0) ? true : false;
 	} // checkEmptyPeriode()
-	
+
+   
+   
 	/**
 	 * Retourne les lignes du tableau de bord pour le contrat en cours
 	 *
@@ -411,9 +414,9 @@ class PluginBestmanagementContrat extends CommonDBTM
 	{
 		$lignes = "";
 		//-------------------------------------------------
-		// Préparation des requêtes
-		// Les tableaux sont indexés selon l'ID du compteur
-		// contrats illimités => juste consommation
+		// PrÃ©paration des requÃ¨tes
+		// Les tableaux sont indexÃ©s selon l'ID du compteur
+		// contrats illimitÃ©s => juste consommation
 		//-------------------------------------------------
 		if (!$this->isContratIllim())
 		{
@@ -427,7 +430,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 		// on adapte l'affichage
 		$tdnormal	= "<td class='tab_bg_1'		align=center>";			// td normal
 		$tdred		= "<td class='tab_bg_2_2'	align=center>";			// td rouge quand HrsRest < 0
-		$tdredstrg	= "<td class='tab_bg_2_2'	align=center style='color:red;'><strong>";	// td rouge et HrsRest écrit en rouge+début gras
+		$tdredstrg	= "<td class='tab_bg_2_2'	align=center style='color:red;'><strong>";	// td rouge et HrsRest ï¿½crit en rouge+dï¿½but gras
 		
 		// alternance de couleurs
 		$tr1 = (isset($tr1)) ? $tr1 : "<tr>";
@@ -437,7 +440,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 		// remplissage des lignes du tableau
 		foreach(array_keys($tab_restant) as $key)
 		{
-			// vérifications pour savoir si les valeurs existent
+			// vï¿½rifications pour savoir si les valeurs existent
 			if (!$this->isContratIllim())
 			{
 				$tab_achat[$key]	= isset($tab_achat[$key])	? $tab_achat[$key]	: 0;
@@ -445,22 +448,22 @@ class PluginBestmanagementContrat extends CommonDBTM
 				$tab_restant[$key]	= isset($tab_restant[$key])	? $tab_restant[$key]: 0;
 			}
 			$tab_conso[$key]	= isset($tab_conso[$key])	? $tab_conso[$key]	: 0;
-			// fin vérification
+			// fin vï¿½rification
 			
 			$td = $tdnormal;
 			
 			if (!$this->isContratIllim())
 			{
-				// on adapte le td. Si aucune heure achetée ni reportée, ligne entièrement rouge
+				// on adapte le td. Si aucune heure achetï¿½e ni reportï¿½e, ligne entiï¿½rement rouge
 				$td = ($tab_achat[$key] + $tab_report[$key] == 0) ? $tdred : $tdnormal;
 				
-				// s'il n'y a ni heure achetée, reportée ou consommée on n'affiche pas la ligne
+				// s'il n'y a ni heure achetï¿½e, reportï¿½e ou consommï¿½e on n'affiche pas la ligne
 				if ($tab_achat[$key] == 0 && $tab_report[$key] == 0 && $tab_conso[$key] == 0) continue;
 			}
 			$name = $this->giveCompteurName($key, $this->infoCompteur());
 			$td_compteur = $td;
 			
-			if ($info_compteur["compteur"] == "priority" && isBgColor())	// couleur de fond pour les priorités
+			if ($info_compteur["compteur"] == "priority" && isBgColor())	// couleur de fond pour les prioritï¿½s
 				$td_compteur = "<td align='center' style=\"background-color:".$_SESSION["glpipriority_$key"]."\">";
 			
 			
@@ -478,7 +481,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 			else if (
             isset($_SERVER["REQUEST_URI"])
 					 && !strpos($_SERVER["REQUEST_URI"], "contract.tabs")	// pas dans la fiche contrat
-					 && !strpos($_SERVER["REQUEST_URI"], "tabrecap.ph"))	// pas dans le tab dans création ticket
+					 && !strpos($_SERVER["REQUEST_URI"], "tabrecap.ph"))	// pas dans le tab dans crï¿½ation ticket
 				$lignes .= $td . "</td>" . $td . "</td>";
 			
 				$lignes .= $td . $this->arrangeIfHours($tab_conso[$key]	, $info_compteur["unit"])	. "</td>"; 
@@ -497,7 +500,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 			}
 			else if (isset($_SERVER["REQUEST_URI"])
 					 && !strpos($_SERVER["REQUEST_URI"], "contract.tabs")	// pas dans la fiche contrat
-					 && !strpos($_SERVER["REQUEST_URI"], "tabrecap.ph"))	// pas dans le tab dans création ticket
+					 && !strpos($_SERVER["REQUEST_URI"], "tabrecap.ph"))	// pas dans le tab dans crï¿½ation ticket
 		//		$lignes .= $td . "</td>";
 			
 			$lignes .= "</tr>";
@@ -507,13 +510,13 @@ class PluginBestmanagementContrat extends CommonDBTM
 	} // currentRecap()
 
 	/**
-	 * Retourne un tableau récapitulatif
+	 * Retourne un tableau rï¿½capitulatif
 	 *
 	 * @param $tabrecap : quel tableau on veut afficher
 	 * sachant que c'est aussi la fonction que l'on va appeler
 	 *
 	 * @return <table>...</table>
-	 *		or <div>...</div> en cas d'échec
+	 *		or <div>...</div> en cas d'ï¿½chec
 	**/
 	function showTabRecap($tabrecap="currentRecap")
 	{
@@ -522,15 +525,15 @@ class PluginBestmanagementContrat extends CommonDBTM
 		$info_compteur = $this->infoCompteur();
 		
 		$class = get_class($this);
-		//if(!is_callable($class.'::'.$tabrecap))	// erreur dans la fonction à appeler
+		//if(!is_callable($class.'::'.$tabrecap))	// erreur dans la fonction ï¿½ appeler
 		//	return false;
 		
-		// cas où on ne peut pas afficher l'historique global
+		// cas oï¿½ on ne peut pas afficher l'historique global
 		if ($tabrecap == "histRecap")
 		{
-			if ($this->nbPeriodes() == 1)	// si il n'y a qu'une période
+			if ($this->nbPeriodes() == 1)	// si il n'y a qu'une pï¿½riode
 				return "<div class='x-tab-panel-header'>" . $LANG["bestmanagement"]["msg"][12] . "</div>";
-			else if ($this->checkEmptyPeriode())	// si les périodes sont vides
+			else if ($this->checkEmptyPeriode())	// si les pï¿½riodes sont vides
 				return "<div class='x-tab-panel-header'>" . $LANG["bestmanagement"]["msg"][23] . "</div>";
 		}
 		if($tabrecap == "currentRecap" && !$this->areSetValues())
@@ -538,7 +541,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 			
 		if(count($info_compteur) == 2)
 		{
-			// on nomme les colonnes du tableau, selon le compteur et les unités
+			// on nomme les colonnes du tableau, selon le compteur et les unitï¿½s
 			$colonnes = array();
 			if ($info_compteur["compteur"] == "category")
 				array_push($colonnes, $LANG['common'][36]);
@@ -563,8 +566,8 @@ class PluginBestmanagementContrat extends CommonDBTM
 			foreach ($colonnes as $col)
 				$tab .= "<th>".$col."</th>";
 			$tab .= "</tr>";
-			
-			$tab .= call_user_func(array($class,$tabrecap));    // appel de la fonction qui affiche le récapitulatif
+         
+			$tab .= call_user_func(array($class,$tabrecap));    // appel de la fonction qui affiche le rÃ©capitulatif
 			
 			$tab .= "</table>";
 		}
@@ -574,7 +577,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 	
 	
 	/*
-	  renvoie un tableau statistiques par entités
+	  renvoie un tableau statistiques par entitï¿½s
 	*/
 	function showStatEntites(){
 	
@@ -626,7 +629,7 @@ class PluginBestmanagementContrat extends CommonDBTM
   }
 
 	/**
-	 * Retourne les lignes du tableau de bord pour les périodes antérieures
+	 * Retourne les lignes du tableau de bord pour les pï¿½riodes antï¿½rieures
 	 *
 	 * @return <tr> <td> ... </td> </tr>
 	**/
@@ -647,7 +650,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 			if($DB->numrows($resultat) > 0)
 				while ($row = $DB->fetch_assoc($resultat))
 				{
-					// rappel période du contrat
+					// rappel pï¿½riode du contrat
 					if (!isset($datedeb) || $datedeb != $row["date_deb"])
 					{
 						if (isset($datedeb))
@@ -660,17 +663,17 @@ class PluginBestmanagementContrat extends CommonDBTM
 					}
 					
 					$datedeb = $row["date_deb"];
-					// vérifications pour savoir si les valeurs existent
+					// vï¿½rifications pour savoir si les valeurs existent
 					$row["achat"]	= isset($row["achat"])	? $row["achat"]	: 0;
 					$row["report"]	= isset($row["report"])	? $row["report"]: 0;
 					$row["conso"]	= isset($row["conso"])	? $row["conso"]	: 0;
 					$reste = $row["achat"] + $row["report"] - $row["conso"];
-					// fin vérification
+					// fin vï¿½rification
 
 					$name = $this->giveCompteurName($row["ID_Compteur"], $this->infoCompteur());
 					
 					$td_compteur = $td;
-					if ($info_compteur["compteur"] == "priority" && isBgColor())	// couleur de fond pour les priorités
+					if ($info_compteur["compteur"] == "priority" && isBgColor())	// couleur de fond pour les prioritï¿½s
 						$td_compteur = "<td align='center' style='background-color:".$_SESSION["glpipriority_".$row["ID_Compteur"].""]."'>";
 					
 					$lignes .= "<tr>";
@@ -694,9 +697,9 @@ class PluginBestmanagementContrat extends CommonDBTM
 	} // histRecap()
 
 	/**
-	 * Retourne le nombre de périodes pour le contrat
+	 * Retourne le nombre de pï¿½riodes pour le contrat
 	 *
-	 * @return int : Nb de périodes
+	 * @return int : Nb de pï¿½riodes
 	**/
 	function nbPeriodes()
 	{
@@ -763,17 +766,18 @@ class PluginBestmanagementContrat extends CommonDBTM
 	{
 		global $LANG;
 		
-		if ($info_compteur["compteur"] == "priority")	// définit le nom des priorités
+		if ($info_compteur["compteur"] == "priority")	// dï¿½finit le nom des prioritï¿½s
 		{
-			if ($key == 0) continue;
-			$name = "";	// nom du premier td
-			$name = ($key == 5) ? $LANG["help"][3] : $name;
-			$name = ($key == 4) ? $LANG["help"][4] : $name;
-			$name = ($key == 3) ? $LANG["help"][5] : $name;
-			$name = ($key == 2) ? $LANG["help"][6] : $name;
-			$name = ($key == 1) ? $LANG["help"][7] : $name;
+			if ($key != 0) {
+            $name = "";	// nom du premier td
+            $name = ($key == 5) ? $LANG["help"][3] : $name;
+            $name = ($key == 4) ? $LANG["help"][4] : $name;
+            $name = ($key == 3) ? $LANG["help"][5] : $name;
+            $name = ($key == 2) ? $LANG["help"][6] : $name;
+            $name = ($key == 1) ? $LANG["help"][7] : $name;
+         }
 		}
-		else // définit le nom des catégories
+		else // dï¿½finit le nom des catï¿½gories
 		{
 			$cat_name = $this->tabCatName();
 			if ($key == 0) $name = "(vide)";
@@ -783,7 +787,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 	} // giveCompteurName()
 
 	/**
-	 * Retourne le tableau associatif id => nom de catégorie
+	 * Retourne le tableau associatif id => nom de catï¿½gorie
 	 *
 	 * @return array
 	**/
@@ -802,7 +806,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 	
 	/**
 	 * Si la chaine est une heure
-	 * cette fonction la transforme pour faciliter la lisisbilité de l'heure
+	 * cette fonction la transforme pour faciliter la lisisbilitï¿½ de l'heure
 	 *
 	 * @param valeur sous forme 99,99
 	 * @return string (si heure, sous forme HH:MM)
@@ -826,7 +830,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 
 	/**
 	 * Retourne les informations sur le
-	 * type de compteur et d'unités
+	 * type de compteur et d'unitï¿½s
 	 *
 	 * @return array
 	**/
@@ -844,8 +848,8 @@ class PluginBestmanagementContrat extends CommonDBTM
 			if($DB->numrows($resultat) > 0)
 			{
 				$row = $DB->fetch_assoc($resultat);
-				$info_compteur["compteur"]	= $row["Type_Compteur"];	// Type du compteur	(category, priorité)
-				$info_compteur["unit"]		= $row["Type_Unit"];		// Type d'unité		(heures, nbtickets)
+				$info_compteur["compteur"]	= $row["Type_Compteur"];	// Type du compteur	(category, prioritï¿½)
+				$info_compteur["unit"]		= $row["Type_Unit"];		// Type d'unitï¿½		(heures, nbtickets)
 			}
 		
 		return $info_compteur;
@@ -853,7 +857,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 
 	
 	/**
-	 * Retourne le type du contrat, préfixé de son entité
+	 * Retourne le type du contrat, prï¿½fixï¿½ de son entitï¿½
 	 *
 	 * @return string
 	**/
@@ -897,7 +901,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 	} // giveManagement()
 	
 	/**
-	 * Retourne la gestion du contrat (adaptée au PDF)
+	 * Retourne la gestion du contrat (adaptï¿½e au PDF)
 	 *
 	 * @return string
 	**/
@@ -916,11 +920,11 @@ class PluginBestmanagementContrat extends CommonDBTM
 	} // giveManagementForPDF()
 	
 	/**
-	 * Effectue la requête d'achat et de report
+	 * Effectue la requï¿½te d'achat et de report
 	 * pour ce contrat.
 	 *
 	 * Retourne un tableau associatif :
-	 * compteur	=> unités
+	 * compteur	=> unitï¿½s
 	 *
 	 * @return array
 	**/
@@ -932,8 +936,8 @@ class PluginBestmanagementContrat extends CommonDBTM
 		switch ($what)
 		{
 		  case "achat" :
-			// Requêtes associées au report des unités
-			// on vérifie d'abort qu'il y a report
+			// Requï¿½tes associï¿½es au report des unitï¿½s
+			// on vï¿½rifie d'abort qu'il y a report
 			$is_achat = "SELECT *
 						  FROM glpi_plugin_bestmanagement_achat
 						  WHERE ID_Contrat = $this->id
@@ -944,8 +948,8 @@ class PluginBestmanagementContrat extends CommonDBTM
 				{
 					$row = $DB->fetch_assoc($res_achat);
 
-					// requête sur les achats du contrat en cours
-					// Selon un compteur, on fait la somme des unités achetées
+					// requï¿½te sur les achats du contrat en cours
+					// Selon un compteur, on fait la somme des unitï¿½s achetï¿½es
 					$query =   "SELECT ID_Compteur CptID, SUM(UnitBought) Unit
 								FROM glpi_plugin_bestmanagement_achat achat, glpi_contracts contrat
 								WHERE ID_Contrat = $this->id
@@ -959,8 +963,8 @@ class PluginBestmanagementContrat extends CommonDBTM
 			break;
 		
 		  case "report" :
-			// Requêtes associées au report des unités
-			// on vérifie d'abort qu'il y a report
+			// Requï¿½tes associï¿½es au report des unitï¿½s
+			// on vï¿½rifie d'abort qu'il y a report
 			$is_report = "SELECT report_credit
 						  FROM glpi_plugin_bestmanagement_reconduction reconduction
 						  WHERE ID_Contrat = $this->id
@@ -974,7 +978,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 					$row = $DB->fetch_assoc($res_report);
 			
 					if (!$row["report_credit"])	// il y a report
-						// Selon un compteur, on fait la somme des unités reportées
+						// Selon un compteur, on fait la somme des unitï¿½s reportï¿½es
 						$query = "SELECT ID_Compteur CptID, Nb_Unit Unit
 								  FROM glpi_plugin_bestmanagement_reconduction reconduction,
 										glpi_plugin_bestmanagement_report report
@@ -987,7 +991,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 
 		} // swith
 		
-		// Puis on stocke le résultat dans le tableau $tab
+		// Puis on stocke le rï¿½sultat dans le tableau $tab
 		$tab = array();
 		
 		if($resultat = $DB->query($query))
@@ -1000,9 +1004,9 @@ class PluginBestmanagementContrat extends CommonDBTM
 	
 
 	/**
-	 * Effectue la requête des consommations pour ce contrat
+	 * Effectue la requï¿½te des consommations pour ce contrat
 	 * et retourne un tableau associatif :
-	 * compteur	=> unités consommées
+	 * compteur	=> unitï¿½s consommï¿½es
 	 *
 	 * @return array
 	**/
@@ -1011,9 +1015,9 @@ class PluginBestmanagementContrat extends CommonDBTM
 		global $DB;
 		$info_compteur = $this->infoCompteur();
 		
-		// Requêtes associées à la consommation
-		// Selon un compteur, on fait la somme des unités consommées
-		if ($info_compteur["compteur"] == "category") // compteur par catégorie
+		// Requï¿½tes associï¿½es ï¿½ la consommation
+		// Selon un compteur, on fait la somme des unitï¿½s consommï¿½es
+		if ($info_compteur["compteur"] == "category") // compteur par catï¿½gorie
 		{
 			if ($info_compteur["unit"] == "hour") // type par heure
 			{
@@ -1034,9 +1038,9 @@ class PluginBestmanagementContrat extends CommonDBTM
 				$conso = "";
 			}
 		}
-		else	// compteur par priorité
+		else	// compteur par prioritï¿½
 		{
-			if ($info_compteur["unit"] == "hour")
+			if ($info_compteur["unit"] != "hour")
 				$AGREG = "SUM(ticket.actiontime)";
 			else
 				$AGREG = "COUNT(ticket.id)";
@@ -1051,14 +1055,14 @@ class PluginBestmanagementContrat extends CommonDBTM
 						AND DATE_ADD(contrat.begin_date, INTERVAL contrat.duration MONTH)
 				   GROUP BY ticket.priority";
 		}
-		
-		// Puis on stocke le résultat dans le tableau $tab_conso
+      
+		// Puis on stocke le rï¿½sultat dans le tableau $tab_conso
 		$tab_conso = array();
 		if($result = $DB->query($conso))
 			if($DB->numrows($result) > 0)
 				while($row = $DB->fetch_assoc($result)) {
-					$tab_conso[$row["CptID"]] = round($row["UnitC"],2)/3600;			// division par 3600 car les heures consommées sont des entiers 
-																						// et non des flottants comme c'était dans les versions précédentes. 
+					$tab_conso[$row["CptID"]] = round($row["UnitC"],2)/3600;			// division par 3600 car les heures consommï¿½es sont des entiers 
+																						// et non des flottants comme c'ï¿½tait dans les versions prï¿½cï¿½dentes. 
 				}
 		return $tab_conso;
 		
@@ -1067,27 +1071,27 @@ class PluginBestmanagementContrat extends CommonDBTM
 	
 	
 	/**
-	 * Effectue la requête des unités restantes pour ce contrat
+	 * Effectue la requï¿½te des unitï¿½s restantes pour ce contrat
 	 * et retourne un tableau associatif :
-	 * compteur	=> unités restantes
+	 * compteur	=> unitï¿½s restantes
 	 *
 	 * @return array
 	**/
 	function prepareTabRestant()
 	{
-		$tab_achat	= $this->prepareTab("achat");		// Tableau récapitulatif des achats
-		$tab_report	= $this->prepareTab("report");		// Tableau récapitulatif des reports
-		$tab_conso	= $this->prepareTabConso();			// Tableau récapitulatif des consommations
+		$tab_achat	= $this->prepareTab("achat");		// Tableau rï¿½capitulatif des achats
+		$tab_report	= $this->prepareTab("report");		// Tableau rï¿½capitulatif des reports
+		$tab_conso	= $this->prepareTabConso();			// Tableau rï¿½capitulatif des consommations
 		
 		$tab_total = array();	// tableau : achats + report
-		foreach (array_keys($tab_achat) as $key_a)	// ajout du report, cas où il ya des achats
+		foreach (array_keys($tab_achat) as $key_a)	// ajout du report, cas oï¿½ il ya des achats
 		{
 			if(array_key_exists($key_a, $tab_report))
 				$tab_total[$key_a] = $tab_achat[$key_a] + $tab_report [$key_a];
 			else
 				$tab_total[$key_a] = $tab_achat[$key_a];
 		}
-		foreach (array_keys($tab_report) as $key_a)	// ajout du report, cas où il n'y a pas d'achat
+		foreach (array_keys($tab_report) as $key_a)	// ajout du report, cas oï¿½ il n'y a pas d'achat
 		{
 			if(!array_key_exists($key_a, $tab_achat))
 				$tab_total[$key_a] = $tab_report [$key_a];
@@ -1096,15 +1100,15 @@ class PluginBestmanagementContrat extends CommonDBTM
 		$tab_restant = array();	// tableau : total - conso
 		foreach (array_keys($tab_total) as $key_a)
 		{
-			if(array_key_exists($key_a, $tab_conso)) { // on récupère le total, retranché des consommations
+			if(array_key_exists($key_a, $tab_conso)) { // on rï¿½cupï¿½re le total, retranchï¿½ des consommations
 				$tab_restant[$key_a] = $tab_total[$key_a] - $tab_conso[$key_a];
 			}
 			else
-				$tab_restant[$key_a] = $tab_total[$key_a] ;	// cas où il n'y a pas de consommation		
+				$tab_restant[$key_a] = $tab_total[$key_a] ;	// cas oï¿½ il n'y a pas de consommation		
 		}
 		foreach (array_keys($tab_conso) as $key_c)
 		{
-			if(!array_key_exists($key_c, $tab_total)) {			// cas où il n'y a pas d'achat ni report mais consommation
+			if(!array_key_exists($key_c, $tab_total)) {			// cas oï¿½ il n'y a pas d'achat ni report mais consommation
 				$tab_restant[$key_c] = -$tab_conso[$key_c];
 			}
 		}
@@ -1113,7 +1117,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 	} // prepareTabRestant()
 	
 	/**
-	 * Retourne la date de début du contrat
+	 * Retourne la date de dï¿½but du contrat
 	 *
 	 * @return string (au format date)
 	**/
@@ -1134,7 +1138,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 	} // dateDeb()
 
 	/**
-	 * Retourne si le contrat est géré en illimité
+	 * Retourne si le contrat est gï¿½rï¿½ en illimitï¿½
 	 *
 	 * @return boolean : vrai si illim
 	**/
@@ -1157,7 +1161,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 	} // isContratIllim()
 	
 	/*
-	  Retourne vrai si sous-entités est à Oui sur la fiche contrat
+	  Retourne vrai si sous-entitï¿½s est ï¿½ Oui sur la fiche contrat
 	*/
 	function isContratRecursif(){
     global $DB;
@@ -1175,7 +1179,7 @@ class PluginBestmanagementContrat extends CommonDBTM
   }
 	
 	/**
-	 * Retourne la durée du contrat
+	 * Retourne la durï¿½e du contrat
 	 *
 	 * @return int (en mois)
 	**/
@@ -1226,7 +1230,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 	
 
 	/**
-	 * Retourne le numéro du contrat
+	 * Retourne le numï¿½ro du contrat
 	 *
 	 * @return string
 	**/
@@ -1290,8 +1294,8 @@ class PluginBestmanagementContrat extends CommonDBTM
 			if ($this->areSetValues() && !$this->isContratIllim())
 			{
 				//----------------------------------------------
-				// Préparation des requêtes
-				// Le tableau est indexé selon l'ID du compteur
+				// Prï¿½paration des requï¿½tes
+				// Le tableau est indexï¿½ selon l'ID du compteur
 				//----------------------------------------------
 				$tab_restant= $this->prepareTabRestant();
 				
@@ -1310,7 +1314,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 				// remplissage des lignes du tableau
 				foreach(array_keys($tab_restant) as $key)
 				{
-					// s'il n'y a ni heure achetée, reportée ou consommée on n'affiche pas la ligne
+					// s'il n'y a ni heure achetï¿½e, reportï¿½e ou consommï¿½e on n'affiche pas la ligne
 					if ($key == 0 || $tab_restant[$key] == 0) continue;
 					
 					echo $tr;
@@ -1369,7 +1373,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 	
 	/**
 	 * Affiche la zone de texte correspondant au 
-	 * numéro de facture.
+	 * numï¿½ro de facture.
 	 *
 	 * @return Nothing(Display)
 	**/
@@ -1382,9 +1386,9 @@ class PluginBestmanagementContrat extends CommonDBTM
 	} // inputFacturation()
 
 	/**
-	 * Retourne l'état de facturation du contrat
-	 * 0 => facturé
-	 * else => non facturé
+	 * Retourne l'ï¿½tat de facturation du contrat
+	 * 0 => facturï¿½
+	 * else => non facturï¿½
 	 *
 	 * @return int
 	**/
@@ -1445,7 +1449,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 		$lignes = "";
 		
 		//================//
-		// Première ligne //
+		// Premiï¿½re ligne //
 		//================//
 		$td2= "<td colspan='2'>";	// td normal colspan=2
 		$td3= "<td align='left'; colspan='3'>";	// td normal colspan=3
@@ -1458,13 +1462,13 @@ class PluginBestmanagementContrat extends CommonDBTM
 		$destination .= "/front/contract.form.php?id=$this->id";
 		
 		$lignes .= $td3."<a href=\"$destination\">".$this->number() . " - " . $this->giveRealName()."</a>";
-		// date de fin formatée
+		// date de fin formatï¿½e
 		$lignes .= "&nbsp;&nbsp;(" . $LANG["bestmanagement"]["allrecap"][11] . Html::convDate($this->dateFin()) . ")</td>";
 		$lignes .= $td2 . $this->giveManagement() . "</td>";
 		$lignes .= "</tr>";
 		
 		//================//
-		// Deuxième ligne //
+		// Deuxiï¿½me ligne //
 		//================//
 		$lignes .= "<tr style=\"background-color:" . $colors["tr1"] . "; color:#000000;\">";
 		// contact
@@ -1477,7 +1481,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 		$tr2 = "<tr style=\"background-color:" . $colors["tr1"] . "; color:#000000;\">";
 		
 		//=======================//
-		// Tableau récapitulatif //
+		// Tableau rï¿½capitulatif //
 		//=======================//
 		if ($this->nbAchats())
 		{
@@ -1486,14 +1490,14 @@ class PluginBestmanagementContrat extends CommonDBTM
 				$lignes .= "<td>".$col."</td>";
 			$lignes .= "</tr>";
 			
-			$lignes .= $this->currentRecap($tr1, $tr2);	// tableau récapitulatif
+			$lignes .= $this->currentRecap($tr1, $tr2);	// tableau rï¿½capitulatif
 		}
 		
 		return $lignes;
 	} // ContratMailing()
 	
 	/**
-	* Execute la tâche d'envoi de mails
+	* Execute la tï¿½che d'envoi de mails
 	*
 	* @param $task Object of CronTask class for log / stat
 	*
@@ -1575,16 +1579,16 @@ class PluginBestmanagementContrat extends CommonDBTM
 						$tab_restant= $contrat->prepareTabRestant();
 						
 						$exit = false;
-						// vérification des résultats
+						// vï¿½rification des rï¿½sultats
 						foreach(array_keys($tab_restant) as $key)
 						{
-							// si on a déjà le contrat ou ni heure achetée ni reportée ou consommée
+							// si on a dï¿½jï¿½ le contrat ou ni heure achetï¿½e ni reportï¿½e ou consommï¿½e
 							if ($exit || $key == 0 || $tab_restant[$key] == 0) continue;
 							
-							if ($tab_restant[$key] < 0)	// consommation négative
+							if ($tab_restant[$key] < 0)	// consommation nï¿½gative
 							{
 								$all_contrats[2][] = $row["id"];
-								$exit = true;	// on a le contrat, pas besoin de le reinsérer dans $all_contrats
+								$exit = true;	// on a le contrat, pas besoin de le reinsï¿½rer dans $all_contrats
 							}
 						}
 					} // while
@@ -1613,28 +1617,28 @@ class PluginBestmanagementContrat extends CommonDBTM
 						if (count($info_compteur) == 0) continue;
 						
 						//-------------------------------------------------
-						// Préparation des requêtes
-						// Les tableau sont indexés selon l'ID du compteur
+						// Prï¿½paration des requï¿½tes
+						// Les tableau sont indexï¿½s selon l'ID du compteur
 						//-------------------------------------------------
 						$tab_achat	= $contrat->prepareTab("achat");
 						$tab_report	= $contrat->prepareTab("report");
 						$tab_restant= $contrat->prepareTabRestant();
 						
 						$exit = false;
-						// vérification des résultats
+						// vï¿½rification des rï¿½sultats
 						foreach(array_keys($tab_restant) as $key)
 						{
-							// si on a déjà le contrat ou ni heure achetée ni reportée ou consommée
+							// si on a dï¿½jï¿½ le contrat ou ni heure achetï¿½e ni reportï¿½e ou consommï¿½e
 							if ($exit || $key == 0 || $tab_restant[$key] == 0) continue;
 							
-							// si les valeurs ne sont pas définies :
+							// si les valeurs ne sont pas dï¿½finies :
 							$tab_report[$key]	= isset($tab_report[$key])	? $tab_report[$key]	: 0;
 							$tab_achat[$key]	= isset($tab_achat[$key])	? $tab_achat[$key]	: 0;
 							
 							if (($tab_restant[$key]/$tab_achat[$key]+$tab_report[$key])*100 <= $ratio && ($tab_restant[$key]/$tab_achat[$key]+$tab_report[$key])*100 >= 0)
-							{	// ratio dépassé
+							{	// ratio dï¿½passï¿½
 								$all_contrats[3][] = $row["id"];
-								$exit = true;	// on a le contrat, pas besoin de le reinsérer dans $all_contrats
+								$exit = true;	// on a le contrat, pas besoin de le reinsï¿½rer dans $all_contrats
 							}
 						}
 					} // while
@@ -1649,15 +1653,15 @@ class PluginBestmanagementContrat extends CommonDBTM
 		
 		foreach(array_keys($all_contrats) as $key)
 		{
-			$colors = getMailColors();	// définit les couleurs des tableaux
+			$colors = getMailColors();	// dï¿½finit les couleurs des tableaux
 			
 			$body .= "<table>";
-			// titre bleu foncé
+			// titre bleu foncï¿½
 			$body .= "<tr><th style='background-color:" . $colors["titre"] . ";' colspan='5'>".$LANG["bestmanagement"]["cron"][$key]."</th></tr>";
 			
 			foreach($all_contrats[$key] as $id)
 			{
-				if (isset($un_contrat))	// ligne vierge pour séparer les contrats
+				if (isset($un_contrat))	// ligne vierge pour sï¿½parer les contrats
 					$body .= "<tr style=\"background-color:#ffffff;\"><td colspan='5'>&nbsp;</td></tr>";
 
 				$un_contrat = new PluginBestmanagementContrat($id);
@@ -1690,7 +1694,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 		$body .= "</table><br><br>";
 		$body.="</body></html>";
 		
-		// on récupère les adresses e-mail
+		// on rï¿½cupï¿½re les adresses e-mail
 		foreach (getAdresses() as $ad)
 		{
 			$mmail= new NotificationMail;
@@ -1707,7 +1711,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 	} // cronVerif
 
 	/**
-	* Execute la tâche de sauvegarde de la BD
+	* Execute la tï¿½che de sauvegarde de la BD
 	*
 	* @param $task Object of CronTask class for log / stat
 	*
@@ -1793,7 +1797,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 	} // cronSQL
 
 	/**
-	* Vérifie si des valeurs ont été saisies
+	* Vï¿½rifie si des valeurs ont ï¿½tï¿½ saisies
 	* dans achat, report et consommation
 	*
 	* @return boolean
@@ -1802,8 +1806,8 @@ class PluginBestmanagementContrat extends CommonDBTM
 	{
 		$val = (count($this->prepareTabRestant()) == 0) ? false : true;
 		
-		// cas exceptionnel : si on a des unités nulles (par exemple en cas de réajustement)
-		// on vérifie qu'on ait au moins une unité non nulle, sinon return false
+		// cas exceptionnel : si on a des unitï¿½s nulles (par exemple en cas de rï¿½ajustement)
+		// on vï¿½rifie qu'on ait au moins une unitï¿½ non nulle, sinon return false
 		if ($val)
 			foreach ($this->prepareTabRestant() as $unit)
 				if ($unit == 0)	$val = false;
