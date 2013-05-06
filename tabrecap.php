@@ -6,7 +6,6 @@
 
 define('GLPI_ROOT', '../..');
 include_once(GLPI_ROOT . "/inc/includes.php");
-include_once(GLPI_ROOT . "/plugins/bestmanagement/inc/bestmanagement.class.php");
 
 if(isset($_POST["Fact"]) && $_POST["Fact"] == 0 && isset($_POST["idContratFactureContrat"]))
 {
