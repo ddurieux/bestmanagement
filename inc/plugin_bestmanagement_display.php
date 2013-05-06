@@ -14,14 +14,14 @@ function plugin_bestmanagement_fichecontrat($ID)
 	// on cr�� un objet PluginBestmanagementContrat que l'on va manipuler tout au long de cette fonction
 	$contrat = new PluginBestmanagementContrat($ID);
 	
-	if(0 == count($contrat->infoCompteur()))	// d�finir le tri
+	if(0 == count($contrat->infoCompteur()))	// définir le tri
 		if (Session::haveRight('contract', 'w'))
 			$contrat->sort();
 		else
 			echo "<div class='x-tab-panel-header'>" . $LANG["bestmanagement"]["msg"][13] . "</div>";
 	else
 	{
-		echo "<div class='tab_cadre_fixe'>";
+		echo "<div class='tab_cadre_fixe' style='width:1100px'>";
 			echo "<div class='x-tab-panel-header x-unselectable x-tab-panel-header-plain' style='-moz-user-select: none;'>";
 			echo "<div class='x-tab-strip-wrap'>";
 				echo "<ul class='x-tab-strip x-tab-strip-top'>";
@@ -51,7 +51,7 @@ function plugin_bestmanagement_fichecontrat($ID)
 			echo '<div class="tabbed_area tab_cadre_fixe">';
 				
 				echo '<div id="content_1" class="content">';
-					// affichage du tableau r�capitulatif
+					// affichage du tableau récapitulatif
 					if (plugin_bestmanagement_haveRight("bestmanagement","recapcontrat", 1))
 						echo $contrat->showTabRecap("currentRecap");
 					else
