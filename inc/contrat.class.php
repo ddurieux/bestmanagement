@@ -285,7 +285,7 @@ class PluginBestmanagementContrat extends CommonDBTM {
                }
             }
             else
-            { // XMLHttpRequest non support� par le navigateur
+            { // XMLHttpRequest non supporté par le navigateur
                alert(\"Votre navigateur ne supporte pas les objets XMLHTTPRequest...\");
                xhr = false;
             }
@@ -293,14 +293,14 @@ class PluginBestmanagementContrat extends CommonDBTM {
          }
 
          /**
-         * M�thode qui sera appel�e sur le clic du bouton
+         * Méthode qui sera appelée sur le clic du bouton
          */
          function go()
          {
             var xhr = getXhr();
-            // On d�fini ce qu'on va faire quand on aura la r�ponse
+            // On défini ce qu'on va faire quand on aura la réponse
             xhr.onreadystatechange = function(){
-               // On ne fait quelque chose que si on a tout re�u et que le serveur est ok
+               // On ne fait quelque chose que si on a tout reçu et que le serveur est ok
                if(xhr.readyState == 4 && xhr.status == 200){
                   leselect = xhr.responseText;
                   // On se sert de innerHTML pour rajouter les options a la liste
@@ -310,7 +310,7 @@ class PluginBestmanagementContrat extends CommonDBTM {
 
             // Ici on va voir comment faire du post
             xhr.open(\"POST\",\"../plugins/bestmanagement/tabrecap.php\",true);
-            // ne pas oublier �a pour le post
+            // ne pas oublier ça pour le post
             xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
             // ne pas oublier de poster les arguments
             // ici, l'id de l'auteur
@@ -340,10 +340,11 @@ class PluginBestmanagementContrat extends CommonDBTM {
             echo " :</td>";
             echo "<td style='padding:0.2em 0.5em;' align=center colspan='4'>";
 
-            if ($info_compteur["compteur"] == "category")
-               Dropdown::show('TaskCategory');            // dropdown des cat�gories
-            else
-               Ticket::dropdownPriority("priority",3);      // dropdown des priorit�s
+            if ($info_compteur["compteur"] == "category") {
+               Dropdown::show('TaskCategory');            // dropdown des catégories
+            } else {
+               Ticket::dropdownPriority("priority",3);      // dropdown des priorités
+            }
             echo "</td></tr>";
 
             // Achat
@@ -379,13 +380,14 @@ class PluginBestmanagementContrat extends CommonDBTM {
       }
    } // AddPurchase()
 
+   
+   
    /**
-    * V�rifie si les p�riodes sont vides
+    * Vérifie si les périodes sont vides
     *
     * @return boolean : true si z�ro achat
    **/
-   function checkEmptyPeriode()
-   {
+   function checkEmptyPeriode() {
       global $DB;
 
       $date_deb = $this->dateDeb();
@@ -396,8 +398,9 @@ class PluginBestmanagementContrat extends CommonDBTM {
                AND ID_Contrat = $this->id
                AND date_deb != '$date_deb'";
 
-      if($resultat = $DB->query($query))
+      if($resultat = $DB->query($query)) {
          $row = $DB->fetch_assoc($resultat);
+      }
 
       return ($row["Total"] == 0) ? true : false;
    } // checkEmptyPeriode()
@@ -409,16 +412,14 @@ class PluginBestmanagementContrat extends CommonDBTM {
     *
     * @return <tr> <td> ... </td> </tr>
    **/
-   function currentRecap($tr1=null, $tr2=null)
-   {
+   function currentRecap($tr1=null, $tr2=null) {
       $lignes = "";
       //-------------------------------------------------
       // Préparation des requètes
       // Les tableaux sont indexés selon l'ID du compteur
       // contrats illimités => juste consommation
       //-------------------------------------------------
-      if (!$this->isContratIllim())
-      {
+      if (!$this->isContratIllim()) {
          $tab_achat   = $this->prepareTab("achat");
          $tab_report   = $this->prepareTab("report");
       }
@@ -437,11 +438,9 @@ class PluginBestmanagementContrat extends CommonDBTM {
       $tr = $tr1;
 
       // remplissage des lignes du tableau
-      foreach(array_keys($tab_restant) as $key)
-      {
-         // v�rifications pour savoir si les valeurs existent
-         if (!$this->isContratIllim())
-         {
+      foreach(array_keys($tab_restant) as $key) {
+         // vérifications pour savoir si les valeurs existent
+         if (!$this->isContratIllim()) {
             $tab_achat[$key]   = isset($tab_achat[$key])   ? $tab_achat[$key]   : 0;
             $tab_report[$key]   = isset($tab_report[$key])   ? $tab_report[$key]   : 0;
             $tab_restant[$key]   = isset($tab_restant[$key])   ? $tab_restant[$key]: 0;
@@ -451,8 +450,7 @@ class PluginBestmanagementContrat extends CommonDBTM {
 
          $td = $tdnormal;
 
-         if (!$this->isContratIllim())
-         {
+         if (!$this->isContratIllim()) {
             // on adapte le td. Si aucune heure achet�e ni report�e, ligne enti�rement rouge
             $td = ($tab_achat[$key] + $tab_report[$key] == 0) ? $tdred : $tdnormal;
 
@@ -462,9 +460,10 @@ class PluginBestmanagementContrat extends CommonDBTM {
          $name = $this->giveCompteurName($key, $this->infoCompteur());
          $td_compteur = $td;
 
-         if ($info_compteur["compteur"] == "priority" && isBgColor())   // couleur de fond pour les priorit�s
+         if ($info_compteur["compteur"] == "priority" 
+                 && isBgColor()) {   // couleur de fond pour les priorités
             $td_compteur = "<td align='center' style=\"background-color:".$_SESSION["glpipriority_$key"]."\">";
-
+         }
 
          $tr = ($tr == $tr1) ? $tr2 : $tr1;
 
@@ -472,22 +471,19 @@ class PluginBestmanagementContrat extends CommonDBTM {
 
          $lignes .= $td_compteur .   $name . "</td>";
 
-         if (!$this->isContratIllim())
-         {
+         if (!$this->isContratIllim()) {
             $lignes .= $td . $this->arrangeIfHours($tab_achat[$key]   , $info_compteur["unit"])   . "</td>";
             $lignes .= $td . $this->arrangeIfHours($tab_report[$key]   , $info_compteur["unit"])   . "</td>";
-         }
-         else if (
-            isset($_SERVER["REQUEST_URI"])
+         } else if (isset($_SERVER["REQUEST_URI"])
                 && !strpos($_SERVER["REQUEST_URI"], "contract.tabs")   // pas dans la fiche contrat
-                && !strpos($_SERVER["REQUEST_URI"], "tabrecap.ph"))   // pas dans le tab dans cr�ation ticket
+                && !strpos($_SERVER["REQUEST_URI"], "tabrecap.ph")) {  // pas dans le tab dans cr�ation ticket
             $lignes .= $td . "</td>" . $td . "</td>";
+         }
 
-            $lignes .= $td . $this->arrangeIfHours($tab_conso[$key]   , $info_compteur["unit"])   . "</td>";
+         $lignes .= $td . $this->arrangeIfHours($tab_conso[$key]   , $info_compteur["unit"])   . "</td>";
 
 
-         if (!$this->isContratIllim())
-         {
+         if (!$this->isContratIllim()) {
             $lignes .= ($tab_restant[$key] < 0) ? $tdredstrg  : $td;
             $lignes .= $this->arrangeIfHours($tab_restant[$key]      , $info_compteur["unit"]);
 
@@ -496,11 +492,11 @@ class PluginBestmanagementContrat extends CommonDBTM {
             // pour avoir le % : reste / (achat+report)
             $lignes .= ($tab_restant[$key] < 0) ? "" : " (".round(100*$tab_restant[$key]/($tab_achat[$key]+$tab_report[$key]),0)."%)";
             $lignes .= ($tab_restant[$key] < 0) ? "</strong>" : "";
-         }
-         else if (isset($_SERVER["REQUEST_URI"])
+         } else if (isset($_SERVER["REQUEST_URI"])
                 && !strpos($_SERVER["REQUEST_URI"], "contract.tabs")   // pas dans la fiche contrat
-                && !strpos($_SERVER["REQUEST_URI"], "tabrecap.ph"))   // pas dans le tab dans cr�ation ticket
+                && !strpos($_SERVER["REQUEST_URI"], "tabrecap.ph")) {  // pas dans le tab dans cr�ation ticket
       //      $lignes .= $td . "</td>";
+         }
 
          $lignes .= "</tr>";
       } // fin remplissage des lignes
@@ -508,8 +504,10 @@ class PluginBestmanagementContrat extends CommonDBTM {
 
    } // currentRecap()
 
+   
+   
    /**
-    * Retourne un tableau r�capitulatif
+    * Retourne un tableau récapitulatif
     *
     * @param $tabrecap : quel tableau on veut afficher
     * sachant que c'est aussi la fonction que l'on va appeler
@@ -517,53 +515,54 @@ class PluginBestmanagementContrat extends CommonDBTM {
     * @return <table>...</table>
     *      or <div>...</div> en cas d'�chec
    **/
-   function showTabRecap($tabrecap="currentRecap")
-   {
+   function showTabRecap($tabrecap="currentRecap") {
       global $DB, $LANG;
+      
       $tab = "";
       $info_compteur = $this->infoCompteur();
 
       $class = get_class($this);
-      //if(!is_callable($class.'::'.$tabrecap))   // erreur dans la fonction � appeler
+      //if(!is_callable($class.'::'.$tabrecap))   // erreur dans la fonction à appeler
       //   return false;
 
       // cas o� on ne peut pas afficher l'historique global
-      if ($tabrecap == "histRecap")
-      {
-         if ($this->nbPeriodes() == 1)   // si il n'y a qu'une p�riode
+      if ($tabrecap == "histRecap") {
+         if ($this->nbPeriodes() == 1) {   // si il n'y a qu'une période
             return "<div class='x-tab-panel-header'>" . $LANG["bestmanagement"]["msg"][12] . "</div>";
-         else if ($this->checkEmptyPeriode())   // si les p�riodes sont vides
+         } else if ($this->checkEmptyPeriode()) {  // si les p�riodes sont vides
             return "<div class='x-tab-panel-header'>" . $LANG["bestmanagement"]["msg"][23] . "</div>";
+         }
       }
-      if($tabrecap == "currentRecap" && !$this->areSetValues())
+      if($tabrecap == "currentRecap" && !$this->areSetValues()) {
          return "<div class='x-tab-panel-header'>" . $LANG["bestmanagement"]["msg"][24] . "</div>";
-
-      if(count($info_compteur) == 2)
-      {
+      }
+      if(count($info_compteur) == 2) {
          // on nomme les colonnes du tableau, selon le compteur et les unit�s
          $colonnes = array();
-         if ($info_compteur["compteur"] == "category")
+         if ($info_compteur["compteur"] == "category") {
             array_push($colonnes, $LANG['common'][36]);
-         else
+         } else {
             array_push($colonnes, $LANG['joblist'][2] );
-
+         }
          // pour adapter l'affichage des colonnes
          $nb = ($info_compteur["unit"] == "nbtickets") ? 10 : 0;
 
-         if ($this->isContratIllim())
+         if ($this->isContratIllim()) {
             array_push($colonnes, $LANG["bestmanagement"]["tabrecap"][3 + $nb]);
-         else
-         array_push($colonnes, $LANG["bestmanagement"]["tabrecap"][1 + $nb],
-                          $LANG["bestmanagement"]["tabrecap"][2 + $nb],
-                          $LANG["bestmanagement"]["tabrecap"][3 + $nb],
-                          $LANG["bestmanagement"]["tabrecap"][4 + $nb]);
+         } else {
+            array_push($colonnes, $LANG["bestmanagement"]["tabrecap"][1 + $nb],
+                             $LANG["bestmanagement"]["tabrecap"][2 + $nb],
+                             $LANG["bestmanagement"]["tabrecap"][3 + $nb],
+                             $LANG["bestmanagement"]["tabrecap"][4 + $nb]);
+         }
 
          $tab .= "<table class='tab_cadre'>";
          $tab .= "<tr> <th colspan='5'>" . $LANG["bestmanagement"]["tabrecap"][0] . "</th> </tr>"; // titre
 
          $tab .= "<tr>";
-         foreach ($colonnes as $col)
+         foreach ($colonnes as $col) {
             $tab .= "<th>".$col."</th>";
+         }
          $tab .= "</tr>";
 
          $tab .= call_user_func(array($class,$tabrecap));    // appel de la fonction qui affiche le récapitulatif
@@ -574,67 +573,69 @@ class PluginBestmanagementContrat extends CommonDBTM {
 
    } // showTabRecap()
 
+   
 
    /*
      renvoie un tableau statistiques par entit�s
    */
    function showStatEntites(){
+      global $DB, $LANG;
 
-    global $DB, $LANG;
+      $tab = "";
 
-    $tab = "";
+      $query ="
+      select e.name, count(t.id) as nb_ticket,tps.temps
+      from glpi_tickets t
+      inner join glpi_entities e
+      on t.entities_id = e.id
+      inner join glpi_plugin_bestmanagement_link_ticketcontrat l
+      on t.id = l.ID_Ticket and l.ID_Contrat = $this->id
+      inner join (
+      select e.name, sum(ta.actiontime)/3600 as temps
+      from glpi_tickets t
+      inner join glpi_entities e
+      on t.entities_id = e.id
+      inner join glpi_plugin_bestmanagement_link_ticketcontrat l
+      on t.id = l.ID_Ticket and l.ID_Contrat = $this->id
+      inner join glpi_tickettasks ta
+      on t.id = ta.tickets_id
+      inner join glpi_contracts c
+      on l.ID_Contrat = c.id
+      where ta.date between c.begin_date and date_add(c.begin_date, INTERVAL c.duration MONTH)
+      group by e.name
+      ) tps
+      on e.name = tps.name
+      inner join glpi_contracts c
+      on l.ID_Contrat = c.id
+      where t.date between c.begin_date and date_add(c.begin_date, INTERVAL c.duration MONTH)
+      group by e.name";
 
-    $query ="
-    select e.name, count(t.id) as nb_ticket,tps.temps
-    from glpi_tickets t
-    inner join glpi_entities e
-    on t.entities_id = e.id
-    inner join glpi_plugin_bestmanagement_link_ticketcontrat l
-    on t.id = l.ID_Ticket and l.ID_Contrat = $this->id
-    inner join (
-    select e.name, sum(ta.actiontime)/3600 as temps
-    from glpi_tickets t
-    inner join glpi_entities e
-    on t.entities_id = e.id
-    inner join glpi_plugin_bestmanagement_link_ticketcontrat l
-    on t.id = l.ID_Ticket and l.ID_Contrat = $this->id
-    inner join glpi_tickettasks ta
-    on t.id = ta.tickets_id
-    inner join glpi_contracts c
-    on l.ID_Contrat = c.id
-    where ta.date between c.begin_date and date_add(c.begin_date, INTERVAL c.duration MONTH)
-    group by e.name
-    ) tps
-    on e.name = tps.name
-    inner join glpi_contracts c
-    on l.ID_Contrat = c.id
-    where t.date between c.begin_date and date_add(c.begin_date, INTERVAL c.duration MONTH)
-    group by e.name";
+      $tab = "<table class='tab_cadre'>";
+      $tab .= "<tr><th>".$LANG["bestmanagement"]["tabs"][8]."</th><th>".$LANG["bestmanagement"]["sort"][7]."</th><th>".$LANG["bestmanagement"]["recap"][3]."</th></tr>";
 
-    $tab = "<table class='tab_cadre'>";
-    $tab .= "<tr><th>".$LANG["bestmanagement"]["tabs"][8]."</th><th>".$LANG["bestmanagement"]["sort"][7]."</th><th>".$LANG["bestmanagement"]["recap"][3]."</th></tr>";
-
-    if($resultat = $DB->query($query))
-      if($DB->numrows($resultat) > 0)
-        while ($row = $DB->fetch_assoc($resultat)){
-            $tab .= "<tr><td class='tab_bg_1' align='center'>".$row["name"]."</td>";
-            $tab .= "<td class='tab_bg_1' align='center'>".$row["nb_ticket"]."</td>";
-            $tab .= "<td class='tab_bg_1' align='center'>".$this->arrangeIfHours($row["temps"],"hour")."</td></tr>";
+      if ($resultat = $DB->query($query)) {
+        if ($DB->numrows($resultat) > 0) {
+          while ($row = $DB->fetch_assoc($resultat)) {
+              $tab .= "<tr><td class='tab_bg_1' align='center'>".$row["name"]."</td>";
+              $tab .= "<td class='tab_bg_1' align='center'>".$row["nb_ticket"]."</td>";
+              $tab .= "<td class='tab_bg_1' align='center'>".$this->arrangeIfHours($row["temps"],"hour")."</td></tr>";
+          }
         }
+      }
 
-    $tab .= "</table>";
+      $tab .= "</table>";
 
-    return $tab;
+      return $tab;
   }
 
    /**
-    * Retourne les lignes du tableau de bord pour les p�riodes ant�rieures
+    * Retourne les lignes du tableau de bord pour les périodes antérieures
     *
     * @return <tr> <td> ... </td> </tr>
    **/
-   function histRecap()
-   {
+   function histRecap() {
       global $DB, $LANG;
+      
       $lignes = "";
 
       $query = "SELECT *
@@ -645,16 +646,14 @@ class PluginBestmanagementContrat extends CommonDBTM {
       $td   = "<td class='tab_bg_1' align='center'>";      // td normal
       $info_compteur = $this->infoCompteur();
 
-      if($resultat = $DB->query($query))
-         if($DB->numrows($resultat) > 0)
-            while ($row = $DB->fetch_assoc($resultat))
-            {
+      if ($resultat = $DB->query($query)) {
+         if ($DB->numrows($resultat) > 0) {
+            while ($row = $DB->fetch_assoc($resultat)) {
                // rappel p�riode du contrat
-               if (!isset($datedeb) || $datedeb != $row["date_deb"])
-               {
-                  if (isset($datedeb))
+               if (!isset($datedeb) || $datedeb != $row["date_deb"]) {
+                  if (isset($datedeb)) {
                      $lignes .= "<tr class='tab_bg_1'><td 'colspan='5'>&nbsp;</td></tr>";   // ligne vierge
-
+                  }
                   $lignes .= "<tr class='tab_bg_1'>";
                   $lignes .= "<td colspan='5'>" . $LANG["bestmanagement"]["contrat"][8]. Html::convDate($row["date_deb"]);
                   $lignes .= $LANG["bestmanagement"]["contrat"][9].Infocom::getWarrantyExpir($row["date_deb"],$row["duree"])."</td>";
@@ -672,55 +671,59 @@ class PluginBestmanagementContrat extends CommonDBTM {
                $name = $this->giveCompteurName($row["ID_Compteur"], $this->infoCompteur());
 
                $td_compteur = $td;
-               if ($info_compteur["compteur"] == "priority" && isBgColor())   // couleur de fond pour les priorit�s
+               if ($info_compteur["compteur"] == "priority" && isBgColor()) {  // couleur de fond pour les priorit�s
                   $td_compteur = "<td align='center' style='background-color:".$_SESSION["glpipriority_".$row["ID_Compteur"].""]."'>";
-
+               }
                $lignes .= "<tr>";
                $lignes .= $td_compteur .   $name . "</td>";
 
-               if (!$this->isContratIllim())
-               {
+               if (!$this->isContratIllim()) {
                   $lignes .= $td . $this->arrangeIfHours($row["achat"]   , $info_compteur["unit"])   . "</td>";
                   $lignes .= $td . $this->arrangeIfHours($row["report"]   , $info_compteur["unit"])   . "</td>";
                }
 
-                  $lignes .= $td . $this->arrangeIfHours($row["conso"]   , $info_compteur["unit"])   . "</td>";
+               $lignes .= $td . $this->arrangeIfHours($row["conso"]   , $info_compteur["unit"])   . "</td>";
 
-               if (!$this->isContratIllim())
+               if (!$this->isContratIllim()) {
                   $lignes .= $td . $this->arrangeIfHours($reste         , $info_compteur["unit"]);
-
+               }
                $lignes .= "</tr>";
+            }
+         }
       } // fin remplissage des lignes
       return $lignes;
-
    } // histRecap()
 
+   
+   
    /**
-    * Retourne le nombre de p�riodes pour le contrat
+    * Retourne le nombre de périodes pour le contrat
     *
-    * @return int : Nb de p�riodes
+    * @return int : Nb de périodes
    **/
-   function nbPeriodes()
-   {
+   function nbPeriodes() {
       global $DB;
 
       $query_nb = "SELECT COUNT(DISTINCT date_deb) NbPeriodes
                 FROM glpi_plugin_bestmanagement_achat
                 WHERE ID_Contrat = $this->id";
 
-      if($res = $DB->query($query_nb))
-         if ($row = $DB->fetch_assoc($res))
+      if($res = $DB->query($query_nb)) {
+         if ($row = $DB->fetch_assoc($res)) {
             return $row["NbPeriodes"];
+         }
+      }
       return 0;
    } // nbPeriodes()
 
+   
+   
    /**
     * Retourne le nombre d'achat pour le contrat
     *
     * @return int : Nb d'achats
    **/
-   function nbAchats()
-   {
+   function nbAchats() {
       global $DB;
 
       $query_nb = "SELECT COUNT(*) NbAchats
@@ -728,31 +731,37 @@ class PluginBestmanagementContrat extends CommonDBTM {
                 WHERE ID_Contrat = $this->id
                   AND ID_Compteur IS NOT NULL";
 
-         if($res = $DB->query($query_nb))
-         if ($row = $DB->fetch_assoc($res))
+      if($res = $DB->query($query_nb)) {
+         if ($row = $DB->fetch_assoc($res)) {
             return $row["NbAchats"];
+         }
+      }
       return 0;
    } // nbAchats()
 
+   
+   
    /**
     * Indique si le contrat est encore valable
     *
     * @return boolean : true si encore valable
    **/
-   function isAvailable()
-   {
+   function isAvailable() {
       global $DB;
 
       $query_nb = "SELECT is_deleted
                 FROM glpi_contracts
                 WHERE id = $this->id";
 
-         if($res = $DB->query($query_nb))
-         if ($row = $DB->fetch_assoc($res))
+      if($res = $DB->query($query_nb)) {
+         if ($row = $DB->fetch_assoc($res)) {
             return !$row["is_deleted"];
-
+         }
+      }
    } // isAvailable()
 
+   
+   
    /**
     * Retourne le nom du compteur
     *
@@ -761,12 +770,10 @@ class PluginBestmanagementContrat extends CommonDBTM {
     *
     * @return Nom du Compteur
    **/
-   function giveCompteurName($key, $info_compteur)
-   {
+   function giveCompteurName($key, $info_compteur) {
       global $LANG;
 
-      if ($info_compteur["compteur"] == "priority")   // d�finit le nom des priorit�s
-      {
+      if ($info_compteur["compteur"] == "priority") {  // définit le nom des priorités
          if ($key != 0) {
             $name = "";   // nom du premier td
             $name = ($key == 5) ? $LANG["help"][3] : $name;
@@ -775,44 +782,53 @@ class PluginBestmanagementContrat extends CommonDBTM {
             $name = ($key == 2) ? $LANG["help"][6] : $name;
             $name = ($key == 1) ? $LANG["help"][7] : $name;
          }
-      }
-      else // d�finit le nom des cat�gories
-      {
+      } else { // définit le nom des catégories
          $cat_name = $this->tabCatName();
-         if ($key == 0) $name = "(vide)";
-         else $name = (isset($cat_name[$key])) ? $cat_name[$key] : "(non d&eacute;finie)";
+         if ($key == 0) {
+            $name = "(vide)";
+         } else {
+            $name = (isset($cat_name[$key])) ? $cat_name[$key] : "(non d&eacute;finie)";
+         }
       }
       return $name;
    } // giveCompteurName()
 
+   
+   
    /**
-    * Retourne le tableau associatif id => nom de cat�gorie
+    * Retourne le tableau associatif id => nom de catégorie
     *
     * @return array
    **/
-   function tabCatName()
-   {
+   function tabCatName() {
       global $DB;
 
       $query_cat = "SELECT ID, name FROM glpi_taskcategories";
-      if($res = $DB->query($query_cat))
-         if($DB->numrows($res) > 0)
-            while ($row = $DB->fetch_assoc($res))
+      if($res = $DB->query($query_cat)) {
+         if($DB->numrows($res) > 0) {
+            while ($row = $DB->fetch_assoc($res)) {
                $cat_name[$row["ID"]] = $row["name"];
+            }
+         }
+      }
 
       return $cat_name;
    } // tabCatName()
 
+   
+   
    /**
     * Si la chaine est une heure
-    * cette fonction la transforme pour faciliter la lisisbilit� de l'heure
+    * cette fonction la transforme pour faciliter la lisisbilité de l'heure
     *
     * @param valeur sous forme 99,99
     * @return string (si heure, sous forme HH:MM)
    **/
-   static function arrangeIfHours($val, $unit)
-   {
-      if ($unit != "hour") return $val;
+   static function arrangeIfHours($val, $unit) {
+
+      if ($unit != "hour") {
+         return $val;
+      }
 
       $neg = ($val < 0) ? true : false;
       $val = round($val+0,2);
@@ -821,20 +837,22 @@ class PluginBestmanagementContrat extends CommonDBTM {
 
       $h += ($val < 0) ? 1 : 0;
       $m = round(($val - $h ) * 60); // minutes
-      if ($m >= 0 && $m < 10) $m = "0" . $m;
+      if ($m >= 0 
+              && $m < 10) {
+         $m = "0" . $m;
+      }
       return (($neg) ? "-" : "") . $h . ":" . $m;
-
-
    } // arrangeIfHours()
 
+   
+   
    /**
     * Retourne les informations sur le
-    * type de compteur et d'unit�s
+    * type de compteur et d'unités
     *
     * @return array
    **/
-   function infoCompteur()
-   {
+   function infoCompteur() {
       global $DB;
 
       $query_compteur = "SELECT DISTINCT Type_Compteur, Type_Unit
@@ -843,25 +861,24 @@ class PluginBestmanagementContrat extends CommonDBTM {
 
       $info_compteur = array();
 
-      if($resultat = $DB->query($query_compteur))
-         if($DB->numrows($resultat) > 0)
-         {
+      if($resultat = $DB->query($query_compteur)) {
+         if($DB->numrows($resultat) > 0) {
             $row = $DB->fetch_assoc($resultat);
             $info_compteur["compteur"]   = $row["Type_Compteur"];   // Type du compteur   (category, priorit�)
             $info_compteur["unit"]      = $row["Type_Unit"];      // Type d'unit�      (heures, nbtickets)
          }
-
+      }
       return $info_compteur;
    } // infoCompteur()
 
 
+   
    /**
-    * Retourne le type du contrat, pr�fix� de son entit�
+    * Retourne le type du contrat, préfixé de son entité
     *
     * @return string
    **/
-   function giveRealName()
-   {
+   function giveRealName() {
       global $DB, $LANG;
 
       $query = "SELECT IFNULL(entite.name,'Entite Racine') entitename, IFNULL(type.name, '(Pas de type)') contratname
@@ -872,83 +889,91 @@ class PluginBestmanagementContrat extends CommonDBTM {
                         ON contrat.contracttypes_id = type.id
               WHERE contrat.id = $this->id";
 
-      if($resultat = $DB->query($query))
-         if($DB->numrows($resultat) > 0)
-            while($row = $DB->fetch_assoc($resultat))
+      if($resultat = $DB->query($query)) {
+         if($DB->numrows($resultat) > 0) {
+            while($row = $DB->fetch_assoc($resultat)) {
                return $row["entitename"] . " - " . $row["contratname"];
-
+            }
+         }
+      }
       return "(ID " . $LANG['financial'][1] . " : $this->id)";
    } // giveRealName()
 
+   
+   
    /**
     * Retourne la gestion du contrat
     *
     * @return string
    **/
-   function giveManagement()
-   {
+   function giveManagement() {
       global $LANG;
 
       $cpt = $this->infoCompteur();
 
-      if (!count($cpt)) return "<span class='red'>".$LANG["bestmanagement"]["allrecap"][10]."</span>";
+      if (!count($cpt)) {
+         return "<span class='red'>".$LANG["bestmanagement"]["allrecap"][10]."</span>";
+      }
 
-      $unit      = ($cpt["unit"] == "hour")         ? $LANG["bestmanagement"]["allrecap"][6] : $LANG["bestmanagement"]["allrecap"][7];
-      $compteur   = ($cpt["compteur"] == "category")   ? $LANG["bestmanagement"]["allrecap"][8] : $LANG["bestmanagement"]["allrecap"][9];
+      $unit     = ($cpt["unit"] == "hour")         ? $LANG["bestmanagement"]["allrecap"][6] : $LANG["bestmanagement"]["allrecap"][7];
+      $compteur = ($cpt["compteur"] == "category")   ? $LANG["bestmanagement"]["allrecap"][8] : $LANG["bestmanagement"]["allrecap"][9];
 
       return $unit . $compteur;
    } // giveManagement()
 
+   
+   
    /**
-    * Retourne la gestion du contrat (adapt�e au PDF)
+    * Retourne la gestion du contrat (adaptée au PDF)
     *
     * @return string
    **/
-   function giveManagementForPDF()
-   {
+   function giveManagementForPDF() {
       global $LANG;
 
       $cpt = $this->infoCompteur();
 
-      if (!count($cpt)) return $LANG["bestmanagement"]["pdf"][5];
+      if (!count($cpt)) {
+         return $LANG["bestmanagement"]["pdf"][5];
+      }
 
       $unit      = ($cpt["unit"] == "hour")         ? $LANG["bestmanagement"]["pdf"][1] : $LANG["bestmanagement"]["pdf"][2];
-      $compteur   = ($cpt["compteur"] == "category")   ? $LANG["bestmanagement"]["pdf"][3] : $LANG["bestmanagement"]["pdf"][3];
+      $compteur  = ($cpt["compteur"] == "category")   ? $LANG["bestmanagement"]["pdf"][3] : $LANG["bestmanagement"]["pdf"][3];
 
       return $unit . $compteur;
    } // giveManagementForPDF()
 
+   
+   
    /**
-    * Effectue la requ�te d'achat et de report
+    * Effectue la requête d'achat et de report
     * pour ce contrat.
     *
     * Retourne un tableau associatif :
-    * compteur   => unit�s
+    * compteur   => unités
     *
     * @return array
    **/
-   function prepareTab($what, $avenant=null)
-   {
+   function prepareTab($what, $avenant=null) {
       global $DB;
 
       $query = "";
-      switch ($what)
-      {
+      switch ($what) {
+         
         case "achat" :
-         // Requ�tes associ�es au report des unit�s
-         // on v�rifie d'abort qu'il y a report
+         // Requêtes associées au report des unités
+         // on vérifie d'abort qu'il y a report
          $is_achat = "SELECT *
                     FROM glpi_plugin_bestmanagement_achat
                     WHERE ID_Contrat = $this->id
                      AND ID_Compteur IS NOT NULL";
 
-         if($res_achat = $DB->query($is_achat))
-            if($DB->numrows($res_achat) > 0)
-            {
+         if($res_achat = $DB->query($is_achat)) {
+            if($DB->numrows($res_achat) > 0) {
                $row = $DB->fetch_assoc($res_achat);
 
-               // requ�te sur les achats du contrat en cours
-               // Selon un compteur, on fait la somme des unit�s achet�es
+               // requête sur les achats du contrat en cours
+               // Selon un compteur, on fait la somme des unités achetées
                $query =   "SELECT ID_Compteur CptID, SUM(UnitBought) Unit
                         FROM glpi_plugin_bestmanagement_achat achat, glpi_contracts contrat
                         WHERE ID_Contrat = $this->id
@@ -959,10 +984,11 @@ class PluginBestmanagementContrat extends CommonDBTM {
                            $avenant
                         GROUP BY ID_Compteur";
             }
+         }
          break;
 
         case "report" :
-         // Requ�tes associ�es au report des unit�s
+         // Requêtes associées au report des unités
          // on v�rifie d'abort qu'il y a report
          $is_report = "SELECT report_credit
                     FROM glpi_plugin_bestmanagement_reconduction reconduction
@@ -971,12 +997,11 @@ class PluginBestmanagementContrat extends CommonDBTM {
                                    FROM glpi_plugin_bestmanagement_reconduction
                                    WHERE ID_Contrat = $this->id)";
 
-         if($res_report = $DB->query($is_report))
-            if($DB->numrows($res_report) > 0)
-            {
+         if($res_report = $DB->query($is_report)) {
+            if($DB->numrows($res_report) > 0) {
                $row = $DB->fetch_assoc($res_report);
 
-               if (!$row["report_credit"])   // il y a report
+               if (!$row["report_credit"]) {  // il y a report
                   // Selon un compteur, on fait la somme des unit�s report�es
                   $query = "SELECT ID_Compteur CptID, Nb_Unit Unit
                           FROM glpi_plugin_bestmanagement_reconduction reconduction,
@@ -986,26 +1011,32 @@ class PluginBestmanagementContrat extends CommonDBTM {
                            AND begin_date IN (SELECT MAX(begin_date)
                                          FROM glpi_plugin_bestmanagement_reconduction
                                          WHERE ID_Contrat = $this->id)";
+               }
             }
+         }
+         break;
 
       } // swith
 
       // Puis on stocke le r�sultat dans le tableau $tab
       $tab = array();
 
-      if($resultat = $DB->query($query))
-         if($DB->numrows($resultat) > 0)
-            while($row = $DB->fetch_assoc($resultat))
+      if($resultat = $DB->query($query)) {
+         if($DB->numrows($resultat) > 0) {
+            while($row = $DB->fetch_assoc($resultat)) {
                $tab[$row["CptID"]] = $row["Unit"];
-
+            }
+         }
+      }
       return $tab;
    } // prepareTab()
 
+   
 
    /**
-    * Effectue la requ�te des consommations pour ce contrat
+    * Effectue la requête des consommations pour ce contrat
     * et retourne un tableau associatif :
-    * compteur   => unit�s consomm�es
+    * compteur   => unités consommées
     *
     * @return array
    **/
