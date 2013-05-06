@@ -1,7 +1,7 @@
 <?php
 // ----------------------------------------------------------------------
 // Original Author of file: Nicolas Mercier
-// Purpose of file: Traitements et mise à jour des droits selon les
+// Purpose of file: Traitements et mise Ã  jour des droits selon les
 //			profils. Onglet Administration => Profils
 // ----------------------------------------------------------------------
 

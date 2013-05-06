@@ -23,12 +23,12 @@ if (isset($_POST["update"]))
 	unset ($_POST["update"]);
 	Session::checkRight("profile","w");
 	
-	// on vérifie si on a une ligne dans la table
+	// on vÃ©rifie si on a une ligne dans la table
 	$query = "SELECT * FROM $table";
 
 	if($resultat = $DB->query($query))
 		if($DB->numrows($resultat) <= 0){
-    // la table est vide : il faut insérer une ligne
+    // la table est vide : il faut insÃ©rer une ligne
       insertToDB($table,"0,0,0,0,0,0,0,0,0,0,0,0,0,0,0");  
     }
 				

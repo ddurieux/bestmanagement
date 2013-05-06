@@ -1,7 +1,7 @@
 <?php
 // ----------------------------------------------------------------------
 // Original Author of file: Nicolas Mercier
-// Purpose of file: Page de configuration des droits par élément
+// Purpose of file: Page de configuration des droits par Ã©lÃ©ment
 // ----------------------------------------------------------------------
 
 define('GLPI_ROOT', '../../..');

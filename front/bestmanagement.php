@@ -75,7 +75,7 @@ echo "<div class='tab_cadre_fixe'>";
 		echo '</div>';
 		
 		echo '<div id="content_5" class="content" style="display:none;">';
-			// liste des tickets affectés au hors contrat
+			// liste des tickets affectÃ©s au hors contrat
 			echo "<table class='tab_cadre' style='margin-top: 10px;'>";
 			PluginBestmanagementAllTickets::showForm("linkedcontrat", "NULL");
 			echo "</table>";
@@ -103,7 +103,7 @@ function recapAllContracts()
 								xhr = new ActiveXObject(\"Microsoft.XMLHTTP\");
 							}
 					}
-					else { // XMLHttpRequest non supporté par le navigateur 
+					else { // XMLHttpRequest non supportÃ© par le navigateur 
 					   alert(\"Votre navigateur ne supporte pas les objets XMLHTTPRequest...\"); 
 					   xhr = false; 
 					} 
@@ -113,9 +113,9 @@ function recapAllContracts()
 
 				function showContrats(){
 					var xhr = getXhr();
-					// On défini ce qu'on va faire quand on aura la réponse
+					// On dÃ©fini ce qu'on va faire quand on aura la rÃ©ponse
 					xhr.onreadystatechange = function(){
-						// On ne fait quelque chose que si on a tout reçu et que le serveur est ok
+						// On ne fait quelque chose que si on a tout reÃ§u et que le serveur est ok
 						if(xhr.readyState == 4 && xhr.status == 200){
 							leselect = xhr.responseText;
 							// On se sert de innerHTML pour rajouter les options a la liste
@@ -125,7 +125,7 @@ function recapAllContracts()
 
 					// Ici on va voir comment faire du post
 					xhr.open(\"POST\",\"show_contracts.php\",true);
-					// ne pas oublier ça pour le post
+					// ne pas oublier Ã§a pour le post
 					xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 					// ne pas oublier de poster les arguments
 					sel = document.getElementById('contrat');

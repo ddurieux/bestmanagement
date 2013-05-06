@@ -4,7 +4,7 @@
 // Purpose of file:
 // ----------------------------------------------------------------------
 
-//On sort en cas de paramètre manquant ou invalide
+//On sort en cas de paramÃ¨tre manquant ou invalide
 if(empty($_GET["id"]) or empty($_GET["type"]) or empty($_GET["champ"]) or empty($_GET["valeur"])
    or !is_numeric($_GET["id"])
    or !in_array(
@@ -18,7 +18,7 @@ else
 {
 	global $DB;
 	$DB_TABLE_NAME = "inlinemod";
-	//Construction de la requête en fonction du type de valeur
+	//Construction de la requÃªte en fonction du type de valeur
 	switch($_GET["type"])
 	{
 		case 'texte':
@@ -37,7 +37,7 @@ else
 		default:
 			$sql="";
 	}
-		//Exécution de la requête
+		//ExÃ©cution de la requÃªte
 		$DB->query($sql)or die(mysql_error());
 }
 ?>

@@ -12,7 +12,7 @@ echo "<div name='tabcontrat'>";
 
 switch($_POST["allContrats"])
 {
-  case "2" :	// terminés
+  case "2" :	// terminÃ©s
 	$AND_CONDITION = "AND CURDATE() > DATE_ADD(begin_date, INTERVAL duration MONTH)";
 	break;
   case "3" :	// en cours

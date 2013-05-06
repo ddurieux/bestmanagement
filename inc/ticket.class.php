@@ -1,8 +1,8 @@
 <?php
 // ----------------------------------------------------------------------
 // Original Author of file: Nicolas Mercier
-// Purpose of file: Classe Ticket servant pour l'Ètat de facturation,
-//					ainsi que l'affectation ‡ un contrat
+// Purpose of file: Classe Ticket servant pour l'√©tat de facturation,
+//					ainsi que l'affectation √† un contrat
 // ----------------------------------------------------------------------
 
 class PluginBestmanagementTicket
@@ -19,7 +19,7 @@ class PluginBestmanagementTicket
 		$this->id = $ID;
 	}
 	/**
-	 * Retourne le select correspondant aux Ètats de facturation
+	 * Retourne le select correspondant aux √©tats de facturation
 	 *
 	 * @return <select> ... </select>
 	**/
@@ -29,7 +29,7 @@ class PluginBestmanagementTicket
 		
 		$etat = $this->etatFact();
 		$fact = array();
-		$fact[0] = "selected";	// par dÈfaut ‡ non facturÈ
+		$fact[0] = "selected";	// par d√©faut √† non factur√©
 		
 		$select = "<select name='id_facturation' id='id_facturation'>";
 		for ($i = 0 ; $i < 3 ; ++$i)
@@ -44,10 +44,10 @@ class PluginBestmanagementTicket
 	} // selectEtatFacture()
 	
 	/**
-	 * Retourne l'Ètat de facturation
-	 * 0 => non facturÈ
-	 * 1 => facturÈ sous contrat
-	 * 2 => facturÈ hors contrat
+	 * Retourne l'√©tat de facturation
+	 * 0 => non factur√©
+	 * 1 => factur√© sous contrat
+	 * 2 => factur√© hors contrat
 	 *
 	 * @return int
 	**/
@@ -70,7 +70,7 @@ class PluginBestmanagementTicket
 	
 	/**
 	 * Formulaire qui se place sous la fiche
-	 * d'un ticket, pour l'affectation ‡ un contrat
+	 * d'un ticket, pour l'affectation √† un contrat
 	 *
 	 * @return Nothing(Display)
 	**/
@@ -96,11 +96,11 @@ class PluginBestmanagementTicket
 		$p['used']           = array();
 		$p['nochecklimit']   = false;
 		
-		// on vÈrifie si un contrat est dÈj‡ reliÈ ‡ ce ticket
+		// on v√©rifie si un contrat est d√©j√† reli√© √† ce ticket
 		if (0 == countElementsInTable("glpi_plugin_bestmanagement_link_ticketcontrat", "ID_Ticket = $this->id"))
 			$p['value'] = -1;
 		else
-		{ // contrat associÈ (ou Hors Contrat, dans ce cas 0)
+		{ // contrat associ√© (ou Hors Contrat, dans ce cas 0)
 			$query	=  "SELECT IFNULL(ID_Contrat,0) ID_Contrat
 						FROM glpi_plugin_bestmanagement_link_ticketcontrat
 						WHERE ID_Ticket = $this->id";
@@ -155,7 +155,7 @@ echo "<script type='text/javascript'>
 							xhr = new ActiveXObject(\"Microsoft.XMLHTTP\");
 						}
 				}
-				else { // XMLHttpRequest non supportÈ par le navigateur 
+				else { // XMLHttpRequest non support√© par le navigateur 
 				   alert(\"Votre navigateur ne supporte pas les objets XMLHTTPRequest...\"); 
 				   xhr = false; 
 				} 
@@ -163,13 +163,13 @@ echo "<script type='text/javascript'>
 			}
 			
 			/**
-			* MÈthode qui sera appelÈe sur le click du bouton
+			* M√©thode qui sera appel√©e sur le click du bouton
 			*/
 			function go(id){
 				var xhr = getXhr();
-				// On dÈfini ce qu'on va faire quand on aura la rÈponse
+				// On d√©fini ce qu'on va faire quand on aura la r√©ponse
 				xhr.onreadystatechange = function(){
-					// On ne fait quelque chose que si on a tout reÁu et que le serveur est ok
+					// On ne fait quelque chose que si on a tout re√ßu et que le serveur est ok
 					if(xhr.readyState == 4 && xhr.status == 200){
 						leselect = xhr.responseText;
 						// On se sert de innerHTML pour rajouter les options a la liste
@@ -179,7 +179,7 @@ echo "<script type='text/javascript'>
 
 				// Ici on va voir comment faire du post
 				xhr.open(\"POST\",\"../plugins/bestmanagement/tabrecap.php\",true);
-				// ne pas oublier Áa pour le post
+				// ne pas oublier √ßa pour le post
 				xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 				// ne pas oublier de poster les arguments
 				// ici, l'id du contrat
@@ -194,14 +194,14 @@ echo "<script type='text/javascript'>
 
 		echo "<select name ='contrat_select' id='contrat_select' onchange='go(\"tabrecap2\")'>";
 		
-			if ($p['value'] >= 0) // affectÈ ‡ un contrat
+			if ($p['value'] >= 0) // affect√© √† un contrat
 			{
 				if ($p['value'] == 0)
 				{ // hors contrat
 					$hc = true;
 					echo "<option value='NULL'>Hors Contrat</option>";
 				}
-				else	// dÈtails du contrat
+				else	// d√©tails du contrat
 				{
 					$output=Dropdown::getDropdownName('glpi_contracts',$p['value']);
 					
@@ -211,7 +211,7 @@ echo "<script type='text/javascript'>
 					echo "<option selected value='".$p['value']."'>".$output."</option>";
 				}
 			}
-			else // affectÈ ‡ aucun contrat
+			else // affect√© √† aucun contrat
 				echo "<option value='-1'>-----</option>";
 			
 			
@@ -275,9 +275,9 @@ echo "<script type='text/javascript'>
 	} // formLinkContrat()
 	
 	/**
-	 * Retourne le numÈro de facture du ticket
+	 * Retourne le num√©ro de facture du ticket
 	 * 
-	 * @return string : numÈro de facture
+	 * @return string : num√©ro de facture
 	**/
 	function giveNumFacture()
 	{

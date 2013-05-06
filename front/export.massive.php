@@ -1,7 +1,7 @@
 <?php
 // ----------------------------------------------------------------------
 // Original Author of file: 
-// Purpose of file: Génération du PDF
+// Purpose of file: GÃ©nÃ©ration du PDF
 // ----------------------------------------------------------------------
 
 define('GLPI_ROOT', '../../..');

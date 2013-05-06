@@ -25,7 +25,7 @@ if (isset($_POST["update"]))
 					  ratioexceeded = 1";
 	$DB->query($query_del) or die ($query_del);
 	
-	// Ètat ‡ 1 (waiting)
+	// √©tat √† 1 (waiting)
 	$query_state = "UPDATE glpi_crontasks
 					SET state = 1
 						WHERE itemtype = 'PluginBestmanagementContrat'
@@ -42,7 +42,7 @@ if (isset($_POST["update"]))
 	}
 	
 	if (!isset($aucun))
-	{ // mettre l'Ètat ‡ 0 (disabled)
+	{ // mettre l'√©tat √† 0 (disabled)
 		unset($aucun);
 		$query_state = "UPDATE glpi_crontasks
 						SET state = 0
@@ -74,7 +74,7 @@ else if (isset($_POST["frequence"]))
 
 $showFreq = false;
 
-// Quels tableaux rÈcapitulatifs envoyer ?
+// Quels tableaux r√©capitulatifs envoyer ?
 echo "<div class='center'><form method='post' action=\"".$_SERVER["PHP_SELF"]."\">";
 echo "<input type='hidden' name='update'>";
 echo "<table class='tab_cadre'><tr><th colspan='2'><a href='config.form.php'>";
@@ -86,7 +86,7 @@ $query_items_mail = "SELECT *
 
 $res=$DB->query($query_items_mail) or die ($query_items_mail);
 
-$nbcols = $DB->num_fields($res) - 1; // on enlËve l'attribut ID pour le comptage des colonnes
+$nbcols = $DB->num_fields($res) - 1; // on enl√®ve l'attribut ID pour le comptage des colonnes
 $tab = array();
 
 for ($i = 0 ; $i < $nbcols ; $i++)
@@ -105,7 +105,7 @@ echo "</form></div>";
 
 if ($showFreq)
 {
-	// FrÈquence de l'envoi des mails
+	// Fr√©quence de l'envoi des mails
 	echo "<div class='center'><form method='post' action=\"".$_SERVER["PHP_SELF"]."\">";
 	echo "<tr><th colspan='2'>" . $LANG["crontask"][37] . "</th></tr>";
 

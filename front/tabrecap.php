@@ -1,8 +1,8 @@
 <?php
 // ----------------------------------------------------------------------
 // Original Author of file: Nicolas Mercier
-// Purpose of file: Affichage du tableau récapitulatif du contrat, dans
-//			le formulaire de création de ticket
+// Purpose of file: Affichage du tableau rÃ©capitulatif du contrat, dans
+//			le formulaire de crÃ©ation de ticket
 // ----------------------------------------------------------------------
 
 define('GLPI_ROOT', '../../..');
