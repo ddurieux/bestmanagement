@@ -1,8 +1,8 @@
 <?php
 // ----------------------------------------------------------------------
 // Original Author of file: Nicolas Mercier
-// Purpose of file: Page de configuration des éléments comme la couleur,
-//			le ratio, le thème du mail
+// Purpose of file: Page de configuration des ï¿½lï¿½ments comme la couleur,
+//			le ratio, le thï¿½me du mail
 // ----------------------------------------------------------------------
 
 define('GLPI_ROOT', '../../..');
@@ -15,10 +15,10 @@ Html::header($LANG["bestmanagement"]["config"][2], $_SERVER["PHP_SELF"],"config"
 $table = "glpi_plugin_bestmanagement_typecontrat";
 // Partie traitements
 if (isset($_POST["update"]))
-	updateTypeIllim($table, $_POST);
+	updateTypeIllim($table);
 // Fin traitements
 
-// Quels tableaux récapitulatifs envoyer ?
+// Quels tableaux rï¿½capitulatifs envoyer ?
 echo "<div class='center'><form method='post' action=\"".$_SERVER["PHP_SELF"]."\">";
 echo "<table class='tab_cadre'><tr><th colspan='2'><a href='config.form.php'>";
 echo $LANG["bestmanagement"]["config"][0]."</a><br>&nbsp;<br>";

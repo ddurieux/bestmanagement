@@ -14,10 +14,10 @@ Html::header($LANG["bestmanagement"]["config"][2], $_SERVER["PHP_SELF"],"config"
 $table = "glpi_plugin_bestmanagement_config";
 // Partie traitements
 if (isset($_POST["update"]))
-	updateTable($table, $_POST);
+	updateTable($table);
 // Fin traitements
 
-// Quels tableaux récapitulatifs envoyer ?
+// Quels tableaux rï¿½capitulatifs envoyer ?
 echo "<div class='center'><form method='post' action=\"".$_SERVER["PHP_SELF"]."\">";
 echo "<table class='tab_cadre'><tr><th colspan='2'><a href='config.form.php'>";
 echo $LANG["bestmanagement"]["config"][0]."</a><br>&nbsp;<br>";

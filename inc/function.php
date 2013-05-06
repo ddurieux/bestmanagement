@@ -1,7 +1,7 @@
 <?php
 // ----------------------------------------------------------------------
 // Original Author of file: Nicolas Mercier
-// Purpose of file: Toutes les fonctions du plugin sont écrites ici
+// Purpose of file: Toutes les fonctions du plugin sont Ã©crites ici
 // ----------------------------------------------------------------------
 
 function isTicketOutPeriode($id)
@@ -83,7 +83,7 @@ function get_content2($DB, $table,$from,$limit) {
 }
 
 /**
- * Insère un tuple dans un table
+ * InsÃ¨re un tuple dans un table
  *
  * @param $table string: table name
  * @param $datas string: datas to insert
@@ -100,8 +100,8 @@ function insertToDB($table,$datas="")
 	$DB->query($query) or die("erreur de la requete $query ". $DB->error());
 } // insertToDB()
 
-// met à jour $table avec $_POST
-function updateTable($table, $_POST)
+// met Ã  jour $table avec $_POST
+function updateTable($table)
 {
 	global $DB;
 	
@@ -133,15 +133,15 @@ function updateTable($table, $_POST)
 } // updateTable()
 
 
-// met à jour $table avec $_POST
-function updateTypeIllim($table, $_POST)
+// met Ã  jour $table avec $_POST
+function updateTypeIllim($table)
 {
 	global $DB;
 	
 	unset ($_POST["update"]);
 	Session::checkRight("profile","w");
 	
-	// on remet tout à zéro d'abord
+	// on remet tout Ã  zÃ©ro d'abord
 	//$query_update = "UPDATE $table
 	//			 SET illimite = 1";
 	$query_update = "delete FROM $table";
@@ -172,12 +172,12 @@ function whichContratSend($item)
 } // whichContratSend()
 
 /**
- * Retourne le nom de l'élément
+ * Retourne le nom de l'Ã©lÃ©ment
  *
- * @param $i	 int :		indice de l'élément dans la table
+ * @param $i	 int :		indice de l'Ã©lÃ©ment dans la table
  * @param $table string :	table dans laquelle se fait la recherche
  *
- * return string: nom de l'élément
+ * return string: nom de l'Ã©lÃ©ment
  */
 function getItemName($i, $table)
 {
@@ -206,7 +206,7 @@ function getAdresses()
 	return preg_split("/[\s,;]+/", getItem("destinataires", "glpi_plugin_bestmanagement_config"));
 } // getAdresses()
 
-// vérifie les contrats en double
+// vÃ©rifie les contrats en double
 // param : tableau contenant les contrat
 // retourne la condition pour le WHERE
 function verifDoublonsQuery($all_contrats)
@@ -219,16 +219,16 @@ function verifDoublonsQuery($all_contrats)
 		
 		$au_moins_un = true;
 	}
-	if(isset($au_moins_un))	// on remplace la dernière virgule par ")"
+	if(isset($au_moins_un))	// on remplace la derniÃ¨re virgule par ")"
 		return substr_replace($contrats_deja_selected, ")", -1, 1);
 	else
 		return "";	// pas de contrats
 } // verifDoublonsQuery()
 
 /**
- * Retourne l'état de la checkbox
+ * Retourne l'Ã©tat de la checkbox
  *
- * @param $i	 int :		indice de l'élément dans la table
+ * @param $i	 int :		indice de l'Ã©lÃ©ment dans la table
  * @param $table string :	table dans laquelle se fait la recherche
  *
  * return boolean
@@ -250,7 +250,7 @@ function isItemChecked($i, $table)
 } // isItemChecked
 
 /**
- * Retourne la fréquence de la tâche périodique
+ * Retourne la frÃ©quence de la tÃ©che pÃ©riodique
  *
  * return int
  */
@@ -283,8 +283,8 @@ function VerifAddMsg($element)
 } // VerifAddMsg()
 
 /**
- * Retourne un booléen pour savoir si ou non on affiche
- * la couleur de fond quand l'élement est une priorité
+ * Retourne un boolÃ©en pour savoir si ou non on affiche
+ * la couleur de fond quand l'Ã©lÃ©ment est une prioritÃ©
  *
  * return boolean
  */
@@ -326,7 +326,7 @@ function getItem($item, $table)
 
 /**
  * Arrange le tableau d'identifiants des tickets
- * pour séparer le contrat du hors contrat
+ * pour sÃ©parer le contrat du hors contrat
  *
  * @param $tabID	array :	tableau d'id de tickets
  *
@@ -342,10 +342,10 @@ function arrangeForHC($TabID)
 	foreach($TabID as $i)
 		$trackID .= $i . ",";
 		
-	$trackID = substr($trackID, 0, -1);	// pour enlever la virgule à la fin
+	$trackID = substr($trackID, 0, -1);	// pour enlever la virgule ï¿½ la fin
 	$trackID .= ")";
 
-	// requête pour avoir le titre et le temps total du ticket
+	// requÃ¨te pour avoir le titre et le temps total du ticket
 	$query =   "SELECT ticket.id
 				FROM glpi_tickets ticket
 					LEFT JOIN glpi_plugin_bestmanagement_link_ticketcontrat link
@@ -362,7 +362,7 @@ function arrangeForHC($TabID)
 } // arrangeForHC()
 
 /**
- * Est-ce qu'on intégre les CGV dans le PDF ?
+ * Est-ce qu'on intÃ¨gre les CGV dans le PDF ?
  *
  * return boolean : true si oui
  */
@@ -395,7 +395,7 @@ function showAllContracts($all_contrats)
 	foreach($all_contrats as $id)
 	{
 		
-		if (isset($contrat))	// ligne vierge pour séparer les contrats
+		if (isset($contrat))	// ligne vierge pour sï¿½parer les contrats
 			echo "<tr><th colspan='6'>&nbsp;</th></tr>";
 
 		$contrat = new PluginBestmanagementContrat($id);
@@ -413,7 +413,7 @@ function showAllContracts($all_contrats)
 		echo "<tr>";
 		// lien vers le contrat
 		echo $th3."<a href=\"".GLPI_ROOT."/front/contract.form.php?id=$id\">".$contrat->giveRealName()."</a>";
-		// date de fin formatée
+		// date de fin formatï¿½e
 		echo "&nbsp;&nbsp;(" . $LANG["bestmanagement"]["allrecap"][11] . Html::convDate($contrat->dateFin()) . ")";
 		echo "&nbsp;&nbsp;-&nbsp;&nbsp;" . $contrat->giveManagement() . "</th>";
 		echo "</tr>";
@@ -432,7 +432,7 @@ function showAllContracts($all_contrats)
 					echo "<th>".$col."</th>";
 				echo "</tr>";
 				array_shift($colonnes);
-				echo $contrat->currentRecap();	// tableau récapitulatif
+				echo $contrat->currentRecap();	// tableau rï¿½capitulatif
 				
 		}	
 		
