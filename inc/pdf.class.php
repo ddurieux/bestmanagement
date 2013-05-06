@@ -1,11 +1,11 @@
 <?php
 // ----------------------------------------------------------------------
 // Original Author of file: Nicolas Mercier
-// Purpose of file: Classe PDF permattant de créer le contenu du
+// Purpose of file: Classe PDF permattant de crï¿½er le contenu du
 //				rapport d'intervention
 // ----------------------------------------------------------------------
 
-include_once (GLPI_ROOT . "/plugins/bestmanagement/inc/fpdf.class.php");
+include_once (GLPI_ROOT . "/plugins/bestmanagement/lib/fpdf/fpdf.class.php");
 
 class PluginBestmanagementPDF extends FPDF
 {
@@ -30,7 +30,7 @@ class PluginBestmanagementPDF extends FPDF
 	} // getItem()
 	
 	/**
-	 * Définit l'en-tête
+	 * Dï¿½finit l'en-tï¿½te
 	 *
 	 * @return Nothing (display)
 	**/
@@ -71,7 +71,7 @@ class PluginBestmanagementPDF extends FPDF
 	} // Header()
 
 	/**
-	 * Définit le pied de page
+	 * Dï¿½finit le pied de page
 	 *
 	 * @return Nothing (display)
 	**/
@@ -88,17 +88,17 @@ class PluginBestmanagementPDF extends FPDF
 			if($DB->numrows($result) > 0)
 				$row = $DB->fetch_assoc($result);
 		
-		//Positionnement à 1,5 cm du bas
+		//Positionnement ï¿½ 1,5 cm du bas
 		$this->SetY(-15);
 		$this->SetFont('Arial','I',8);
 		
-		$footer	= utf8_decode(str_replace("&euro;",'€',$row["footer"]));
+		$footer	= utf8_decode(str_replace("&euro;",'ï¿½',$row["footer"]));
 		
 		$this->MultiCell(0,3, $footer . "\n" .$LANG["bestmanagement"]["pdf"][16] . " " . $this->PageNo().' / {nb}',0,'C');
 	} // Footer()
 	
 	/**
-	 * Définit le titre de la page
+	 * Dï¿½finit le titre de la page
 	 *
 	 * @return Nothing (display)
 	**/
@@ -110,7 +110,7 @@ class PluginBestmanagementPDF extends FPDF
 		foreach($TabID as $i)
 			$trackID .= $i . ",";
 			
-		$trackID = substr($trackID, 0, -1);	// pour enlever la virgule à la fin
+		$trackID = substr($trackID, 0, -1);	// pour enlever la virgule ï¿½ la fin
 		$trackID .= ")";
 
 		$this->Cell(10);
@@ -144,7 +144,7 @@ class PluginBestmanagementPDF extends FPDF
 	} // Titre()
 	
 	/**
-	 * Définit la signature en fin de page
+	 * Dï¿½finit la signature en fin de page
 	 *
 	 * @return Nothing (display)
 	**/
@@ -159,7 +159,7 @@ class PluginBestmanagementPDF extends FPDF
 		$group = "";
 		if (isset($_SESSION["glpifirstname"]))
 		{
-			// requête pour récupérer le groupe de l'intervenant
+			// requï¿½te pour rï¿½cupï¿½rer le groupe de l'intervenant
 			$query =   "SELECT groupe.name as GrpName
 						FROM glpi_groups_users usergroup
 							INNER JOIN glpi_groups groupe
@@ -183,7 +183,7 @@ class PluginBestmanagementPDF extends FPDF
 	} // Signature()
 	
 	/**
-	 * Présentation du contrat et des tickets
+	 * Prï¿½sentation du contrat et des tickets
 	 *
 	 * @return Nothing (display)
 	**/
@@ -197,14 +197,14 @@ class PluginBestmanagementPDF extends FPDF
 		foreach($TabID as $i)
 			$trackID .= $i . ",";
 			
-		$trackID = substr($trackID, 0, -1);	// pour enlever la virgule à la fin
+		$trackID = substr($trackID, 0, -1);	// pour enlever la virgule ï¿½ la fin
 		$trackID .= ")";
 		
 		$this->SetFont('Arial','',9);
 		$this->Cell(10);
 		$this->Cell(50,0,$LANG['common'][27] . " : " . date("d.m.Y"));	// date
 		
-		// requête pour récupérer le contrat
+		// requï¿½te pour rï¿½cupï¿½rer le contrat
 		$query =   "SELECT ID_Contrat
 					FROM glpi_plugin_bestmanagement_link_ticketcontrat link
 					WHERE link.ID_Ticket IN " . $trackID . "
@@ -228,7 +228,7 @@ class PluginBestmanagementPDF extends FPDF
 				
 					$this->Ln(3);
 					
-					if (!$contrat->isContratIllim())                          //test si contrat est illimité ou non 
+					if (!$contrat->isContratIllim())                          //test si contrat est illimitï¿½ ou non 
 					{
 						$tab_achat	= $contrat->prepareTab("achat");
 						$tab_report	= $contrat->prepareTab("report");
@@ -255,12 +255,12 @@ class PluginBestmanagementPDF extends FPDF
 						$this->Cell(10);
 						foreach(array_keys($tab_restant) as $key)
 						{
-							// vérifications pour savoir si les valeurs existent
+							// vï¿½rifications pour savoir si les valeurs existent
 							$tab_achat[$key]	= isset($tab_achat[$key])	? $tab_achat[$key]	: 0;
 							$tab_report[$key]	= isset($tab_report[$key])	? $tab_report[$key]	: 0;
 							$tab_conso[$key]	= isset($tab_conso[$key])	? $tab_conso[$key]	: 0;
 							$tab_restant[$key]	= isset($tab_restant[$key])	? $tab_restant[$key]: 0;
-							// fin vérification
+							// fin vï¿½rification
 							$Tab = array("");
 							
 							if ($tab_achat[$key] == 0 && $tab_report[$key] == 0 && $tab_conso[$key] == 0) continue;
@@ -310,9 +310,9 @@ class PluginBestmanagementPDF extends FPDF
 						$this->Cell(10);
 						foreach(array_keys($tab_restant) as $key)
 						{
-							// vérifications pour savoir si les valeurs existent
+							// vï¿½rifications pour savoir si les valeurs existent
 							$tab_conso[$key]	= isset($tab_conso[$key])	? $tab_conso[$key]	: 0;
-							// fin vérification
+							// fin vï¿½rification
 							$Tab = array("");
 							
 							if ($tab_conso[$key] == 0) continue;
@@ -337,7 +337,7 @@ class PluginBestmanagementPDF extends FPDF
 					
 					
 					} // fin isContratIllim
-				} // fin présentation contrat
+				} // fin prï¿½sentation contrat
 			}
 		
 		$tabConstraint = array("IS NOT NULL", "IS NULL");
@@ -345,7 +345,7 @@ class PluginBestmanagementPDF extends FPDF
 		
 		foreach($tabConstraint as $constraint)
 		{
-			// requête pour avoir le temps/nombre total de tous les tickets du rapport (ceux appartenant aux contrats)
+			// requï¿½te pour avoir le temps/nombre total de tous les tickets du rapport (ceux appartenant aux contrats)
 			if (isset($info_compteur["unit"]) && $info_compteur["unit"] == "hour")
 				$SELECT =   "SELECT SUM(actiontime) as TpsNb";
 			else
@@ -398,7 +398,7 @@ class PluginBestmanagementPDF extends FPDF
 					if ($time != "" && $time != " ")
 					{
 						$this->Cell(10);
-						$this->Cell(15,0,utf8_decode($title . " : " .$time));		// à vérifier selon l'intervalle
+						$this->Cell(15,0,utf8_decode($title . " : " .$time));		// ï¿½ vï¿½rifier selon l'intervalle
 						$this->Ln(5);
 					}
 				}
@@ -409,7 +409,7 @@ class PluginBestmanagementPDF extends FPDF
 	} // Present()
 	
 	/**
-	 * Tableau récapitulatif d'un ticket
+	 * Tableau rï¿½capitulatif d'un ticket
 	 * 
 	 * @param $ID_tracking ID du ticket
 	 *
@@ -435,7 +435,7 @@ class PluginBestmanagementPDF extends FPDF
 		$this->SetAligns('L');
 		$this->SetFont('Arial','',9);
 
-		// requête pour avoir le titre et le temps total du ticket
+		// requï¿½te pour avoir le titre et le temps total du ticket
 		$query =   "SELECT name as Titre, actiontime as Duree, IFNULL(ID_Contrat, 'NULL') ID_Contrat
 					FROM glpi_tickets ticket
 						LEFT JOIN glpi_plugin_bestmanagement_link_ticketcontrat link
@@ -486,7 +486,7 @@ class PluginBestmanagementPDF extends FPDF
 		$this->Cell(0, 5, $time, 1, 1, 'R', true);
 		$this->Ln(3);
 
-		$this->SetFillColor(255,255,255);		// on défait le cadre de couleur
+		$this->SetFillColor(255,255,255);		// on dï¿½fait le cadre de couleur
 		// Description du ticket
 		$this->Cell($alinea);
 		$this->SetTextColor(0,0,0);
@@ -518,9 +518,9 @@ class PluginBestmanagementPDF extends FPDF
 		$this->SetFont('Arial','',7);			//Police Arial 7
 
 		/*
-			Construit une requête à partir de l'identifiant du ticket ($ID_tracking).
-			Récupère pour toutes les taches :
-			date, durée, planification éventuelle, catégorie, auteur et description.
+			Construit une requï¿½te ï¿½ partir de l'identifiant du ticket ($ID_tracking).
+			Rï¿½cupï¿½re pour toutes les taches :
+			date, durï¿½e, planification ï¿½ventuelle, catï¿½gorie, auteur et description.
 		*/
 		$query =   "SELECT task.date as DateF, task.content as Description, task.actiontime as Duree,
 							user.realname as Nom, user.firstname as Prenom,
@@ -544,9 +544,9 @@ class PluginBestmanagementPDF extends FPDF
 			{
 				$this->Cell($alinea);
 				$this->Cell($col1, 5, utf8_decode($LANG['common'][27])	, 1, 0, 'C', true);	// date
-				$this->Cell($col2, 5, utf8_decode($LANG['job'][31]), 1, 0, 'C', true);	// durée
+				$this->Cell($col2, 5, utf8_decode($LANG['job'][31]), 1, 0, 'C', true);	// durï¿½e
 				$this->Cell($col3, 5, utf8_decode($LANG['common'][37])	, 1, 0, 'C', true);	// auteur
-				$this->Cell($col4, 5, utf8_decode($LANG['common'][36])	, 1, 0, 'C', true);	// catégorie
+				$this->Cell($col4, 5, utf8_decode($LANG['common'][36])	, 1, 0, 'C', true);	// catï¿½gorie
 				$this->Cell($col5, 5, utf8_decode($LANG['job'][35])		, 1, 0, 'C', true);	// planification
 				$this->Ln(6);
 				
@@ -621,9 +621,9 @@ class PluginBestmanagementPDF extends FPDF
 			
 			$this->Ln(10);
 		/*
-			Construit une requête à partir de l'identifiant du ticket ($ID_tracking).
-			Récupère pour tous les suivis:
-			date, catégorie, auteur et description.
+			Construit une requï¿½te ï¿½ partir de l'identifiant du ticket ($ID_tracking).
+			Rï¿½cupï¿½re pour tous les suivis:
+			date, catï¿½gorie, auteur et description.
 		*/
 			
 			$query = " SELECT follow.date AS Date, follow.content AS Description, user.realname AS Nom,
@@ -674,7 +674,7 @@ class PluginBestmanagementPDF extends FPDF
 	} // Ticket().
 	
 	/**
-	 * Créé un tableau des largeurs de colonnes
+	 * Crï¿½ï¿½ un tableau des largeurs de colonnes
 	 * 
 	 * @param $w largeur de colonne
 	 *
@@ -699,13 +699,13 @@ class PluginBestmanagementPDF extends FPDF
 		for($i=0;$i<count($data);$i++)
 			$nb=max($nb,$this->NbLines($this->widths[$i],$data[$i]));
 		$h=5*$nb;
-		//Effectue un saut de page si nécessaire
+		//Effectue un saut de page si nï¿½cessaire
 		$this->CheckPageBreak($h);
 		//Dessine les cellules
 		for($i=0;$i<count($data);$i++)
 		{
 			$w=$this->widths[$i];
-			$a=isset($this->aligns[$i]) ? $this->aligns[$i] : 'C';	// on centre les données
+			$a=isset($this->aligns[$i]) ? $this->aligns[$i] : 'C';	// on centre les donnï¿½es
 			//Sauve la position courante
 			$x=$this->GetX();
 			$y=$this->GetY();
@@ -713,15 +713,15 @@ class PluginBestmanagementPDF extends FPDF
 			$this->Rect($x,$y,$w,$h);
 			//Imprime le texte
 			$this->MultiCell($w,5,$data[$i],0,$a);
-			//Repositionne à droite
+			//Repositionne ï¿½ droite
 			$this->SetXY($x+$w,$y);
 		}
-		//Va à la ligne
+		//Va ï¿½ la ligne
 		$this->Ln($h);
 	} // Row()
 	
 	/**
-	 * Vérifie s'il faut sauter une page
+	 * Vï¿½rifie s'il faut sauter une page
 	 * 
 	 * @param $h hauteur de celulle
 	 *
@@ -729,7 +729,7 @@ class PluginBestmanagementPDF extends FPDF
 	**/
 	function CheckPageBreak($h)
 	{
-		//Si la hauteur h provoque un débordement, saut de page manuel
+		//Si la hauteur h provoque un dï¿½bordement, saut de page manuel
 		if($this->GetY()+$h>$this->PageBreakTrigger)
 		{
 			$this->AddPage($this->CurOrientation);
@@ -739,7 +739,7 @@ class PluginBestmanagementPDF extends FPDF
 	
 	function CheckPageBreakWithoutCell($h)
 	{
-		//Si la hauteur h provoque un débordement, saut de page manuel
+		//Si la hauteur h provoque un dï¿½bordement, saut de page manuel
 		if($this->GetY()+$h>$this->PageBreakTrigger)
 			$this->AddPage($this->CurOrientation);
 	} // CheckPageBreakWithoutCell()
@@ -813,7 +813,7 @@ class PluginBestmanagementPDF extends FPDF
 			$derniere_ligne = $this->lastLine($file);
 			while(!feof($fp))
 			{
-				// On récupère une ligne
+				// On rï¿½cupï¿½re une ligne
 				$Ligne = fgets($fp);
 				
 				$align = 'J';
@@ -825,7 +825,7 @@ class PluginBestmanagementPDF extends FPDF
 				}
 				else if ($Ligne == strtoupper($Ligne))	// Sous-titre
 					$this->SetFont('Arial','B',9);
-				else if ($Ligne == $derniere_ligne)		// dernière ligne
+				else if ($Ligne == $derniere_ligne)		// derniï¿½re ligne
 					$this->SetFont('Arial','',10);
 				else
 					$this->SetFont('Arial','',7);
@@ -852,7 +852,7 @@ class PluginBestmanagementPDF extends FPDF
 	} // lastLine()
 
 	/**
-	 * Génère le fichier .pdf
+	 * Gï¿½nï¿½re le fichier .pdf
 	 * 
 	 * @param $TabID : tableau des id des tickets
 	 *
@@ -862,7 +862,7 @@ class PluginBestmanagementPDF extends FPDF
 	{
 		global $DB;
 		
-		// Propriétés du document
+		// Propriï¿½tï¿½s du document
 		$this->SetTitle		($this->getItem("titre"));
 		$this->SetAuthor	($this->getItem("auteur"));
 		$this->SetSubject	($this->getItem("sujet"));
@@ -870,7 +870,7 @@ class PluginBestmanagementPDF extends FPDF
 		$this->AliasNbPages();
 		$this->AddPage();
 		$this->Titre($TabID);				// Nom du client et titre de la page
-		$this->Present($TabID);				// Présentation du contrat
+		$this->Present($TabID);				// Prï¿½sentation du contrat
 		$this->SetFont('Times','',7);		// Police Times 7
 		
 		foreach ($TabID as $i)
