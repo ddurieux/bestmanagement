@@ -523,7 +523,7 @@ class PluginBestmanagementContrat extends CommonDBTM
 		global $DB, $LANG;
 		$tab = "";
 		$info_compteur = $this->infoCompteur();
-		
+      
 		$class = get_class($this);
 		//if(!is_callable($class.'::'.$tabrecap))	// erreur dans la fonction � appeler
 		//	return false;

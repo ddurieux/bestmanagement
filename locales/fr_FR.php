@@ -251,12 +251,13 @@ $LANG["bestmanagement"]["tabrecap"][14] = "Tickets restants";
 
 $LANG["bestmanagement"]["tabs"][1] = "Tableau récapitulatif";
 $LANG["bestmanagement"]["tabs"][2] = "Historique d'achat";
-$LANG["bestmanagement"]["tabs"][3] = "Historique par période";
-$LANG["bestmanagement"]["tabs"][4] = "Ajouter un achat";
-$LANG["bestmanagement"]["tabs"][5] = "Reconduction";
-$LANG["bestmanagement"]["tabs"][6] = "Facturation";
-$LANG["bestmanagement"]["tabs"][7] = "Tickets associés";
-$LANG["bestmanagement"]["tabs"][8] = "Sous-entités";
+$LANG["bestmanagement"]["tabs"][3] = "Historique par achat";
+$LANG["bestmanagement"]["tabs"][4] = "Historique par période";
+$LANG["bestmanagement"]["tabs"][5] = "Ajouter un achat";
+$LANG["bestmanagement"]["tabs"][6] = "Reconduction";
+$LANG["bestmanagement"]["tabs"][7] = "Facturation";
+$LANG["bestmanagement"]["tabs"][8] = "Tickets associés";
+$LANG["bestmanagement"]["tabs"][9] = "Sous-entités";
 
 $LANG["bestmanagement"]["tabs_global"][1] = "Récapitulatif des contrats";
 $LANG["bestmanagement"]["tabs_global"][2] = "Tickets à affecter";
