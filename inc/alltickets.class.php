@@ -111,7 +111,7 @@ class PluginBestmanagementAllTickets
 									  $LANG['common'][36],
 									  $LANG['joblist'][29]);
 				
-				// cas où on veut aussi le numéro de facturation
+				// cas oï¿½ on veut aussi le numï¿½ro de facturation
 				if ($lesquels == "linkedcontrat")
 					array_push($colonnes, $LANG["bestmanagement"]["facturation_ticket"][4]);
 				
@@ -121,7 +121,7 @@ class PluginBestmanagementAllTickets
 				echo "</tr>";
 				
 				echo "<script type='text/javascript' >";
-				//On ne pourra éditer qu'une valeur à la fois
+				//On ne pourra ï¿½diter qu'une valeur ï¿½ la fois
 				echo "var editionEnCours = false;";
 				echo "</script>";
 				
@@ -137,7 +137,7 @@ class PluginBestmanagementAllTickets
 					echo $td . $row["ID"] ."</td>";
 					// Titre + lien
 					echo $td . "<a href=\"".Toolbox::getItemTypeFormURL("Ticket")."?id=".$row["ID"]."\">".$row["Titre"]."</a></td>";
-					// Entité, si 0, alors Entité Racine
+					// Entitï¿½, si 0, alors Entitï¿½ Racine
 					// pas si on se trouve dans la fiche contrat
 				//	if (!isset($ID) || $ID == "NULL")
 						echo $td . (empty($row["Entite"]) ? $LANG['entity'][2] : $row["Entite"]) ."</td>";
@@ -145,19 +145,19 @@ class PluginBestmanagementAllTickets
 					echo $td . "<img src=\"".$CFG_GLPI["root_doc"]."/pics/".$row["Statut"].".png\"
 					   alt='".Ticket::getStatus($row["Statut"])."' title='".
 					   Ticket::getStatus($row["Statut"])."'>&nbsp;" . Ticket::getStatus($row["Statut"]) . "</td>";
-					// Priorité + BG
+					// Prioritï¿½ + BG
 					$key = $row["Priorite"];
 					echo "<td align='center' style=\"background-color:".$_SESSION["glpipriority_$key"]."\">";
 					echo Ticket::getPriorityName($row["Priorite"]) . "</td>";
-					// Dernière modif
+					// Derniï¿½re modif
 					echo $td . PluginBestmanagementContrat::arrangeIfHours($row["TempsTicket"]/3600, "hour") ."</td>"; 
 					// Date ouverture
 					echo $td . Html::convDateTime($row["DateOuv"]) ."</td>";
-					// Catégorie
+					// Catï¿½gorie
 					echo $td . $row["CatName"] ."</td>";
 					// Urgence
 					echo $td . Ticket::getUrgencyName($row["Urgence"]) . "</td>";
-					// N° facture
+					// Nï¿½ facture
 					if ($lesquels == "linkedcontrat")
 					{
 						echo "<input type='hidden' name='id' value='$ID'></td>";
@@ -211,7 +211,7 @@ class PluginBestmanagementAllTickets
 
 	/**
 	 * Affiche le select correspondant
-	 * aux états de facturation
+	 * aux ï¿½tats de facturation
 	 * 
 	 * @return Nothing(Display)
 	**/
@@ -220,7 +220,7 @@ class PluginBestmanagementAllTickets
 		global $LANG;
 		
 		$fact = array();
-		$fact[0] = "selected";	// par défaut à non facturé
+		$fact[0] = "selected";	// par dï¿½faut ï¿½ non facturï¿½
 		
 		echo "<select name='id_facturation' id='id_facturation'>";
 		for ($i = 0 ; $i < 3 ; ++$i)
@@ -231,7 +231,7 @@ class PluginBestmanagementAllTickets
 	
 	/**
 	 * Affiche le select correspondant
-	 * aux contrats de l'entité
+	 * aux contrats de l'entitï¿½
 	 * 
 	 * @return Nothing(Display)
 	**/
@@ -347,7 +347,7 @@ class PluginBestmanagementAllTickets
 	} // nbOrphanTickets()
 
 	/**
-	 * Retourne le nombre de tickets non facturés
+	 * Retourne le nombre de tickets non facturï¿½s
 	 *
 	 * @return int : Nombre de tickets
 	**/

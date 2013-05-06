@@ -1,7 +1,7 @@
 <?php
 // ----------------------------------------------------------------------
 // Original Author of file: Nicolas Mercier
-// Purpose of file: Traitements spécifiques du plugin
+// Purpose of file: Traitements spï¿½cifiques du plugin
 // ----------------------------------------------------------------------
 
 include_once (GLPI_ROOT . "/plugins/bestmanagement/inc/profile.class.php");
@@ -10,7 +10,7 @@ include_once (GLPI_ROOT . "/plugins/bestmanagement/inc/plugin_bestmanagement_dis
 
 //### HOOKS ADD, UPDATE, PURGE ###
 
-// Pré-Mise à jour d'un élément
+// Prï¿½-Mise ï¿½ jour d'un ï¿½lï¿½ment
 function plugin_pre_item_update_bestmanagement($item)
 {
 	global $DB, $LANG;
@@ -26,14 +26,14 @@ function plugin_pre_item_update_bestmanagement($item)
 		  case "Contract" :
 			$contractsaved = false;
 			
-			// Il faut qu'une date de début soit saisie
+			// Il faut qu'une date de dï¿½but soit saisie
 			if (isset($item->input["begin_date"]) && $item->input["begin_date"] == "NULL"
 				&& VerifAddMsg("date_deb"))
 			{				
 				Session::addMessageAfterRedirect($LANG["bestmanagement"]["msg"][0], false, ERROR);
 				$contractsaved = true;
 			}
-			// Il faut qu'une durée soit saisie
+			// Il faut qu'une durï¿½e soit saisie
 			else if (isset($item->input["duration"]) && $item->input["duration"] == 0
 					 && VerifAddMsg("duration"))
 			{
@@ -62,13 +62,13 @@ function plugin_pre_item_update_bestmanagement($item)
 			if (!isset($item->input["contracts_id"]))
 				continue;
 			
-			// Il faut qu'un contrat soit associé au ticket (-1 == pas de contrat)
+			// Il faut qu'un contrat soit associï¿½ au ticket (-1 == pas de contrat)
 			if ($item->input["contracts_id"] == -1)
 			{
 				Session::addMessageAfterRedirect($LANG["bestmanagement"]["msg"][2], false, ERROR);
 				$helpdesksaved = true;
 			}
-			// La catégorie du ticket ne doit pas être vide.
+			// La catï¿½gorie du ticket ne doit pas ï¿½tre vide.
 			else if (isset($item->input["ticketcategories_id"]) && $item->input["ticketcategories_id"] == 0
 					 && VerifAddMsg("ticket_category"))
 			{
@@ -88,13 +88,13 @@ function plugin_pre_item_update_bestmanagement($item)
 				Session::addMessageAfterRedirect($LANG["bestmanagement"]["msg"][11], false, ERROR);
 				$helpdesksaved = true;
 			}
-			if ($helpdesksaved)	// le ticket ne doit pas être enregistré
+			if ($helpdesksaved)	// le ticket ne doit pas ï¿½tre enregistrï¿½
 			{
 				$mandatory_ok = false;
 				$_SESSION["helpdeskSaved"] = $item->input;	// conserve les valeurs du ticket
 				$item->input = false;
 			}
-			else // le ticket est ok, vérification du contrat + facturation
+			else // le ticket est ok, vï¿½rification du contrat + facturation
 			{
 				$num_ticket		= $item->input["id"];
 				$num_contrat	= $item->input["contracts_id"];
@@ -102,7 +102,7 @@ function plugin_pre_item_update_bestmanagement($item)
 				// est-ce que le ticket provient d'un post-only ?
 				if (0 == countElementsInTable("glpi_plugin_bestmanagement_link_ticketcontrat",
 											  "ID_Ticket = $num_ticket"))
-					// pas de tuple dans link_ticketcontrat, il faut en insérer
+					// pas de tuple dans link_ticketcontrat, il faut en insï¿½rer
 					insertToDB("glpi_plugin_bestmanagement_link_ticketcontrat", "NULL, $num_ticket, NULL");
 				
 				$query = "SELECT IFNULL(ID_Contrat,'NULL') ID_Contrat
@@ -117,7 +117,7 @@ function plugin_pre_item_update_bestmanagement($item)
 					else
 						$old_contrat = 0;
 				}
-				// cas où le contrat a changé
+				// cas oï¿½ le contrat a changï¿½
 				if ($old_contrat != $num_contrat)
 				{
 					$query = "UPDATE glpi_plugin_bestmanagement_link_ticketcontrat
@@ -127,7 +127,7 @@ function plugin_pre_item_update_bestmanagement($item)
 					$DB->query($query) or die("error $query");
 					Session::addMessageAfterRedirect($LANG["bestmanagement"]["msg"][5], false, INFO);
 				}
-				// pour la facturation, requête soit de mise à jour soit d'insertion
+				// pour la facturation, requï¿½te soit de mise ï¿½ jour soit d'insertion
 				if (isset($item->input["id_facturation"]))
 				{
 					$facturation	= $item->input["id_facturation"];
@@ -176,7 +176,7 @@ function plugin_pre_item_update_bestmanagement($item)
 	
 } // plugin_pre_item_update_bestmanagement()
 
-// Pré-Ajout d'un élément
+// Prï¿½-Ajout d'un ï¿½lï¿½ment
 function plugin_pre_item_add_bestmanagement($item)
 {
 	global $DB, $LANG;
@@ -191,14 +191,14 @@ function plugin_pre_item_add_bestmanagement($item)
 		{
 		  case "Contract" :
 			$contractsaved = false;			
-			// Il faut qu'une date de début soit saisie
+			// Il faut qu'une date de dï¿½but soit saisie
 			if (isset($item->input["begin_date"]) && $item->input["begin_date"] == "NULL"
 				&& VerifAddMsg("date_deb"))
 			{
 				Session::addMessageAfterRedirect($LANG["bestmanagement"]["msg"][0], false, ERROR);
 				$contractsaved = true;
 			}
-			// Il faut qu'une durée soit saisie
+			// Il faut qu'une durï¿½e soit saisie
 			else if (isset($item->input["duration"]) && $item->input["duration"] == 0
 					 && VerifAddMsg("duration"))
 			{
@@ -225,20 +225,20 @@ function plugin_pre_item_add_bestmanagement($item)
 			$minute	= isset($item->input["minute"])	? $item->input["minute"]: 0;
 			$helpdesksaved = false;
 			
-			// On ne doit pas saisir de temps à la création
+			// On ne doit pas saisir de temps ï¿½ la crï¿½ation
 			if ($hour+$minute > 0)
 			{
 				Session::addMessageAfterRedirect($LANG["bestmanagement"]["msg"][6], false, ERROR);
 				$helpdesksaved = true;
 			}
-			// Il faut qu'un contrat soit associé au ticket (-1 == pas de contrat)
+			// Il faut qu'un contrat soit associï¿½ au ticket (-1 == pas de contrat)
 			else if (isset($item->input["contracts_id"]) && $item->input["contracts_id"] == -1)
 			{
 				Session::addMessageAfterRedirect($LANG["bestmanagement"]["msg"][2], false, ERROR);
 				$helpdesksaved = true;
 			}
 			/*
-			// La catégorie du ticket ne doit pas être vide. (sauf pour les post-only)
+			// La catï¿½gorie du ticket ne doit pas ï¿½tre vide. (sauf pour les post-only)
 			else if (isset($item->input["ticketcategories_id"]) && $item->input["ticketcategories_id"] == 0)
 			{
 				Session::addMessageAfterRedirect($LANG["bestmanagement"]["msg"][3], false, ERROR);
@@ -282,12 +282,12 @@ function plugin_pre_item_add_bestmanagement($item)
 	return false;
 } // plugin_pre_item_add_bestmanagement()
 
-// Pré-urge d'un élément
+// Prï¿½-urge d'un ï¿½lï¿½ment
 function plugin_pre_item_purge_bestmanagement($item)
 {
 	global $DB, $LANG;
 	
-	/*si un élément est définitivement supprimé, on
+	/*si un ï¿½lï¿½ment est dï¿½finitivement supprimï¿½, on
 	peut aussi le supprimer des tables de notre plugin */
 	$num = $item->input["id"];
 
@@ -352,7 +352,7 @@ function plugin_item_add_bestmanagement($item)
 			
 			insertToDB("glpi_plugin_bestmanagement_link_ticketcontrat", $values);
 		
-			// pour la facturation, requête d'insertion
+			// pour la facturation, requï¿½te d'insertion
 			if (isset($item->input["id_facturation"]))
 			{
 				$facturation	= $item->input["id_facturation"];
@@ -527,10 +527,10 @@ function plugin_bestmanagement_MassiveActionsProcess($data)
 			foreach($tabIDTickets as $i)
 				$trackID .= $i . ",";
 				
-			$trackID = substr($trackID, 0, -1);	// pour enlever la virgule à la fin
+			$trackID = substr($trackID, 0, -1);	// pour enlever la virgule ï¿½ la fin
 			$trackID .= ")";
 
-			// On sélectionne les ID des contrats des tickets
+			// On sï¿½lectionne les ID des contrats des tickets
 			$query =   "SELECT distinct ID_Contrat CtrID
 						FROM glpi_plugin_bestmanagement_link_ticketcontrat
 						WHERE ID_Ticket IN " . $trackID;
@@ -541,10 +541,10 @@ function plugin_bestmanagement_MassiveActionsProcess($data)
 					while ($row = $DB->fetch_assoc($result))
 						++$nbcontrat;
 			
-			if ($nbcontrat <= 2)	// on vérifie qu'il y ait au maximum le contrat + du hors contrat
+			if ($nbcontrat <= 2)	// on vï¿½rifie qu'il y ait au maximum le contrat + du hors contrat
 			{
 				$_SESSION["bestmanagement"]["TabID"] = $tabIDTickets;
-				// génere et ouvre le PDF
+				// gï¿½nere et ouvre le PDF
 				echo "<script type='text/javascript'>location.href='../plugins/bestmanagement/front/export.massive.php'</script>";
 			}
 			else
@@ -556,7 +556,7 @@ function plugin_bestmanagement_MassiveActionsProcess($data)
 
 
 // Installation des tables du plugin
-// Retourne vrai si tout s'est bien passé
+// Retourne vrai si tout s'est bien passï¿½
 function plugin_bestmanagement_install()
 {
 	global $DB, $LANG;
@@ -697,7 +697,7 @@ function plugin_bestmanagement_install()
 	  $DB->query($query) or die("error creating glpi_plugin_bestmanagement_pdf". $DB->error());
 	}
 
-	// Valeurs par défaut
+	// Valeurs par dï¿½faut
 	$query_ent_datas = "SELECT *
 						FROM glpi_entitydatas
 						WHERE id = 1";
@@ -727,7 +727,7 @@ function plugin_bestmanagement_install()
 							
 			$DB->query($query_email) or die("error inserting : $query_email". $DB->error());
 		}
-	// Fin valeurs par défaut
+	// Fin valeurs par dï¿½faut
 
 	if (!TableExists("glpi_plugin_bestmanagement_profiles"))
 	{
@@ -751,12 +751,12 @@ function plugin_bestmanagement_install()
 		$DB->query($query) or die("error creating glpi_plugin_bestmanagement_profiles ". $DB->error());
 	}
 	
-	// Valeurs par défaut
-	$query_prof = "SELECT id, name
-				   FROM glpi_profiles";
+	// Valeurs par dï¿½faut
+	$query_prof = "SELECT `id`, `name`
+                  FROM glpi_profiles";
 				   
-	$query_prof_plug = "SELECT id, name
-						FROM glpi_plugin_bestmanagement_profiles";
+	$query_prof_plug = "SELECT `id`, `name`
+                       FROM glpi_plugin_bestmanagement_profiles";
 	
 	$res = $DB->query($query_prof_plug);
 	
@@ -839,7 +839,7 @@ function plugin_bestmanagement_install()
 				}
 				
 			} // while
-	// Fin valeurs par défaut
+	// Fin valeurs par dï¿½faut
 	
 	if (!TableExists("glpi_plugin_bestmanagement_reconduction"))
 	{
@@ -880,7 +880,7 @@ function plugin_bestmanagement_install()
 		$DB->query($query) or die("error creating glpi_plugin_bestmanagement_typecontrat ". $DB->error());
 	}
 	
-	// Valeurs par défaut
+	// Valeurs par dï¿½faut
 	$query_prof = "SELECT id
 				   FROM glpi_contracttypes";
 				   
@@ -911,7 +911,7 @@ function plugin_bestmanagement_install()
 								$DB->query($ins_illim) or die("error inserting : $ins_illim". $DB->error());
 					}
 				} // while
-	// Fin valeurs par défaut
+	// Fin valeurs par dï¿½faut
 	
 	
 	// To be called for each task the plugin manage
@@ -922,8 +922,8 @@ function plugin_bestmanagement_install()
 } // plugin_bestmanagement_install()
 
 
-// Désinstallation des tables du plugin
-// Retourne vrai si tout s'est bien passé
+// Dï¿½sinstallation des tables du plugin
+// Retourne vrai si tout s'est bien passï¿½
 function plugin_bestmanagement_uninstall()
 {
 	global $DB;
