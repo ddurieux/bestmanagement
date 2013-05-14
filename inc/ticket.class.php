@@ -68,20 +68,22 @@ class PluginBestmanagementTicket
 		return $etat;
 	} // selectedFact()
 	
+   
+   
 	/**
 	 * Formulaire qui se place sous la fiche
 	 * d'un ticket, pour l'affectation à un contrat
 	 *
 	 * @return Nothing(Display)
 	**/
-	function formLinkContrat()
-	{
+	function formLinkContrat() {
 		global $DB, $LANG, $CFG_GLPI;
 		
 		echo "<div>";
 		echo "<form method='post' action=\"".$CFG_GLPI["root_doc"]."/plugins/bestmanagement/front/bestmanagement.form.php\">";
-		if ($this->id)
+		if ($this->id) {
 			echo "<input type='hidden' name='ticket_".$this->id."'	value='$this->id'>";
+      }
 		echo "<table class='tab_cadre'>";
 		
 		echo "<tr class='tab_bg_1'>";
@@ -89,6 +91,7 @@ class PluginBestmanagementTicket
 		echo "<td>";
 
 		//$name,$entity_restrict=-1,$alreadyused=array(),$nochecklimit=false
+      $p = array();
 		$p['name']           = 'contracts_id';
 		$p['value']          = '';
 		$p['entity']         = '';
@@ -97,34 +100,34 @@ class PluginBestmanagementTicket
 		$p['nochecklimit']   = false;
 		
 		// on vérifie si un contrat est déjà relié à ce ticket
-		if (0 == countElementsInTable("glpi_plugin_bestmanagement_link_ticketcontrat", "ID_Ticket = $this->id"))
+		if (0 == countElementsInTable("glpi_plugin_bestmanagement_link_ticketcontrat", "ID_Ticket = $this->id")) {
 			$p['value'] = -1;
-		else
-		{ // contrat associé (ou Hors Contrat, dans ce cas 0)
+      } else { // contrat associé (ou Hors Contrat, dans ce cas 0)
 			$query	=  "SELECT IFNULL(ID_Contrat,0) ID_Contrat
 						FROM glpi_plugin_bestmanagement_link_ticketcontrat
 						WHERE ID_Ticket = $this->id";
 			
-			if($resultat = $DB->query($query))
-				if($DB->numrows($resultat) > 0)
-					while($row = $DB->fetch_assoc($resultat))
+			if($resultat = $DB->query($query)) {
+				if($DB->numrows($resultat) > 0) {
+					while($row = $DB->fetch_assoc($resultat)) {
 						$p['value'] = $row["ID_Contrat"];
+               }
+            }
+         }
 		}
 	
-		
-		if (!($p['entity']<0) && $p['entity_sons'])
-		{
-			if (is_array($p['entity']))
-				echo "entity_sons options is not available with array of entity";
-			else
-				$p['entity'] = getSonsOf('glpi_entities',$p['entity']);
-		}
+      $ticket = new Ticket();
+      $ticket->getFromDB($this->id);
+      
+		$p['entity'] = getSonsOf('glpi_entities',$ticket->fields['entities_id']);
 
-		$entrest="";
-		$idrest="";
-		if ($p['entity']>=0)
-		 $entrest=getEntitiesRestrictRequest("AND","glpi_contracts","entities_id",$p['entity'],true);
-		
+		$idrest  = "";
+      $entrest = getEntitiesRestrictRequest("AND",
+                                            "glpi_contracts",
+                                            "entities_id",
+                                            $ticket->fields['entities_id'],
+                                            true);
+      
 		if (count($p['used']))
 			$idrest=" AND `glpi_contracts`.`id` NOT IN(".implode("','",$p['used']).") ";
 		
@@ -222,10 +225,9 @@ echo "<script type='text/javascript'>
 			}
 			 
 			$prev=-1;
-			while ($data=$DB->fetch_array($result))
-			{
+			while ($data=$DB->fetch_array($result)) {
 				if ($p['nochecklimit'] || $data["max_links_allowed"]==0
-				 || $data["max_links_allowed"]>countElementsInTable("glpi_contracts_items",
+                    || $data["max_links_allowed"]>countElementsInTable("glpi_contracts_items",
 																   "contracts_id = '".$data['id']."'" ))
 				{
 					if ($data["entities_id"]!=$prev)
