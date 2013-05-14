@@ -21,11 +21,11 @@ function plugin_bestmanagement_fichecontrat($ID)
 			echo "<div class='x-tab-panel-header'>" . $LANG["bestmanagement"]["msg"][13] . "</div>";
 	else
 	{
-		echo "<div class='tab_cadre_fixe' style='width:1100px'>";
+		echo "<div class='tab_cadre_fixe'>";
 			echo "<div class='x-tab-panel-header x-unselectable x-tab-panel-header-plain' style='-moz-user-select: none;'>";
 			echo "<div class='x-tab-strip-wrap'>";
 				echo "<ul class='x-tab-strip x-tab-strip-top'>";
-				$max = (Session::haveRight('contract', 'w') && $contrat->isAvailable()) ? 9 : 3;	// nb onglets
+				$max = (Session::haveRight('contract', 'w') && $contrat->isAvailable()) ? 8 : 3;	// nb onglets
 				$active = "class='x-tab-strip-active'";			// onglet actif
 				for ($i = 1 ; $i <= $max ; $i++)
 				{
@@ -68,17 +68,8 @@ function plugin_bestmanagement_fichecontrat($ID)
 					else
 						echo "<div class='x-tab-panel-header'>" . $LANG['common'][83] . "</div>";
 				echo '</div>';
-
-            echo '<div id="content_3" class="content" style="display:none;">';
-					// affichage de l'historique par achat
-					if (plugin_bestmanagement_haveRight("bestmanagement","historicalperiode", 1))
-                  echo '';
-					else
-						echo "<div class='x-tab-panel-header'>" . $LANG['common'][83] . "</div>";
-				echo '</div>';
 				
-            
-				echo '<div id="content_4" class="content" style="display:none;">';
+				echo '<div id="content_3" class="content" style="display:none;">';
 					// affichage de l'historique global
 					if (plugin_bestmanagement_haveRight("bestmanagement","historicalperiode", 1))
 						echo $contrat->showTabRecap("histRecap");
@@ -90,7 +81,7 @@ function plugin_bestmanagement_fichecontrat($ID)
 				// si l'utilisateur a l'autorisation pour modifier un contrat
 				// et le contrat n'a pas �t� supprim�
 				{
-					echo '<div id="content_5" class="content" style="display:none;">';
+					echo '<div id="content_4" class="content" style="display:none;">';
 						// affichage d'insertion d'achat
 						if (plugin_bestmanagement_haveRight("bestmanagement","addpurchase", 1))
 							if($contrat->isContratIllim())
@@ -101,7 +92,7 @@ function plugin_bestmanagement_fichecontrat($ID)
 							echo "<div class='x-tab-panel-header'>" . $LANG['common'][83] . "</div>";
 					echo '</div>';
 					
-					echo '<div id="content_6" class="content" style="display:none;">';
+					echo '<div id="content_5" class="content" style="display:none;">';
 						// affichage de reconduction
 						if (plugin_bestmanagement_haveRight("bestmanagement","renewal", 1))
 							$contrat->renewal();
@@ -109,7 +100,7 @@ function plugin_bestmanagement_fichecontrat($ID)
 							echo "<div class='x-tab-panel-header'>" . $LANG['common'][83] . "</div>";
 					echo '</div>';
 					
-					echo '<div id="content_7" class="content" style="display:none;">';
+					echo '<div id="content_6" class="content" style="display:none;">';
 						// affichage de facturation
 						if (plugin_bestmanagement_haveRight("bestmanagement","facturationcontrat", 1))
 							$contrat->facture();
@@ -117,15 +108,15 @@ function plugin_bestmanagement_fichecontrat($ID)
 							echo "<div class='x-tab-panel-header'>" . $LANG['common'][83] . "</div>";
 					echo '</div>';
 					
-					echo '<div id="content_8" class="content" style="display:none;">';
+					echo '<div id="content_7" class="content" style="display:none;">';
 						// liste des tickets affect�s au contrat
 						echo "<table class='tab_cadre' style='margin-top: 10px;'>";
 						PluginBestmanagementAllTickets::showForm("linkedcontrat", $ID);
 						echo "</table>";
 					echo '</div>';
 					
-					echo '<div id="content_9" class="content" style="display:none;">';
-					// stats par sous-entités
+					echo '<div id="content_8" class="content" style="display:none;">';
+					// stats par sous-entit�s
 					     if ($contrat->isContratRecursif()){
                   echo $contrat->showStatEntites();
                }
