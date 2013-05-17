@@ -457,13 +457,14 @@ function plugin_headings_bestmanagement($item, $withtemplate=0)
 							 array("target" => $CFG_GLPI["root_doc"]."/plugins/bestmanagement/front/profile.form.php"));
 			break;
 
-		  case CONTRACT_TYPE :
+		  case 'Contract':
 			plugin_bestmanagement_fichecontrat($item->fields["id"]);
 			break;
 		
-		  case TRACKING_TYPE :
+		  case 'Ticket':
 			$ticket = new PluginBestmanagementTicket($item->fields["id"]);
 			$ticket->formLinkContrat();
+         $ticket->displayLinks();
 			break;
 	  }
 	  echo "</div>";
