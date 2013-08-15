@@ -253,8 +253,13 @@ echo "<script type='text/javascript'>
 		
 		echo "</select></td>";
 		
-		if (plugin_bestmanagement_haveRight("bestmanagement","facturationticket", 1))
-		{
+      echo "<td>";
+// TODO : suivant le contrat et le type de gestion (ticket et demi-journée), ajouter une dropdown pour saisirle nombre à utiliser
+//        exemple : je veux que ce ticket représente 2 'tickets'
+     
+      echo "</td>";
+            
+		if (plugin_bestmanagement_haveRight("bestmanagement","facturationticket", 1)) {
 			echo "<td>" . $LANG["bestmanagement"]["facturation_ticket"][3]. " : ";
 			echo "</td>";
 			echo "<td>" . $this->selectEtatFacture() . "</td>";
@@ -275,6 +280,68 @@ echo "<script type='text/javascript'>
 		echo "</div>";
 	
 	} // formLinkContrat()
+   
+   
+   
+   function displayLinks() {
+      global $DB, $LANG;
+      
+      $contract = new Contract();
+      
+      
+      $query	=  "SELECT *
+               FROM glpi_plugin_bestmanagement_link_ticketcontrat
+               WHERE ID_Ticket = $this->id";
+
+      if($resultat = $DB->query($query)) {
+         if($DB->numrows($resultat) > 0) {
+            echo "<table class='tab_cadre_fixe'>";
+            
+            echo "<tr class='tab_bg_1'>";
+            echo "<th colspan='6'>Contrat lié :</th>";
+            echo "<td>";
+            
+            echo "<tr class='tab_bg_1'>";
+            echo "<th>Contrat</th>";
+            echo "<th>Type</th>";
+            echo "<th>Unités</th>";
+            echo "<th>Etat facturation</th>";
+            echo "<th>Numéro de facture</th>";
+            echo "<th></th>";
+            echo "<td>";
+         }
+         while($data = $DB->fetch_assoc($resultat)) {
+            echo "<tr class='tab_bg_1'>";
+            $contract->getFromDB($data['ID_Contrat']);
+            echo "<td>".$contract->getLink(1)."</td>";
+            echo "<td>";
+            
+            
+            echo "</td>";
+            echo "<td></td>";
+            echo "<td>".$this->selectEtatFacture()."</td>";
+            echo "<td><input type='text' name='NumFact' size='15'
+				   value='".$this->giveNumFacture()."'></td>";
+            echo "<td>";
+            echo "<input type='submit' name='delete' value=\"".$LANG['buttons'][22]."\"
+                         class='submit' ".Html::addConfirmationOnAction($LANG['common'][50]).">";
+            echo "</td>";
+            echo "<td>"; 
+            
+            
+            
+            
+         } 
+         if($DB->numrows($resultat) > 0) {
+            echo "</table>";
+         }
+      }
+      
+      
+      
+   }
+   
+   
 	
 	/**
 	 * Retourne le numéro de facture du ticket
