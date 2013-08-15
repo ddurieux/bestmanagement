@@ -1,193 +1,265 @@
 <?php
-// ----------------------------------------------------------------------
-// Original Author of file: Nicolas Mercier
-// Purpose of file: Classe Profile permettant la gestion des droits
-// ----------------------------------------------------------------------
 
-class PluginBestmanagementProfile extends CommonDBTM
-{
-	function canCreate()
-	{
+/*
+   ------------------------------------------------------------------------
+   Best Management
+   Copyright (C) 2011-2013 by the Best Management Development Team.
+
+   https://forge.indepnet.net/
+   ------------------------------------------------------------------------
+
+   LICENSE
+
+   This file is part of Best Management project.
+
+   Best Management is free software: you can redistribute it and/or modify
+   it under the terms of the GNU Affero General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+
+   Best Management is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+   GNU Affero General Public License for more details.
+
+   You should have received a copy of the GNU Affero General Public License
+   along with Best Management. If not, see <http://www.gnu.org/licenses/>.
+
+   ------------------------------------------------------------------------
+
+   @package   Best Management
+   @author    David Durieux
+   @co-author 
+   @copyright Copyright (c) 2011-2013 Best Management team
+   @license   AGPL License 3.0 or (at your option) any later version
+              http://www.gnu.org/licenses/agpl-3.0-standalone.html
+   @link      https://forge.indepnet,net
+   @since     2013
+ 
+   ------------------------------------------------------------------------
+ */
+
+class PluginBestmanagementProfile extends CommonDBTM {
+   
+	function canCreate() {
 		return Session::haveRight('profile', 'w');
-	} // canCreate()
+	}
 
-	function canView()
-	{
+	function canView() {
 		return Session::haveRight('profile', 'r');
-	} // canView()
+	}
 
-	static function cleanProfiles(Profile $prof)
-	{
-		$plugprof = new self();
-		$plugprof->delete(array('id'=>$prof->getField("id")));
-	} // cleanProfiles()
+   
+   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+      global $LANG;
+      
+      $itemtype = $item->getType();
+      if ($itemtype == 'Profile') {
+         return $LANG["bestmanagement"]["title"][0];
+      }
+      return '';
+   }
+
+   
+   
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+      
+      $pbProfile = new self();
+      if ($item->getID() > 0) {
+         $pbProfile->showForm($item->getID());
+      }
+
+      return true;
+   }
 
 
-	function showForm($id, $options=array())
-	{
+   
+	function showForm($profiles_id, $options=array()) {
 		global $LANG,$DB;
 
-		$target = $this->getFormURL();
-		if (isset($options["target"]))
-			$target = $options["target"];
-		
-		if ($id > 0)
+      $a_profiles = $this->find("`profiles_id`='".$profiles_id."'", "", 1);
+      $id = 0;
+		if (count($a_profiles) == 1) {
+         $a_profile = current($a_profiles);
+         $id = $a_profile['id'];
+      }
+      
+		if ($id > 0) {
 			$this->check($id,'r');
-		else
+      } else {
 			$this->check(-1,'w');
-		
+      }		
 
-		$canedit=$this->can($id,'w');
+      $this->showFormHeader($options);
 
-		echo "<form action='".$target."' method='post'>";
-		echo "<table class='tab_cadre_fixe'>";
-		echo "<tr><th colspan='4' class='center b'>";
-		echo $LANG["bestmanagement"]["config"][10]." ".$this->fields["profile"]."</th></tr>";
-		
-		foreach($this->allItems() as $key => $plug)
-		{
-			echo "<tr class='tab_bg_1'>";
-			echo "<td>".$LANG["bestmanagement"]["config"][$plug]." :</td><td>";
-			Dropdown::showYesNo($plug,(isset($this->fields[$plug])?$this->fields[$plug]:''));
-			echo "</td></tr>";
-		}
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>";
+      echo $LANG["bestmanagement"]["config"][20]."&nbsp;:";
+      echo "</td>";
+      echo "<td>";
+      Profile::dropdownNoneReadWrite('recapglobal', $this->fields['recapglobal'], 1, 1, 0);
+      echo "</td>";
+      echo "<td>";
+      echo $LANG["bestmanagement"]["config"][24]."&nbsp;:";
+      echo "</td>";
+      echo "<td>";
+      Profile::dropdownNoneReadWrite('addpurchase', $this->fields['addpurchase'], 1, 0, 1);
+      echo "</td>";
+      echo "</tr>";      
+     
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>";
+      echo $LANG["bestmanagement"]["config"][21]."&nbsp;:";
+      echo "</td>";
+      echo "<td>";
+      Profile::dropdownNoneReadWrite('recapcontrat', $this->fields['recapcontrat'], 1, 1, 0);
+      echo "</td>";
+      echo "<td>";
+      echo $LANG["bestmanagement"]["config"][22]."&nbsp;:";
+      echo "</td>";
+      echo "<td>";
+      Profile::dropdownNoneReadWrite('historicalpurchase', $this->fields['historicalpurchase'], 1, 1, 0);
+      echo "</td>";
+      echo "</tr>";     
+     
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>";
+      echo $LANG["bestmanagement"]["config"][25]."&nbsp;:";
+      echo "</td>";
+      echo "<td>";
+      Profile::dropdownNoneReadWrite('facturationcontrat', $this->fields['facturationcontrat'], 1, 1, 1);
+      echo "</td>";
+      echo "<td>";
+      echo $LANG["bestmanagement"]["config"][23]."&nbsp;:";
+      echo "</td>";
+      echo "<td>";
+      Profile::dropdownNoneReadWrite('historicalperiode', $this->fields['historicalperiode'], 1, 1, 0);
+      echo "</td>";
+      echo "</tr>";     
+     
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>";
+      echo $LANG["bestmanagement"]["config"][29]."&nbsp;:";
+      echo "</td>";
+      echo "<td>";
+      Profile::dropdownNoneReadWrite('facturationticket', $this->fields['facturationticket'], 1, 1, 1);
+      echo "</td>";
+      echo "<td>";
+      echo $LANG["bestmanagement"]["config"][27]."&nbsp;:";
+      echo "</td>";
+      echo "<td>";
+      Profile::dropdownNoneReadWrite('mailing', $this->fields['mailing'], 1, 1, 1);
+      echo "</td>";
+      echo "</tr>";     
+     
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>";
+      echo $LANG["bestmanagement"]["config"][28]."&nbsp;:";
+      echo "</td>";
+      echo "<td>";
+      Profile::dropdownNoneReadWrite('linkticketcontrat', $this->fields['linkticketcontrat'], 1, 1, 1);
+      echo "</td>";
+      echo "<td>";
+      echo $LANG["bestmanagement"]["config"][26]."&nbsp;:";
+      echo "</td>";
+      echo "<td>";
+      Profile::dropdownNoneReadWrite('renewal', $this->fields['renewal'], 1, 1, 1);
+      echo "</td>";
+      echo "</tr>"; 
+      
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>";
+      echo $LANG["bestmanagement"]["config"][30]."&nbsp;:";
+      echo "</td>";
+      echo "<td>";
+      Profile::dropdownNoneReadWrite('modifcontentmailing', $this->fields['modifcontentmailing'], 1, 1, 1);
+      echo "</td>";
+      echo "<td>";
+      
+      echo "</td>";
+      echo "<td>";
+      
+      echo "<input type='hidden' name='profiles_id' value='".$profiles_id."' />";
+      echo "</td>";
+      echo "</tr>"; 
+      
+      $this->showFormButtons($options);
 
-		if ($canedit)
-		{
-			echo "<tr class='tab_bg_1'>";
-			echo "<td class='center' colspan='4'>";
-			echo "<input type='hidden' name='id' value=$id>";
-			echo "<input type='submit' name='update_user_profile' value='".$LANG["buttons"][7]."' class='submit'>";
-			echo "</td></tr>";
-		}
-		echo "</table></form>";
-	} // showForm()
+      return true;
+	}
+   
+   
+   
+   /**
+    * Change profile (for used connected)
+    *
+    **/
+   static function changeprofile() {
+      if (isset($_SESSION['glpiactiveprofile']['id'])) {
+         $pbProfile = new self();
+         $a_rights = $pbProfile->find("`profiles_id` = '".$_SESSION['glpiactiveprofile']['id']."'");
+         $i = 0;
+         foreach ($a_rights as $data) {
+            $i++;
+            unset($data['id']);
+            unset($data['profiles_id']);
+            foreach ($data as $type => $right) {
+               $_SESSION["glpi_plugin_bestmanagement_profile"][$type] = $right;
+            }
+         }
+         if ($i == '0') {
+            unset($_SESSION["glpi_plugin_bestmanagement_profile"]);
+         }
+      }
+   }
+   
+   
+   
+   /**
+    * test if user have right
+    *
+    * @param $p_moduleName Module name (directory)
+    * @param $p_type Right type ('wol', 'agents'...)
+    * @param $p_right Right (NULL, r, w)
+    * 
+    * @return boolean : true if right is ok
+    **/
+   static function haveRight($p_type, $p_right) {
+      $matches=array(
+            ""  => array("","r","w"), // ne doit pas arriver normalement
+            "r" => array("r","w"),
+            "w" => array("w"),
+               );
+      if (isset($_SESSION["glpi_plugin_bestmanagement_profile"][$p_type])
+                && in_array($_SESSION["glpi_plugin_bestmanagement_profile"][$p_type], 
+                            $matches[$p_right])) {
+         return true;
+      } else {
+         return false;
+      }
+   }
 
-	function updateRights()
-	{
-		global $DB;
 
-		// Add missing profiles
-		$query_profiles = "INSERT INTO ".$this->getTable()."
-						   (id, profile)
-						   (SELECT id, name
-						    FROM glpi_profiles
-							WHERE id NOT IN (SELECT id
-											 FROM ".$this->getTable()."))";
-		$DB->query($query_profiles) or die("error $query_profiles");
-		
-		$query_delete = "DELETE FROM ".$this->getTable()."
-						 WHERE id NOT IN (SELECT id
-										  FROM glpi_profiles)";
-		$DB->query($query_delete) or die("error $query_delete");
-		
-	} // updateRights()
 
-	static function changeprofile()
-	{
-		$prof = new self();
-		if ($prof->getFromDB($_SESSION["glpiactiveprofile"]["id"]))
-			$_SESSION["glpi_plugin_bestmanagement_profile"]=$prof->fields;
-		else
-			unset($_SESSION["glpi_plugin_bestmanagement_profile"]);
+   /**
+    * Check right and display error if right not ok
+    *
+    * @param $p_moduleName Module name (directory)
+    * @param $p_type Right type ('wol', 'agents'...)
+    * @param $p_right Right (NULL, r, w)
+    **/
+   static function checkRight($p_type, $p_right) {
+      global $CFG_GLPI;
 
-	} // changeprofile()
-
-	/**
-	* Create access rights for an user
-	* @param id the user id
-	*/
-	function createaccess($id)
-	{
-		global $DB;
-
-		$Profile = new Profile();
-		$Profile->GetfromDB($id);
-		$name = $Profile->fields["profil"];
-
-		$query = "INSERT INTO ".$this-getTable()."
-				  (id, profile)
-				  VALUES ($id, '$name');";
-		$DB->query($query);
-	} // createaccess()
-
-	/**
-	* Look for all the plugins, and update rights if necessary
-	*/
-	function updatePluginRights()
-	{
-		$this->getEmpty();
-		$tab = $this->allItems();
-		$this->updateRights();
-
-		return $tab;
-	} // updatePluginRights()
-	
-	/**
-	* Search for items
-	*
-	* @return tab : an array which contains all the items found (name => plugin)
-	*/
-	static function allItems()
-	{
-		global $LANG, $DB;
-		
-		$query_plugprofiles = "SELECT recapglobal, recapcontrat, historicalpurchase, historicalperiode,
-									  addpurchase, facturationcontrat, mailing, linkticketcontrat,
-									  facturationticket, modifcontentmailing, renewal 
-							   FROM glpi_plugin_bestmanagement_profiles";
-		
-		$res=$DB->query($query_plugprofiles) or die ($query_plugprofiles);
-		
-		$nbcols = $DB->num_fields($res);
-		$tab = array();
-		
-		for ($i = 0 ; $i < $nbcols ; $i++)
-			$tab[] = $DB->field_name($res, $i);
-
-		return $tab;
-	} // allItems()
-	
-	function defValues()
-	{
-		global $DB;	
-		
-		$query_prof = "SELECT id, profile
-					   FROM glpi_plugin_bestmanagement_profiles";
-
-		if($resultat = $DB->query($query_prof))
-			if($DB->numrows($resultat) > 0)
-				while ($row = $DB->fetch_assoc($resultat))
-				{
-					$pre_query = "UPDATE glpi_plugin_bestmanagement_profiles SET ";
-					
-					if (in_array($row["profile"], array("normal", "admin", "super-admin")))
-					{
-						$query_nasa = "recapglobal = '1',
-									   recapcontrat = '1',
-									   historicalpurchase = '1',
-									   historicalperiode = '1'
-									   WHERE profile IN ('normal', 'admin', 'super-admin')";
-						$DB->query($pre_query . $query_nasa) or die("erreur de la requete $query_nasa ". $DB->error());
-					}
-					if (in_array($row["profile"], array("admin", "super-admin")))
-					{
-						$query_asa = "addpurchase = '1',
-									  facturationcontrat = '1',
-									  renewal = '1',
-									  mailing = '1',
-									  linkticketcontrat = '1',
-									  modifcontentmailing = '1'
-									  WHERE profile IN ('admin', 'super-admin')";
-						$DB->query($pre_query . $query_asa) or die("erreur de la requete $query_asa ". $DB->error());
-					}
-					{
-						$query_sa = "facturationticket = '1'
-									 WHERE profile = 'super-admin'";
-						$DB->query($pre_query . $query_sa) or die("erreur de la requete $query_sa ". $DB->error());
-					}
-					
-				} // while
-	} // defValues()
+      $pbProfile = new PluginBestmanagementProfile();
+      if (!$pbProfile->haveRight($p_type, $p_right)) {
+         // Gestion timeout session
+         if (!isset ($_SESSION["glpiID"])) {
+            Html::redirect($CFG_GLPI["root_doc"] . "/index.php");
+            exit ();
+         }
+         Html::displayRightError();
+      }
+   }
 }
 ?>

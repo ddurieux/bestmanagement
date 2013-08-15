@@ -13,6 +13,7 @@ $LANG["bestmanagement"]["achat"][5] = "Choisir une catégorie";
 $LANG["bestmanagement"]["achat"][6] = "Choisir une priorité";
 $LANG["bestmanagement"]["achat"][7] = "Heures achetées";
 $LANG["bestmanagement"]["achat"][8] = "Tickets achetés";
+$LANG['bestmanagement']['achat'][9] = "Achat";
 
 $LANG["bestmanagement"]["allrecap"][0] = "Récapitulatif des contrats";
 $LANG["bestmanagement"]["allrecap"][2] = "Achats";
@@ -55,17 +56,18 @@ $LANG["bestmanagement"]["config"]["task_category"]	= "Catégorie de la tâche ob
 $LANG["bestmanagement"]["config"]["no_renewal"]		= "Informer si le contrat n'a pas été reconduit";
 
 // Listing des éléments du mailing
-$LANG["bestmanagement"]["config"]["recapglobal"]		= "Récapitulatif global de tous les contrats";
-$LANG["bestmanagement"]["config"]["recapcontrat"]		= "Récapitulatif d'un contrat";
-$LANG["bestmanagement"]["config"]["historicalpurchase"]= "Historique d'achat";
-$LANG["bestmanagement"]["config"]["historicalperiode"]	= "Historique par période";
-$LANG["bestmanagement"]["config"]["addpurchase"]		= "Ajouter un achat";
-$LANG["bestmanagement"]["config"]["renewal"]			= "Reconduction";
-$LANG["bestmanagement"]["config"]["facturationcontrat"]= "Facturation d'un contrat";
-$LANG["bestmanagement"]["config"]["mailing"]			= "Mailing";
-$LANG["bestmanagement"]["config"]["linkticketcontrat"]	= "Affecter un ticket à un contrat";
-$LANG["bestmanagement"]["config"]["facturationticket"]	= "Facturation ticket";
-$LANG["bestmanagement"]["config"]["modifcontentmailing"]= "Modifier le contenu du mailing";
+$LANG["bestmanagement"]["config"][20] = "Récapitulatif global de tous les contrats";
+$LANG["bestmanagement"]["config"][21] = "Récapitulatif d'un contrat";
+$LANG["bestmanagement"]["config"][22] = "Historique d'achat";
+$LANG["bestmanagement"]["config"][23] = "Historique par période";
+$LANG["bestmanagement"]["config"][24] = "Ajouter un achat";
+$LANG["bestmanagement"]["config"][25] = "Facturation d'un contrat";
+$LANG["bestmanagement"]["config"][26] = "Reconduction";
+$LANG["bestmanagement"]["config"][27] = "Mailing";
+$LANG["bestmanagement"]["config"][28] = "Affecter un ticket à un contrat";
+$LANG["bestmanagement"]["config"][29] = "Facturation ticket";
+$LANG["bestmanagement"]["config"][30] = "Modifier le contenu du mailing";
+$LANG["bestmanagement"]["config"][0] = "Affecter un ticket à un contrat";
 
 // Listing des contrats du mailing
 $LANG["bestmanagement"]["config"]["mailing_contratended"]	= "Contrats non reconduits et terminés depuis moins d'un mois";
@@ -97,6 +99,8 @@ $LANG["bestmanagement"]["contrat"][9] = " au ";
 $LANG["bestmanagement"]["contrat"][10] = "Il reste encore ";
 $LANG["bestmanagement"]["contrat"][11] = " contrats à facturer";
 $LANG["bestmanagement"]["contrat"][12] = " contrat à facturer";
+$LANG["bestmanagement"]["contrat"][13] = "Automatique (durée des tâches)";
+$LANG["bestmanagement"]["contrat"][14] = "Hors contrat";
 
 $LANG["bestmanagement"]["cron"][0] = "Contrats non reconduits et terminés depuis moins d'un mois";
 $LANG["bestmanagement"]["cron"][1] = "Contrats arrivant à expiration dans moins d'un mois";
@@ -123,6 +127,7 @@ $LANG["bestmanagement"]["facturation_ticket"][1] = "facturé sous contrat";
 $LANG["bestmanagement"]["facturation_ticket"][2] = "facturé hors contrat";
 $LANG["bestmanagement"]["facturation_ticket"][3] = "État facturation";
 $LANG["bestmanagement"]["facturation_ticket"][4] = "N° facture";
+$LANG["bestmanagement"]["facturation_ticket"][5] = "Hotline (aucune unité)";
 
 $LANG["bestmanagement"]["historical"][0] = "Détails";
 $LANG["bestmanagement"]["historical"][1] = "Historique des achats";
@@ -234,6 +239,9 @@ $LANG["bestmanagement"]["sort"][5] = "priorité de ticket";
 $LANG["bestmanagement"]["sort"][6] = "Nombre d'heures";
 $LANG["bestmanagement"]["sort"][7] = "Nombre de tickets";
 $LANG["bestmanagement"]["sort"][8] = "Nombre de demi-journées";
+$LANG["bestmanagement"]["sort"][9] = "Unité";
+$LANG["bestmanagement"]["sort"][10] = "Défini sur";
+$LANG["bestmanagement"]["sort"][11] = "Nombre d'unités";
 
 $LANG["bestmanagement"]["sql"][0] = "Fichier de sauvegarde créé";
 $LANG["bestmanagement"]["sql"][1] = "Problème dans la sauvegarde";
@@ -247,6 +255,10 @@ $LANG["bestmanagement"]["tabrecap"][11] = "Tickets achetés";
 $LANG["bestmanagement"]["tabrecap"][12] = "Tickets reportés";
 $LANG["bestmanagement"]["tabrecap"][13] = "Tickets consommés";
 $LANG["bestmanagement"]["tabrecap"][14] = "Tickets restants";
+$LANG['bestmanagement']['tabrecap'][15] = "Unités consommées";
+$LANG['bestmanagement']['tabrecap'][16] = "Unités achetées";
+$LANG['bestmanagement']['tabrecap'][17] = "Unités reportées";
+$LANG['bestmanagement']['tabrecap'][18] = "Unités restantes";
 
 
 $LANG["bestmanagement"]["tabs"][1] = "Tableau récapitulatif";
