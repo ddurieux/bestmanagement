@@ -135,6 +135,12 @@ class PluginBestmanagementPurchase extends CommonDBTM {
       $contract = new Contract();
       $contract->getFromDB($pbContract->fields['contracts_id']);
       echo "<input type='hidden' name='begin_date' value='".$contract->fields['begin_date']."' />";
+      
+      $pbContract_Period = new PluginBestmanagementContract_Period();
+      $a_period = $pbContract_Period->getCurrentPeriod($pbContract->fields['contracts_id']);
+      echo "<input type='hidden' name='plugin_bestmanagement_contracts_periods_id' 
+         value='".$a_period['id']."' />";
+      
       echo "</td>";
       echo "</tr>";
       
@@ -146,8 +152,13 @@ class PluginBestmanagementPurchase extends CommonDBTM {
    /**
     * Display purchase history
     */
-   function showHistory($contracts_id, $a_pbContracts) {
+   function showHistory($contracts_id, $a_pbContracts, $periods_id=0) {
       global $DB, $CFG_GLPI, $LANG;
+
+      $pbContract_Period = new PluginBestmanagementContract_Period();
+      if ($periods_id > 0) {
+         $pbContract_Period->getFromDB($periods_id);
+      }
       
       $onlyone=false;
       $presentcontrat=null;
@@ -157,11 +168,22 @@ class PluginBestmanagementPurchase extends CommonDBTM {
       echo "<tr class='tab_bg_1'>";
       echo "<th colspan='7'>";
       echo $LANG["bestmanagement"]["tabs"][2];
+      if ($periods_id > 0) {
+         echo " ".Html::convDate($pbContract_Period->fields['begin'])." - ".
+              Html::convDate($pbContract_Period->fields['end']);
+      }
       echo "</th>";
       echo "</tr>";
       
-      $a_purchases = $this->find("`contracts_id`='".$contracts_id."'");
+      if ($periods_id > 0) {
+         $a_period = $pbContract_Period->fields;
+      } else {
+         $a_period = $pbContract_Period->getCurrentPeriod($contracts_id);
+      }
       
+      $a_purchases = $this->find("`contracts_id`='".$contracts_id."'
+         AND `plugin_bestmanagement_contracts_periods_id`='".$a_period['id']."'");
+     
       if (count($a_purchases) == 0) {
          echo "<tr class='tab_bg_1'>";
          echo "<td colspan='7'>";
@@ -245,7 +267,8 @@ class PluginBestmanagementPurchase extends CommonDBTM {
             echo "</td>";            
             echo "<td>";
             if (countElementsInTable("glpi_plugin_bestmanagement_tickets_contracts", 
-                                     "`contracts_id`='".$contracts_id."'") == 0) {
+                                     "`contracts_id`='".$contracts_id."'
+                                     AND `plugin_bestmanagement_contracts_periods_id`='".$a_period['id']."'") == 0) {
                echo "<form method='post' action=\"".$CFG_GLPI['root_doc'] . "/plugins/bestmanagement/front/purchase.form.php\">";
                echo "<input type='hidden' name='id' value='".$a_purchase['id']."'/>";
                echo "<input type='submit' name='delete' value=\"".$LANG['buttons'][22]."\"
@@ -259,6 +282,64 @@ class PluginBestmanagementPurchase extends CommonDBTM {
       echo "</table>";
    }
 
+   
+   
+   /**
+    * Display purchase history by period
+    */
+   function showHistoryByPeriod($contracts_id, $a_pbContracts) {
+      global $DB, $CFG_GLPI, $LANG;
+
+      $pbContract_Period = new PluginBestmanagementContract_Period();
+      
+      $onlyone=false;
+      $presentcontrat=null;
+      
+      $a_periods = $pbContract_Period->find("`contracts_id`='".$contracts_id."'
+         AND `end` IS NOT NULL");
+      
+      foreach ($a_periods as $a_period) {
+         $this->showHistory($contracts_id, $a_pbContracts, $a_period['id']);
+         echo "<br/>";
+      }
+      
+   }
+   
+   
+   
+   static function getUnusedUnits($pbcontract_periods_id) {
+      global $DB;
+      
+      $query = "SELECT SUM(`unit_number`) FROM `glpi_plugin_bestmanagement_tickets_contracts`
+         WHERE `plugin_bestmanagement_contracts_periods_id`='".$pbcontract_periods_id."'
+            AND `invoice_state`='1'";
+      
+      if ($result = $DB->query($query)) {
+         $nb = $DB->result($result,0,0);
+         if (!is_null($nb)) {
+            return $nb;
+         }
+      }
+      return '0';
+   }
+
+   
+   
+   static function getUninvoicedUnits($pbcontract_periods_id) {
+      global $DB;
+      
+      $query = "SELECT SUM(`unit_number`) FROM `glpi_plugin_bestmanagement_tickets_contracts`
+         WHERE `plugin_bestmanagement_contracts_periods_id`='".$pbcontract_periods_id."'
+            AND `invoice_state`='0'";
+      
+      if ($result = $DB->query($query)) {
+         $nb = $DB->result($result,0,0);
+         if (!is_null($nb)) {
+            return $nb;
+         }
+      }
+      return '0';
+   }
 }
 
 ?>

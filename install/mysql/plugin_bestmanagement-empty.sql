@@ -136,19 +136,22 @@ CREATE TABLE `glpi_plugin_bestmanagement_purchases` (
    `invoice_number` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
    `comment` text DEFAULT NULL,
    `date_save` datetime DEFAULT NULL,
+   `close_date` datetime DEFAULT NULL,
+   `plugin_bestmanagement_contracts_periods` int(11) NOT NULL DEFAULT '0',
     PRIMARY KEY (`id`),
    KEY `contracts_id` (`contracts_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
 
 
 
-DROP TABLE IF EXISTS `glpi_plugin_bestmanagement_reconductions`;
+DROP TABLE IF EXISTS `glpi_plugin_bestmanagement_contracts_periods`;
 
-CREATE TABLE `glpi_plugin_bestmanagement_reconductions` (
+CREATE TABLE `glpi_plugin_bestmanagement_contracts_periods` (
    `id` int(11) NOT NULL auto_increment,
    `date_save` DATE NOT NULL,
    `contracts_id` int(11) NOT NULL DEFAULT '0',
-   `begin_date` DATE,
+   `begin` DATE,
+   `end` DATE,
    `report_credit` int(11) NOT NULL DEFAULT '0',
    PRIMARY KEY (`id`),
    KEY `contracts_id` (`contracts_id`)
@@ -177,6 +180,8 @@ CREATE TABLE `glpi_plugin_bestmanagement_tickets_contracts` (
    `unit_number` int(2) NOT NULL DEFAULT '0',
    `invoice_state` tinyint(1) NOT NULL DEFAULT '0',
    `invoice_number` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+   `close_date` datetime DEFAULT NULL,
+   `plugin_bestmanagement_contracts_periods` int(11) NOT NULL DEFAULT '0',
    PRIMARY KEY (`id`),
    KEY `tickets_id` (`tickets_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;

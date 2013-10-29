@@ -39,27 +39,51 @@
    ------------------------------------------------------------------------
  */
 
-if (strpos($_SERVER['PHP_SELF'],"dropdowndefinition.php")) {
-   define('GLPI_ROOT','../../..');
-   include (GLPI_ROOT."/inc/includes.php");
-   header("Content-Type: text/html; charset=UTF-8");
-   Html::header_nocache();
+define('GLPI_ROOT', '../../..');
+
+include (GLPI_ROOT . "/inc/includes.php");
+
+$Contract_Period = new PluginBestmanagementContract_Period();
+
+Html::header($LANG["bestmanagement"]["title"][0],$_SERVER["PHP_SELF"], "plugins", 
+             "bestmanagement", "reconduction");
+
+if (isset($_POST['reconduction_report'])) {
+   $input = array();
+   $input['id'] = $_POST['id'];
+   $input['end'] = date('Y-m-d');
+   $input['date_save'] = date('Y-m-d');
+   $Contract_Period->update($input);
+
+   $input = array();
+   $input['contracts_id'] = $_POST['contracts_id'];
+   $input['begin'] = date('Y-m-d');
+   $input['date_save'] = date('Y-m-d');
+   $input['report_credit'] = PluginBestmanagementPurchase::getUnusedUnits($_POST['id']);
+   $Contract_Period->add($input);
+   Html::back();
+} else if (isset($_POST['reconduction'])) {
+   $input = array();
+   $input['id'] = $_POST['id'];
+   $input['end'] = date('Y-m-d');
+   $input['date_save'] = date('Y-m-d');
+   $Contract_Period->update($input);
+
+   $input = array();
+   $input['contracts_id'] = $_POST['contracts_id'];
+   $input['begin'] = date('Y-m-d');
+   $input['date_save'] = date('Y-m-d');
+   $input['report_credit'] = 0;
+   $Contract_Period->add($input);
+   Html::back();
+} else if (isset($_POST['no_reconduction'])) {
+   $input = array();
+   $input['id'] = $_POST['id'];
+   $input['end'] = date('Y-m-d');
+   $input['date_save'] = date('Y-m-d');
+   $Contract_Period->update($input);
+   Html::back();
 }
 
-Session::checkCentralAccess();
-$type = $_POST['unit_type'];
-
-if ($type == '') {
-   exit;
-}
-
-$a_input = array();
-$a_input['priority'] = "Priority";
-
-if ($type == 'hour') {
-   $a_input['TaskCategory'] = 'TaskCategory';
-} else {
-   $a_input['ItilCategory'] = 'ItilCategory';
-}
-Dropdown::showFromArray('definition', $a_input);
+Html::footer();
 ?>

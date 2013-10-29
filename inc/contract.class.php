@@ -125,7 +125,8 @@ class PluginBestmanagementContract extends CommonDBTM {
                   break;
                
                case 12:
-                  
+                  $pbPurchase = new PluginBestmanagementPurchase();                  
+                  $pbPurchase->showHistoryByPeriod($item->fields['contracts_id'], $item->fields);
                   break;
                
                case 13:
@@ -134,7 +135,10 @@ class PluginBestmanagementContract extends CommonDBTM {
                   break;
                
                case 14:
-                  
+                  // reconduction
+                  $pbReconduction = new PluginBestmanagementContract_Period();
+                  $pbReconduction->showList($item);
+                  $pbReconduction->showForm($item);
                   break;
                
                case 15:
@@ -249,6 +253,8 @@ class PluginBestmanagementContract extends CommonDBTM {
    function showSummary($id=0) {
       global $LANG;
 
+      $pbContract_Period = new PluginBestmanagementContract_Period();
+      
       if ($id > 0) {
          $this->getFromDB($id);
       } else {
@@ -257,6 +263,8 @@ class PluginBestmanagementContract extends CommonDBTM {
 
       $contract = new Contract();
       $contract->getFromDB($this->fields['contracts_id']);
+
+      $a_period = $pbContract_Period->getCurrentPeriod($this->fields['contracts_id']);
       
       echo "<table class='tab_cadre_fixe'>";
       echo "<tr class='tab_bg_1'>";
@@ -317,21 +325,21 @@ class PluginBestmanagementContract extends CommonDBTM {
       $a_entities = getSonsOf('glpi_entities', $contract->fields['entities_id']);
       if ($this->fields['definition'] == "priority") {
          for ($priority = 1; $priority <= 6; $priority++) {
-            $a_elements = $this->getSummaryDetail("priority", $priority);
+            $a_elements = $this->getSummaryDetail("priority", $priority, $a_period);
             $this->showSummaryDetail($a_elements);
          }
       } else if ($this->fields['definition'] == "ItilCategory") {
          $itilCategory = new ITILCategory();
          $a_categories = $itilCategory->find("`entities_id` IN (".implode(',', $a_entities).")");
          foreach ($a_categories as $a_category) {
-            $a_elements = $this->getSummaryDetail("ItilCategory", $a_category['id']);
+            $a_elements = $this->getSummaryDetail("ItilCategory", $a_category['id'], $a_period);
             $this->showSummaryDetail($a_elements);
          }
       } else if ($this->fields['definition'] == "TaskCategory") {
          $taskCategory = new TaskCategory();
          $a_categories = $taskCategory->find("`entities_id` IN (".implode(',', $a_entities).")");
          foreach ($a_categories as $a_category) {
-            $a_elements = $this->getSummaryDetail("TaskCategory", $a_category['id']);
+            $a_elements = $this->getSummaryDetail("TaskCategory", $a_category['id'], $a_period);
             $this->showSummaryDetail($a_elements);
          }
       }      
@@ -367,7 +375,7 @@ class PluginBestmanagementContract extends CommonDBTM {
    
    
    
-   function getSummaryDetail($type, $id) {
+   function getSummaryDetail($type, $id, $a_period) {
       global $DB;
       
       $a_elements = array();
@@ -376,7 +384,9 @@ class PluginBestmanagementContract extends CommonDBTM {
 
       $cnt = countElementsInTable("glpi_plugin_bestmanagement_purchases", 
                                   "`contracts_id`='".$this->fields['contracts_id']."'
-                                    AND `definitions_id`='".$id."'");
+                                    AND `definitions_id`='".$id."'
+                                    AND `plugin_bestmanagement_contracts_periods_id`='".$a_period['id']."' ");
+
       $nb_units_used = 0;
       if ($this->fields['unit_type'] == "hour") {
          $query = "SELECT SUM(`glpi_tickettasks`.`actiontime`) as cnt 
@@ -386,7 +396,8 @@ class PluginBestmanagementContract extends CommonDBTM {
                ON `glpi_tickets`.`id`=`glpi_plugin_bestmanagement_tickets_contracts`.`tickets_id`
             LEFT JOIN `glpi_contracts` ON `contracts_id` = `glpi_contracts`.`id` 
             WHERE `glpi_contracts`.`id`='".$this->fields['contracts_id']."' 
-               AND `invoice_state`='1' ";
+               AND `invoice_state`='1'
+               AND `plugin_bestmanagement_contracts_periods_id`='".$a_period['id']."' ";
          if ($type == "priority") {
             $query .=  "AND `glpi_tickets`.`priority`='".$id."'";
          } else if ($type == "TaskCategory") {
@@ -403,7 +414,8 @@ class PluginBestmanagementContract extends CommonDBTM {
             LEFT JOIN `glpi_tickets` 
                ON `glpi_tickets`.`id` = `glpi_plugin_bestmanagement_tickets_contracts`.`tickets_id` 
             WHERE `contracts_id`='".$this->fields['contracts_id']."'  
-               AND `invoice_state`='1' ";
+               AND `invoice_state`='1' 
+               AND `plugin_bestmanagement_contracts_periods_id`='".$a_period['id']."' ";
          if ($type == "priority") {
             $query .=  "AND `glpi_tickets`.`priority`='".$id."'";
          } else if ($type == "ItilCategory") {
@@ -419,7 +431,8 @@ class PluginBestmanagementContract extends CommonDBTM {
               || $nb_units_used > 0) {
 
          $a_purchases = $pbPurchase->find("`contracts_id`='".$this->fields['contracts_id']."'
-                                          AND `definitions_id`='".$id."'");
+                                          AND `definitions_id`='".$id."'
+                                          AND `plugin_bestmanagement_contracts_periods_id`='".$a_period['id']."'");
          $total_unit_bought = 0;
          foreach ($a_purchases as $a_purchase) {
             $total_unit_bought += $a_purchase['unit'];
@@ -727,6 +740,19 @@ class PluginBestmanagementContract extends CommonDBTM {
 
    
    
+   static function getDefinitionForContract($contracts_id) {
+      
+      $pbContract = new self();
+      $a_contracts = $pbContract->find("`contracts_id`='".$contracts_id."'", "", 1);
+      if (count($a_contracts) == 1) {
+         $a_contract = current($a_contracts);
+         return $a_contract['definition'];
+      }
+      return '';
+   }
+
+   
+   
    static function getUnit_typeForContract($contracts_id) {
       
       $pbContract = new self();
@@ -840,6 +866,23 @@ class PluginBestmanagementContract extends CommonDBTM {
          $pbContract->delete($data, 1);
       }
    }
+   
+   
+   
+   function post_addItem() {
+      global $DB;
+
+      $Contract_Period = new PluginBestmanagementContract_Period();
+
+      $input = array();
+      $input['contracts_id'] = $_POST['contracts_id'];
+      $input['begin'] = date('Y-m-d');
+      $input['date_save'] = date('Y-m-d');
+      $input['report_credit'] = 0;
+      $Contract_Period->add($input);
+
+   }
+
 }
 
 ?>

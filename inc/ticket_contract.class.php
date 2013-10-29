@@ -91,6 +91,7 @@ class PluginBestmanagementTicket_Contract extends CommonDBTM {
       if ($item->getID() > 0) {
          $pbTicket_Contract->showContract();
       }
+      echo "Raport d'intervention";
       return true;
    }
    
@@ -115,7 +116,11 @@ class PluginBestmanagementTicket_Contract extends CommonDBTM {
     */
    function showTickets($contracts_id) {
       global $LANG;
+
+      $pbContract_Period = new PluginBestmanagementContract_Period();
       
+      $a_period = $pbContract_Period->getCurrentPeriod($contracts_id);
+
       $elements = $this->getInvoiceState();
       foreach ($elements as $invoice_state=>$element) {
          echo "<table class='tab_cadre_fixe'>";
@@ -166,7 +171,8 @@ class PluginBestmanagementTicket_Contract extends CommonDBTM {
          echo "</tr>";
 
          $a_links = $this->find("`contracts_id`='".$contracts_id."'
-                                 AND `invoice_state`='".$invoice_state."'");
+                                 AND `invoice_state`='".$invoice_state."'
+                                 AND `plugin_bestmanagement_contracts_periods_id`='".$a_period['id']."'");
          foreach($a_links as $data) { 
             $this->showTicketsDetail($data['tickets_id'], 
                                      $invoice_state, 

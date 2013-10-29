@@ -53,6 +53,11 @@ if (isset ($_POST["add"])) {
       $_POST['unit_number'] = 0;
       $_POST['invoice_number'] = '';
    }   
+   
+   $pbContract_Period = new PluginBestmanagementContract_Period();
+   $a_period = $pbContract_Period->getCurrentPeriod($_POST['contracts_id']);
+   $_POST['plugin_bestmanagement_contracts_periods_id'] = $a_period['id'];
+   
    $pbTicket_Contract->add($_POST);
    Html::back();
 } else if (isset ($_POST["update"])) {

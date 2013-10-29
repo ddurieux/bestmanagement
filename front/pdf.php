@@ -39,34 +39,34 @@
    ------------------------------------------------------------------------
  */
 
-if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access directly to this file");
-}
+define('GLPI_ROOT', '../../..');
 
-class PluginBestmanagementToolbox {
-   
-   /**
-    * Display hours
-    */
-   static function displayHours($val, $return=0) {
+include (GLPI_ROOT . "/inc/includes.php");
 
-      $neg = ($val < 0) ? true : false;
-      $val = round($val+0,2);
-      $val *= ($neg) ? (-1) : 1;
-      $h = floor($val); // heures
+require_once(GLPI_ROOT."/plugins/bestmanagement/lib/dompdf/dompdf_config.inc.php");
+require_once(GLPI_ROOT."/plugins/bestmanagement/lib/dompdf/include/canvas.cls.php");
+//require_once(GLPI_ROOT."/plugins/bestmanagement/lib/dompdf/include/cpdf_adapter.cls.php");
+require_once(GLPI_ROOT."/plugins/bestmanagement/lib/dompdf/include/positioner.cls.php");
+require_once(GLPI_ROOT."/plugins/bestmanagement/lib/dompdf/include/frame.cls.php");
+require_once(GLPI_ROOT."/plugins/bestmanagement/lib/dompdf/include/frame_decorator.cls.php");
+require_once(GLPI_ROOT."/plugins/bestmanagement/lib/dompdf/include/frame_reflower.cls.php");
+//require_once(GLPI_ROOT."/plugins/bestmanagement/lib/dompdf/include/cached_pdf_decorator.cls.php");
 
-      $h += ($val < 0) ? 1 : 0;
-      $m = round(($val - $h ) * 60); // minutes
-      if ($m >= 0 
-              && $m < 10) {
-         $m = "0" . $m;
-      }
-      if ($return == 0) {
-         echo (($neg) ? "-" : "") . $h . ":" . $m;
-      } else {
-         return (($neg) ? "-" : "") . $h . ":" . $m;
-      }
+foreach (glob(GLPI_ROOT.'/plugins/bestmanagement/lib/dompdf/include/*.php') as $file) {
+   if (!strstr($file, 'cache')) {
+      require_once($file);
    }
 }
+
+$html = "coucou";
+  $dompdf = new DOMPDF();
+  $dompdf->load_html($html);
+  $dompdf->set_paper("A4");
+  $dompdf->render();
+
+//  $dompdf->stream("dompdf_out.pdf", array("Attachment" => false));
+
+  exit(0);
+
 
 ?>
