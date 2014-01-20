@@ -1,17 +1,17 @@
 <?php
 
-function pluginBestmanagementInstall($version, $migration='') {
+function pluginSupportcontractInstall($version, $migration='') {
    global $DB;
 
    if ($migration == '') {
       $migration = new Migration($version);
    }
    
-   $migration->displayMessage("Installation of plugin BestManagement");
+   $migration->displayMessage("Installation of plugin Supportcontract");
    
    // ** Insert in DB
    $migration->displayMessage("Creation tables in database");
-   $DB_file = GLPI_ROOT ."/plugins/bestmanagement/install/mysql/plugin_bestmanagement-empty.sql";
+   $DB_file = GLPI_ROOT ."/plugins/supportcontract/install/mysql/plugin_supportcontract-empty.sql";
    $DBf_handle = fopen($DB_file, "rt");
    $sql_query = fread($DBf_handle, filesize($DB_file));
    fclose($DBf_handle);

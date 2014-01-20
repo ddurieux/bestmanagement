@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS `glpi_plugin_bestmanagement_configs`;
+DROP TABLE IF EXISTS `glpi_plugin_supportcontract_configs`;
 
-CREATE TABLE `glpi_plugin_bestmanagement_configs` (
+CREATE TABLE `glpi_plugin_supportcontract_configs` (
    `id` int(11) NOT NULL auto_increment,
    `ticket_category` tinyint(1) NOT NULL DEFAULT '0',
    `time_creation` tinyint(1) NOT NULL DEFAULT '0',
@@ -18,9 +18,9 @@ CREATE TABLE `glpi_plugin_bestmanagement_configs` (
 
 
 
-DROP TABLE IF EXISTS `glpi_plugin_bestmanagement_contracts`;
+DROP TABLE IF EXISTS `glpi_plugin_supportcontract_contracts`;
 
-CREATE TABLE `glpi_plugin_bestmanagement_contracts` (
+CREATE TABLE `glpi_plugin_supportcontract_contracts` (
    `id` int(11) NOT NULL auto_increment,
    `contracts_id` int(11) NOT NULL DEFAULT '0',
    `illimite` tinyint(1) NOT NULL DEFAULT '0',
@@ -32,9 +32,9 @@ CREATE TABLE `glpi_plugin_bestmanagement_contracts` (
 
 
 
-DROP TABLE IF EXISTS `glpi_plugin_bestmanagement_entities`;
+DROP TABLE IF EXISTS `glpi_plugin_supportcontract_entities`;
 
-CREATE TABLE `glpi_plugin_bestmanagement_entities` (
+CREATE TABLE `glpi_plugin_supportcontract_entities` (
    `id` int(11) NOT NULL auto_increment,
    `entities_id` int(11) NOT NULL DEFAULT '0',
    `entete` tinyint(1) NOT NULL DEFAULT '0',
@@ -57,9 +57,9 @@ CREATE TABLE `glpi_plugin_bestmanagement_entities` (
 
 
 
-DROP TABLE IF EXISTS `glpi_plugin_bestmanagement_invoices`;
+DROP TABLE IF EXISTS `glpi_plugin_supportcontract_invoices`;
 
-CREATE TABLE `glpi_plugin_bestmanagement_invoice` (
+CREATE TABLE `glpi_plugin_supportcontract_invoice` (
    `id` int(11) NOT NULL auto_increment,
    `tickets_id` int(11) NOT NULL DEFAULT '0',
    `invoice_state` tinyint(1) NOT NULL DEFAULT '0',
@@ -70,9 +70,9 @@ CREATE TABLE `glpi_plugin_bestmanagement_invoice` (
 
 
 
-DROP TABLE IF EXISTS `glpi_plugin_bestmanagement_logs`;
+DROP TABLE IF EXISTS `glpi_plugin_supportcontract_logs`;
 
-CREATE TABLE `glpi_plugin_bestmanagement_logs` (
+CREATE TABLE `glpi_plugin_supportcontract_logs` (
    `id` int(11) NOT NULL auto_increment,
    `contracts_id` int(11) NOT NULL DEFAULT '0',
    `date_deb` DATE NOT NULL,
@@ -88,9 +88,9 @@ CREATE TABLE `glpi_plugin_bestmanagement_logs` (
 
 
 
-DROP TABLE IF EXISTS `glpi_plugin_bestmanagement_mailings`;
+DROP TABLE IF EXISTS `glpi_plugin_supportcontract_mailings`;
 
-CREATE TABLE `glpi_plugin_bestmanagement_mailings` (
+CREATE TABLE `glpi_plugin_supportcontract_mailings` (
    `id` int(11) NOT NULL auto_increment,
    `contratended` tinyint(1) NOT NULL DEFAULT '0',
    `contratending` tinyint(1) NOT NULL DEFAULT '0',
@@ -101,9 +101,9 @@ CREATE TABLE `glpi_plugin_bestmanagement_mailings` (
 
 
 
-DROP TABLE IF EXISTS `glpi_plugin_bestmanagement_profiles`;
+DROP TABLE IF EXISTS `glpi_plugin_supportcontract_profiles`;
 
-CREATE TABLE `glpi_plugin_bestmanagement_profiles` (
+CREATE TABLE `glpi_plugin_supportcontract_profiles` (
    `id` int(11) NOT NULL auto_increment,
    `profiles_id` int(11) NOT NULL DEFAULT '0',
    `recapglobal` CHAR(1) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -123,9 +123,9 @@ CREATE TABLE `glpi_plugin_bestmanagement_profiles` (
 
 
 
-DROP TABLE IF EXISTS `glpi_plugin_bestmanagement_purchases`;
+DROP TABLE IF EXISTS `glpi_plugin_supportcontract_purchases`;
 
-CREATE TABLE `glpi_plugin_bestmanagement_purchases` (
+CREATE TABLE `glpi_plugin_supportcontract_purchases` (
    `id` int(11) NOT NULL auto_increment,
    `contracts_id` int(11) NOT NULL DEFAULT '0',
    `begin_date` date DEFAULT NULL,
@@ -137,16 +137,16 @@ CREATE TABLE `glpi_plugin_bestmanagement_purchases` (
    `comment` text DEFAULT NULL,
    `date_save` datetime DEFAULT NULL,
    `close_date` datetime DEFAULT NULL,
-   `plugin_bestmanagement_contracts_periods` int(11) NOT NULL DEFAULT '0',
+   `plugin_supportcontract_contracts_periods` int(11) NOT NULL DEFAULT '0',
     PRIMARY KEY (`id`),
    KEY `contracts_id` (`contracts_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
 
 
 
-DROP TABLE IF EXISTS `glpi_plugin_bestmanagement_contracts_periods`;
+DROP TABLE IF EXISTS `glpi_plugin_supportcontract_contracts_periods`;
 
-CREATE TABLE `glpi_plugin_bestmanagement_contracts_periods` (
+CREATE TABLE `glpi_plugin_supportcontract_contracts_periods` (
    `id` int(11) NOT NULL auto_increment,
    `date_save` DATE NOT NULL,
    `contracts_id` int(11) NOT NULL DEFAULT '0',
@@ -159,11 +159,11 @@ CREATE TABLE `glpi_plugin_bestmanagement_contracts_periods` (
 
 
 
-DROP TABLE IF EXISTS `glpi_plugin_bestmanagement_reports`;
+DROP TABLE IF EXISTS `glpi_plugin_supportcontract_reports`;
 
-CREATE TABLE `glpi_plugin_bestmanagement_reports` (
+CREATE TABLE `glpi_plugin_supportcontract_reports` (
    `id` int(11) NOT NULL auto_increment,
-   `plugin_bestmanagement_reconductions_id` int(11) NOT NULL DEFAULT '0',
+   `plugin_supportcontract_reconductions_id` int(11) NOT NULL DEFAULT '0',
    `ID_Compteur` int(11) NOT NULL DEFAULT '0',
    `Nb_Unit` FLOAT NOT NULL,
    PRIMARY KEY (`id`)
@@ -171,9 +171,9 @@ CREATE TABLE `glpi_plugin_bestmanagement_reports` (
 
 
 
-DROP TABLE IF EXISTS `glpi_plugin_bestmanagement_tickets_contracts`;
+DROP TABLE IF EXISTS `glpi_plugin_supportcontract_tickets_contracts`;
 
-CREATE TABLE `glpi_plugin_bestmanagement_tickets_contracts` (
+CREATE TABLE `glpi_plugin_supportcontract_tickets_contracts` (
    `id` int(11) NOT NULL auto_increment,
    `tickets_id` int(11) NOT NULL DEFAULT '0',
    `contracts_id` int(11) NOT NULL DEFAULT '0',
@@ -181,7 +181,7 @@ CREATE TABLE `glpi_plugin_bestmanagement_tickets_contracts` (
    `invoice_state` tinyint(1) NOT NULL DEFAULT '0',
    `invoice_number` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
    `close_date` datetime DEFAULT NULL,
-   `plugin_bestmanagement_contracts_periods` int(11) NOT NULL DEFAULT '0',
+   `plugin_supportcontract_contracts_periods` int(11) NOT NULL DEFAULT '0',
    PRIMARY KEY (`id`),
    KEY `tickets_id` (`tickets_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
