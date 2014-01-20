@@ -2,40 +2,40 @@
 
 /*
    ------------------------------------------------------------------------
-   Best Management
-   Copyright (C) 2011-2013 by the Best Management Development Team.
+   Supportcontract
+   Copyright (C) 2014-2014 by the Supportcontract Development Team.
 
-   https://forge.indepnet.net/
+   https://github.com/ddurieux/bestmanagement   
    ------------------------------------------------------------------------
 
    LICENSE
 
-   This file is part of Best Management project.
+   This file is part of Supportcontract project.
 
-   Best Management is free software: you can redistribute it and/or modify
+   Supportcontract is free software: you can redistribute it and/or modify
    it under the terms of the GNU Affero General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
-   Best Management is distributed in the hope that it will be useful,
+   Supportcontract is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    GNU Affero General Public License for more details.
 
    You should have received a copy of the GNU Affero General Public License
-   along with Best Management. If not, see <http://www.gnu.org/licenses/>.
+   along with Supportcontract. If not, see <http://www.gnu.org/licenses/>.
 
    ------------------------------------------------------------------------
 
-   @package   Best Management
+   @package   Supportcontract
    @author    David Durieux
-   @co-author 
-   @copyright Copyright (c) 2011-2013 Best Management team
+   @co-author
+   @copyright Copyright (c) 2014-2014 Supportcontract team
    @license   AGPL License 3.0 or (at your option) any later version
               http://www.gnu.org/licenses/agpl-3.0-standalone.html
-   @link      https://forge.indepnet,net
-   @since     2013
- 
+   @link      https://github.com/ddurieux/bestmanagement
+   @since     2014
+
    ------------------------------------------------------------------------
  */
 
@@ -62,4 +62,5 @@ if ($type == 'hour') {
    $a_input['ItilCategory'] = 'ItilCategory';
 }
 Dropdown::showFromArray('definition', $a_input);
+
 ?>
