@@ -669,7 +669,7 @@ class PluginSupportcontractContract extends CommonDBTM {
    function displayUnits($unit, $display=1) {
       $val = '';
       if ($this->fields['unit_type'] == "hour") {
-         $val =  PluginSupportcontractToolbox::displayHours($unit);
+         $val =  PluginSupportcontractToolbox::displayHours($unit, TRUE);
       } else {
          $val =  $unit;
       }
