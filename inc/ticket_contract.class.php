@@ -77,7 +77,7 @@ class PluginSupportcontractTicket_Contract extends CommonDBTM {
                  && $_POST['glpi_tab'] == 'PluginPdfTicket$1') {
             return __('Intervention report', 'supportcontract')." (".__('Support contract', 'supportcontract').")";
          } else {        
-            return __('Plugin configuration', 'supportcontract');
+            return __('Support contract', 'supportcontract');
          }
       }
       return '';
@@ -341,10 +341,10 @@ class PluginSupportcontractTicket_Contract extends CommonDBTM {
          $a_tickets_crontracts = $this->find("`tickets_id`='".$tickets_id."'", "", 1);
          $data = current($a_tickets_crontracts);
          // Display link(s)
-         echo "<form method='post' action='".GLPI_ROOT.
-                        "/plugins/supportcontract/front/ticket_contract.form.php'>";
-         echo "<input type='hidden' name='id' value='".$data['id']."' />";
-         echo "<table class='tab_cadre_fixe'>";
+         $this->getFromDB($data['id']);
+         
+         $this->initForm($data['id']);
+         $this->showFormHeader();
 
          echo "<tr class='tab_bg_1'>";
          echo "<th colspan='7'>".__('Linked contract', 'supportcontract')." :</th>";
@@ -402,6 +402,7 @@ class PluginSupportcontractTicket_Contract extends CommonDBTM {
          }
          echo "</td>";
          echo "<td>";
+         echo "<input type='hidden' name='id' value='".$this->fields['id']."'/>";
          echo "<input type='submit' name='update' value='".__('Save')."' class='submit' />";
          echo "</td>";
          echo "<td>";

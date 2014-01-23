@@ -2,17 +2,6 @@
 
 /*
    ------------------------------------------------------------------------
-   Best Management
-   Copyright (C) 2011-2013 by the Best Management Development Team.
-
-   https://forge.indepnet.net/
-   ------------------------------------------------------------------------
-
-   LICENSE
-<?php
-
-/*
-   ------------------------------------------------------------------------
    Supportcontract
    Copyright (C) 2014-2014 by the Supportcontract Development Team.
 
@@ -50,8 +39,7 @@
    ------------------------------------------------------------------------
  */
 
-define('GLPI_ROOT', '../../..'); 
-include_once (GLPI_ROOT . "/inc/includes.php");
+include ("../../../inc/includes.php");
 
 Session::checkRight("profile","w");
 

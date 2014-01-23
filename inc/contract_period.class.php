@@ -143,16 +143,16 @@ class PluginSupportcontractContract_Period extends CommonDBTM {
          echo "<input type='hidden' name='contracts_id' value='".$psContract->fields['contracts_id']."' />";
          echo "<input type='hidden' name='pscontracts_id' value='".$psContract->fields['id']."' />";
          echo "<input type='hidden' name='id' value='".$a_period['id']."' />";
-         echo "<input type='submit' name='reconduction' value=\"".__('Closed + reconduction without report units', 'supportcontract')."\" class='submit'>";
+         echo "<input type='submit' name='reconduction' value='".__('Closed + reconduction without report units', 'supportcontract')."' class='submit'>";
          echo "</td>";
          echo "<td colspan='2' align='center'>";
-         echo "<input type='submit' name='reconduction_report' value=\"__('Closed + reconduction with report units', 'supportcontract')\" class='submit'>";
+         echo "<input type='submit' name='reconduction_report' value='".__('Closed + reconduction with report units', 'supportcontract')."' class='submit'>";
          echo "</td>";
          echo "</tr>";
          
          echo "<tr class='tab_bg_1'>";
          echo "<td colspan='4' align='center'>";
-         echo "<input type='submit' name='no_reconduction' value=\"__('Closed without reconduction', 'supportcontract')\" class='submit'>";
+         echo "<input type='submit' name='no_reconduction' value='".__('Closed without reconduction', 'supportcontract')."' class='submit'>";
          echo "</td>";
          echo "</tr>";
 

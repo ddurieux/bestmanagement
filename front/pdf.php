@@ -39,9 +39,7 @@
    ------------------------------------------------------------------------
  */
 
-define('GLPI_ROOT', '../../..');
-
-include (GLPI_ROOT . "/inc/includes.php");
+include ("../../../inc/includes.php");
 
 require_once(GLPI_ROOT."/plugins/supportcontract/lib/dompdf/dompdf_config.inc.php");
 require_once(GLPI_ROOT."/plugins/supportcontract/lib/dompdf/include/canvas.cls.php");

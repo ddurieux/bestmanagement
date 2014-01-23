@@ -607,10 +607,6 @@ class PluginSupportcontractContract extends CommonDBTM {
                                             "&glpi_tab=$key&id=$ID$extraparam");
          }
 
-         // Plugin with plugin_get_headings_xxx
-         $plug_tabs = Plugin::getTabs($target,$this, $withtemplate);
-         $tabs += $plug_tabs;
-
          // Not all tab for templates and if only 1 tab
          if ($display_all && empty($withtemplate) && count($tabs)>1) {
             $tabs[-1] = array('title'  => __('All'),

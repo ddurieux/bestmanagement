@@ -92,14 +92,14 @@ class PluginSupportcontractPurchase extends CommonDBTM {
       } else if ($psContract->fields['definition'] == "ItilCategory") {
          Dropdown::show('ItilCategory', array('name' => 'definitions_id'));
       } else if ($psContract->fields['definition'] == "priority") {
-         Ticket::dropdownPriority('definitions_id');
+         Ticket::dropdownPriority(array('name' => 'definitions_id'));
       }
       echo "</td>";
       echo "<td>";
       echo __('Unit bought', 'supportcontract')."&nbsp;:";
       echo "</td>";
       echo "<td>";
-      echo Dropdown::showInteger("unit", 1, 1);
+      Dropdown::showInteger("unit", 1, 1);
       echo "</td>";      
       echo "</tr>";
       

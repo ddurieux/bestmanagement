@@ -137,7 +137,7 @@ CREATE TABLE `glpi_plugin_supportcontract_purchases` (
    `comment` text DEFAULT NULL,
    `date_save` datetime DEFAULT NULL,
    `close_date` datetime DEFAULT NULL,
-   `plugin_supportcontract_contracts_periods` int(11) NOT NULL DEFAULT '0',
+   `plugin_supportcontract_contracts_periods_id` int(11) NOT NULL DEFAULT '0',
     PRIMARY KEY (`id`),
    KEY `contracts_id` (`contracts_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
@@ -181,7 +181,7 @@ CREATE TABLE `glpi_plugin_supportcontract_tickets_contracts` (
    `invoice_state` tinyint(1) NOT NULL DEFAULT '0',
    `invoice_number` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
    `close_date` datetime DEFAULT NULL,
-   `plugin_supportcontract_contracts_periods` int(11) NOT NULL DEFAULT '0',
+   `plugin_supportcontract_contracts_periods_id` int(11) NOT NULL DEFAULT '0',
    PRIMARY KEY (`id`),
    KEY `tickets_id` (`tickets_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
