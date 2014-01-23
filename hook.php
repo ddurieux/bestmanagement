@@ -41,7 +41,7 @@
 
 
 function plugin_pre_item_update_contractsupport($item) {
-	global $DB, $LANG;
+	global $DB;
 	
 	// Check mandatory
 	$mandatory_ok=true;
@@ -55,16 +55,16 @@ function plugin_pre_item_update_contractsupport($item) {
 
             if (isset($item->input["begin_date"]) && $item->input["begin_date"] == "NULL"
                && VerifAddMsg("date_deb")) {
-               Session::addMessageAfterRedirect($LANG["bestmanagement"]["msg"][0], false, ERROR);
+               Session::addMessageAfterRedirect(__('Begin date not set', 'supportcontract'), false, ERROR);
                $contractsaved = true;
             } else if (isset($item->input["duration"]) && $item->input["duration"] == 0
                    && VerifAddMsg("duration")) {
-               Session::addMessageAfterRedirect($LANG["bestmanagement"]["msg"][1], false, ERROR);
+               Session::addMessageAfterRedirect(__('Duration not set', 'supportcontract'), false, ERROR);
                $contractsaved = true;
             } else if (isset($item->input["contracttypes_id"]) && $item->input["contracttypes_id"] == 0
                    && VerifAddMsg("contract_type")) {
             // contract type
-               Session::addMessageAfterRedirect($LANG["bestmanagement"]["msg"][19], false, ERROR);
+               Session::addMessageAfterRedirect(__('You may define a contract type', 'supportcontract'), false, ERROR);
                $contractsaved = true;
             }
 
@@ -83,18 +83,18 @@ function plugin_pre_item_update_contractsupport($item) {
             }			
 
             if ($item->input["contracts_id"] == -1) {
-               Session::addMessageAfterRedirect($LANG["bestmanagement"]["msg"][2], false, ERROR);
+               Session::addMessageAfterRedirect(__('Contract not set', 'supportcontract'), false, ERROR);
                $helpdesksaved = true;
             } else if (isset($item->input["ticketcategories_id"]) && $item->input["ticketcategories_id"] == 0
                    && VerifAddMsg("ticket_category")) {
-               Session::addMessageAfterRedirect($LANG["bestmanagement"]["msg"][3], false, ERROR);
+               Session::addMessageAfterRedirect(__('Category not set', 'supportcontract'), false, ERROR);
                $helpdesksaved = true;
             } else if ($item->input["contracts_id"] == "NULL" && $item->input["id_facturation"] == 1) {
-               Session::addMessageAfterRedirect($LANG["bestmanagement"]["msg"][10], false, ERROR);
+               Session::addMessageAfterRedirect(__('Impossible to invoice under contract a ticket not managed in a contract', 'supportcontract'), false, ERROR);
                $helpdesksaved = true;
             } else if ($item->input["contracts_id"] != "NULL" &&
                    isset($item->input["id_facturation"]) && $item->input["id_facturation"] == 2) {
-               Session::addMessageAfterRedirect($LANG["bestmanagement"]["msg"][11], false, ERROR);
+               Session::addMessageAfterRedirect(__('Impossible to invoice out of contract a ticket under contract', 'supportcontract'), false, ERROR);
                $helpdesksaved = true;
             }
             if ($helpdesksaved) {
@@ -105,12 +105,12 @@ function plugin_pre_item_update_contractsupport($item) {
                $num_ticket		= $item->input["id"];
                $num_contrat	= $item->input["contracts_id"];
 
-               if (0 == countElementsInTable("glpi_plugin_bestmanagement_link_ticketcontrat",
+               if (0 == countElementsInTable("glpi_plugin_supportcontract_link_ticketcontrat",
                                       "ID_Ticket = $num_ticket")) {
-                  insertToDB("glpi_plugin_bestmanagement_link_ticketcontrat", "NULL, $num_ticket, NULL");
+                  insertToDB("glpi_plugin_supportcontract_link_ticketcontrat", "NULL, $num_ticket, NULL");
                }			
                $query = "SELECT IFNULL(ID_Contrat,'NULL') ID_Contrat
-                       FROM glpi_plugin_bestmanagement_link_ticketcontrat
+                       FROM glpi_plugin_supportcontract_link_ticketcontrat
                        WHERE ID_Ticket = $num_ticket";
 
                if ($res = $DB->query($query)) {
@@ -123,27 +123,27 @@ function plugin_pre_item_update_contractsupport($item) {
                   }
                }
                if ($old_contrat != $num_contrat) {
-                  $query = "UPDATE glpi_plugin_bestmanagement_link_ticketcontrat
+                  $query = "UPDATE glpi_plugin_supportcontract_link_ticketcontrat
                           SET ID_Contrat = $num_contrat
                           WHERE ID_Ticket = $num_ticket";
 
                   $DB->query($query) or die("error $query");
-                  Session::addMessageAfterRedirect($LANG["bestmanagement"]["msg"][5], false, INFO);
+                  Session::addMessageAfterRedirect(__('Contract updated for ticket', 'supportcontract'), false, INFO);
                }
                if (isset($item->input["id_facturation"])) {
                   $facturation	= $item->input["id_facturation"];
 
-                  if (0 == countElementsInTable("glpi_plugin_bestmanagement_facturation_ticket",
+                  if (0 == countElementsInTable("glpi_plugin_supportcontract_facturation_ticket",
                                          "ID_Ticket = $num_ticket")) {
-                     insertToDB("glpi_plugin_bestmanagement_facturation_ticket", "$num_ticket, $facturation, NULL");
-                     Session::addMessageAfterRedirect($LANG["bestmanagement"]["msg"][8], false, INFO);
+                     insertToDB("glpi_plugin_supportcontract_facturation_ticket", "$num_ticket, $facturation, NULL");
+                     Session::addMessageAfterRedirect(__('Invoice added', 'supportcontract'), false, INFO);
                   } else {
-                     $query = "UPDATE glpi_plugin_bestmanagement_facturation_ticket
+                     $query = "UPDATE glpi_plugin_supportcontract_facturation_ticket
                              SET etat_fact = $facturation
                              WHERE ID_Ticket = $num_ticket";
 
                      $DB->query($query) or die("error $query");
-                     Session::addMessageAfterRedirect($LANG["bestmanagement"]["msg"][9], false, INFO);
+                     Session::addMessageAfterRedirect(__('Invoice updated', 'supportcontract'), false, INFO);
                   }
                }
             }
@@ -153,14 +153,14 @@ function plugin_pre_item_update_contractsupport($item) {
             $helpdesksaved = false;
             if (isset($item->input["taskcategories_id"]) && $item->input["taskcategories_id"] != 0
                & VerifAddMsg("task_category")) {
-               Session::addMessageAfterRedirect($LANG["bestmanagement"]["msg"][27], false, ERROR);
+               Session::addMessageAfterRedirect(__('Be careful, there is no category for the task', 'supportcontract'), false, ERROR);
                $helpdesksaved = false;
             } else { 
                $helpdesksaved = true;
             }
             if(isTicketOutPeriode($item->fields["tickets_id"])
                && VerifAddMsg("no_renewal")) {
-               Session::addMessageAfterRedirect($LANG["bestmanagement"]["msg"][28], false, INFO);
+               Session::addMessageAfterRedirect(__("Be careful, contract hasn't be reconducted", 'supportcontract'), false, INFO);
             }			
             break;
 			
@@ -174,8 +174,8 @@ function plugin_pre_item_update_contractsupport($item) {
 
 
 
-function plugin_pre_item_add_bestmanagement($item) {
-	global $DB, $LANG;
+function plugin_pre_item_add_supportcontract($item) {
+	global $DB;
    
 	$mandatory_ok=true;
 		
@@ -190,15 +190,15 @@ function plugin_pre_item_add_bestmanagement($item) {
             // Il faut qu'une date de d�but soit saisie
             if (isset($item->input["begin_date"]) && $item->input["begin_date"] == "NULL"
                && VerifAddMsg("date_deb")) {
-               Session::addMessageAfterRedirect($LANG["bestmanagement"]["msg"][0], false, ERROR);
+               Session::addMessageAfterRedirect(__('Begin date not set', 'supportcontract'), false, ERROR);
                $contractsaved = true;
             } else if (isset($item->input["duration"]) && $item->input["duration"] == 0
                    && VerifAddMsg("duration")) {
-               Session::addMessageAfterRedirect($LANG["bestmanagement"]["msg"][1], false, ERROR);
+               Session::addMessageAfterRedirect(__('Duration not set', 'supportcontract'), false, ERROR);
                $contractsaved = true;
             } else if (isset($_POST["contracttypes_id"]) && $_POST["contracttypes_id"] == 0
                    && VerifAddMsg("contract_type")) {
-               Session::addMessageAfterRedirect($LANG["bestmanagement"]["msg"][19], false, ERROR);
+               Session::addMessageAfterRedirect(__('Contract type is not set', 'supportcontract'), false, ERROR);
                $contractsaved = true;
             }
 
@@ -215,10 +215,10 @@ function plugin_pre_item_add_bestmanagement($item) {
             $helpdesksaved = false;
 
             if ($hour+$minute > 0) {
-               Session::addMessageAfterRedirect($LANG["bestmanagement"]["msg"][6], false, ERROR);
+               Session::addMessageAfterRedirect(__('You may not set time at creation', 'supportcontract'), false, ERROR);
                $helpdesksaved = true;
             } else if (isset($item->input["contracts_id"]) && $item->input["contracts_id"] == -1) {
-               Session::addMessageAfterRedirect($LANG["bestmanagement"]["msg"][2], false, ERROR);
+               Session::addMessageAfterRedirect(__('Contract not set', 'supportcontract'), false, ERROR);
                $helpdesksaved = true;
             }
             if ($helpdesksaved) {
@@ -232,12 +232,12 @@ function plugin_pre_item_add_bestmanagement($item) {
             $helpdesksaved = false; 
             if (isset($item->input["taskcategories_id"]) && $item->input["taskcategories_id"] == 0
                & VerifAddMsg("task_category")) {
-               Session::addMessageAfterRedirect($LANG["bestmanagement"]["msg"][27], false, ERROR);
+               Session::addMessageAfterRedirect(__('Be careful, there is no category for the task', 'supportcontract'), false, ERROR);
                $helpdesksaved = true;
             }
             if(isTicketOutPeriode($item->fields["tickets_id"])
                && VerifAddMsg("no_renewal")) {
-               Session::addMessageAfterRedirect($LANG["bestmanagement"]["msg"][28], false, INFO);
+               Session::addMessageAfterRedirect(__("Be careful, contract hasn't be reconducted", 'supportcontract'), false, INFO);
             }
             if ($helpdesksaved) {
                $mandatory_ok = false;
@@ -257,26 +257,26 @@ function plugin_pre_item_add_bestmanagement($item) {
 
 
 
-function plugin_pre_item_purge_bestmanagement($item) {
-	global $DB, $LANG;
+function plugin_pre_item_purge_supportcontract($item) {
+	global $DB;
 	
 	$num = $item->input["id"];
 
 	switch (get_class($item)) {
 
       case "Contract" :
-         if (TableExists("glpi_plugin_bestmanagement_report")) {
-            $query = "DELETE FROM glpi_plugin_bestmanagement_report
+         if (TableExists("glpi_plugin_supportcontract_report")) {
+            $query = "DELETE FROM glpi_plugin_supportcontract_report
                     WHERE ID_Reconduction IN (SELECT id
-                                       FROM glpi_plugin_bestmanagement_reconduction
+                                       FROM glpi_plugin_supportcontract_reconduction
                                        WHERE ID_Contrat = $num)";
-            $DB->query($query) or die("error deleting contract $num in glpi_plugin_bestmanagement_report");
+            $DB->query($query) or die("error deleting contract $num in glpi_plugin_supportcontract_report");
          }
 
-         $tables = array ("glpi_plugin_bestmanagement_link_ticketcontrat",
-                     "glpi_plugin_bestmanagement_achat",
-                     "glpi_plugin_bestmanagement_historique",
-                     "glpi_plugin_bestmanagement_reconduction");
+         $tables = array ("glpi_plugin_supportcontract_link_ticketcontrat",
+                     "glpi_plugin_supportcontract_achat",
+                     "glpi_plugin_supportcontract_historique",
+                     "glpi_plugin_supportcontract_reconduction");
 
          foreach ($tables as $var) {
             if (TableExists($var)) {
@@ -288,8 +288,8 @@ function plugin_pre_item_purge_bestmanagement($item) {
          break;
 		
 	   case "Ticket" :
-         $tables = array ("glpi_plugin_bestmanagement_link_ticketcontrat",
-                     "glpi_plugin_bestmanagement_facturation_ticket");
+         $tables = array ("glpi_plugin_supportcontract_link_ticketcontrat",
+                     "glpi_plugin_supportcontract_facturation_ticket");
 
          foreach ($tables as $var) {
             if (TableExists($var)) {
@@ -306,8 +306,8 @@ function plugin_pre_item_purge_bestmanagement($item) {
 
 
 
-function plugin_item_add_bestmanagement($item) {
-	global $DB, $LANG;
+function plugin_item_add_supportcontract($item) {
+	global $DB;
 	
 	switch (get_class($item)) {
       
@@ -319,14 +319,14 @@ function plugin_item_add_bestmanagement($item) {
             // si le ticket est en Hors Contrat, $num_contrat vaut NULL
             $values = "NULL, $num_ticket, $num_contrat";
 
-            insertToDB("glpi_plugin_bestmanagement_link_ticketcontrat", $values);
+            insertToDB("glpi_plugin_supportcontract_link_ticketcontrat", $values);
 
             // pour la facturation, requ�te d'insertion
             if (isset($item->input["id_facturation"])) {
                $facturation	= $item->input["id_facturation"];
 
                $values2		= "$num_ticket, $facturation, NULL";
-               insertToDB("glpi_plugin_bestmanagement_facturation_ticket", $values2);
+               insertToDB("glpi_plugin_supportcontract_facturation_ticket", $values2);
             }
          }
          break;
@@ -341,9 +341,9 @@ function plugin_item_add_bestmanagement($item) {
                $query="UPDATE glpi_tickettasks SET	date = '$new'
                      WHERE id = $id";
 
-               $DB->query($query) or die("erreur de la requete $query ". $DB->error());
+               $DB->query($query);
             } else {
-               Session::addMessageAfterRedirect($LANG["bestmanagement"]["msg"][30], false, INFO);
+               Session::addMessageAfterRedirect(__('Date too old to be used', 'supportcontract'), false, INFO);
             }
          }
          break;
@@ -353,22 +353,21 @@ function plugin_item_add_bestmanagement($item) {
 
 
 
-function plugin_get_headings_bestmanagement($item, $withtemplate) {
-	global $LANG;
+function plugin_get_headings_supportcontract($item, $withtemplate) {
 	
 	switch (get_class($item)) {
       
 	   case "Profile" :
          if ($item->fields["interface"]!="helpdesk") {
-            return array(1 => $LANG["bestmanagement"]["title"][0]);
+            return array(1 => __('Support contract', 'supportcontract'));
          }
          break;
 
 		
       case TRACKING_TYPE:
          if ($item->fields["id"] != null 
-                 && plugin_bestmanagement_haveRight("bestmanagement","linkticketcontrat", 1)) {
-            return array(1 => $LANG["bestmanagement"]["config"]["linkticketcontrat"]);
+                 && plugin_supportcontract_haveRight("linkticketcontrat","linkticketcontrat", 1)) {
+            return array(1 => '');
          }
          break;
 	
@@ -376,7 +375,7 @@ function plugin_get_headings_bestmanagement($item, $withtemplate) {
          if ($withtemplate) {
             return array();
          } else {
-            return array(1 => $LANG["bestmanagement"]["title"][0]);
+            return array(1 => __('Support contract', 'supportcontract'));
          }
          break;
          
@@ -386,19 +385,19 @@ function plugin_get_headings_bestmanagement($item, $withtemplate) {
 
 
 
-function plugin_headings_actions_bestmanagement($item) {
+function plugin_headings_actions_supportcontract($item) {
    
 	switch (get_class($item)) {
       
 	   case "Profile" :
          if ($item->getField("interface") == "central") {
-            return array(1 => "plugin_headings_bestmanagement");
+            return array(1 => "plugin_headings_supportcontract");
          }
          break;
 
-	   case CONTRACT_TYPE:
-	   case TRACKING_TYPE:
-         return array(1 => "plugin_headings_bestmanagement");
+	   case 'Contract':
+	   case 'Ticket':
+         return array(1 => "plugin_headings_supportcontract");
          break;
       
 	}
@@ -407,15 +406,15 @@ function plugin_headings_actions_bestmanagement($item) {
 
 
 
-function plugin_headings_bestmanagement($item, $withtemplate=0) {
-	global $LANG, $CFG_GLPI;
+function plugin_headings_supportcontract($item, $withtemplate=0) {
+	global $CFG_GLPI;
 
 	if (!$withtemplate) {
 		echo "<div class='center'>";
 		switch (get_class($item)) {
          
  		   case "Profile" :
-            $prof = new PluginBestmanagementProfile();
+            $prof = new PluginSupportcontractProfile();
             $prof->updatePluginRights();
             $id = $item->getField("id");
             if (!$prof->getFromDB($id)) {
@@ -424,15 +423,15 @@ function plugin_headings_bestmanagement($item, $withtemplate=0) {
 
             $prof->showForm(
                     $id,
-                    array("target" => $CFG_GLPI["root_doc"]."/plugins/bestmanagement/front/profile.form.php"));
+                    array("target" => $CFG_GLPI["root_doc"]."/plugins/supportcontract/front/profile.form.php"));
             break;
 
 		   case 'Contract':
-            plugin_bestmanagement_fichecontrat($item->fields["id"]);
+            plugin_supportcontract_fichecontrat($item->fields["id"]);
             break;
 
 		   case 'Ticket':
-            $ticket = new PluginBestmanagementTicket($item->fields["id"]);
+            $ticket = new PluginSupportcontractTicket($item->fields["id"]);
             $ticket->formLinkContrat();
             $ticket->displayLinks();
             break;
@@ -444,13 +443,12 @@ function plugin_headings_bestmanagement($item, $withtemplate=0) {
 
 
 
-function plugin_bestmanagement_MassiveActions($type) {
-	global $LANG;
+function plugin_supportcontract_MassiveActions($type) {
 
 	switch ($type) {
       
       case TRACKING_TYPE :
-         return array("plugin_bestmanagement_generatePDF" => $LANG["bestmanagement"]["pdf"][0]);
+         return array("plugin_supportcontract_generatePDF" => __('Generate intervention rapport in PDF', 'supportcontract'));
          break;
       
 	}
@@ -459,16 +457,15 @@ function plugin_bestmanagement_MassiveActions($type) {
 
 
 
-function plugin_bestmanagement_MassiveActionsDisplay($options=array()) {
-	global $LANG;
+function plugin_supportcontract_MassiveActionsDisplay($options=array()) {
 	
 	switch ($options['itemtype']) {
       
 	   case TRACKING_TYPE :
          switch ($options['action']) {
          
-            case "plugin_bestmanagement_generatePDF" :
-               echo "&nbsp;<input type='submit' name='massiveaction' class='submit' value='".$LANG["buttons"][2]."'>";
+            case "plugin_supportcontract_generatePDF" :
+               echo "&nbsp;<input type='submit' name='massiveaction' class='submit' value='"._('Save')."'>";
                break;
          
          }
@@ -479,14 +476,14 @@ function plugin_bestmanagement_MassiveActionsDisplay($options=array()) {
 
 
 
-function plugin_bestmanagement_MassiveActionsProcess($data) {
-	global $LANG, $DB;
+function plugin_supportcontract_MassiveActionsProcess($data) {
+	global $DB;
 	
 	switch ($data['action']) {
       
-      case 'plugin_bestmanagement_generatePDF':
-	   case 'plugin_bestmanagement_generatePDF2':
-	   case 'plugin_bestmanagement_generatePDF3':
+      case 'plugin_supportcontract_generatePDF':
+	   case 'plugin_supportcontract_generatePDF2':
+	   case 'plugin_supportcontract_generatePDF3':
          if ($data['itemtype'] == TRACKING_TYPE) {
             $tabIDTickets = array_keys($data["item"]);
 
@@ -500,7 +497,7 @@ function plugin_bestmanagement_MassiveActionsProcess($data) {
             $trackID .= ")";
 
             $query =   "SELECT distinct ID_Contrat CtrID
-                     FROM glpi_plugin_bestmanagement_link_ticketcontrat
+                     FROM glpi_plugin_supportcontract_link_ticketcontrat
                      WHERE ID_Ticket IN " . $trackID;
 
             $nbcontrat=0;
@@ -513,10 +510,10 @@ function plugin_bestmanagement_MassiveActionsProcess($data) {
             }
 
             if ($nbcontrat <= 2)	{
-               $_SESSION["bestmanagement"]["TabID"] = $tabIDTickets;
-               echo "<script type='text/javascript'>location.href='../plugins/bestmanagement/front/export.massive.php'</script>";
+               $_SESSION["supportcontract"]["TabID"] = $tabIDTickets;
+               echo "<script type='text/javascript'>location.href='../plugins/supportcontract/front/export.massive.php'</script>";
             } else {
-               Session::addMessageAfterRedirect($LANG["bestmanagement"]["msg"][25], false, ERROR);
+               Session::addMessageAfterRedirect(__('A report can contain only tickets of same contract', 'supportcontract'), false, ERROR);
             }
          }
          break;

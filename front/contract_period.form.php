@@ -45,7 +45,7 @@ include (GLPI_ROOT . "/inc/includes.php");
 
 $Contract_Period = new PluginSupportcontractContract_Period();
 
-Html::header($LANG["supportcontract"]["title"][0],$_SERVER["PHP_SELF"], "plugins", 
+Html::header(__('Support contract', 'supportcontract'),$_SERVER["PHP_SELF"], "plugins", 
              "supportcontract", "reconduction");
 
 if (isset($_POST['reconduction_report'])) {

@@ -45,7 +45,7 @@ include (GLPI_ROOT . "/inc/includes.php");
 
 $psContract = new PluginSupportcontractContract();
 
-Html::header($LANG["supportcontract"]["title"][0],$_SERVER["PHP_SELF"], "plugins", 
+Html::header(__('Support contract', 'supportcontract'),$_SERVER["PHP_SELF"], "plugins", 
              "supportcontract", "contract");
 
 if (!isset($_GET['display'])) {

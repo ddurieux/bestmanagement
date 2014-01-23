@@ -2,40 +2,40 @@
 
 /*
    ------------------------------------------------------------------------
-   Best Management
-   Copyright (C) 2011-2013 by the Best Management Development Team.
+   Supportcontract
+   Copyright (C) 2014-2014 by the Supportcontract Development Team.
 
-   https://forge.indepnet.net/
+   https://github.com/ddurieux/bestmanagement   
    ------------------------------------------------------------------------
 
    LICENSE
 
-   This file is part of Best Management project.
+   This file is part of Supportcontract project.
 
-   Best Management is free software: you can redistribute it and/or modify
+   Supportcontract is free software: you can redistribute it and/or modify
    it under the terms of the GNU Affero General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
-   Best Management is distributed in the hope that it will be useful,
+   Supportcontract is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    GNU Affero General Public License for more details.
 
    You should have received a copy of the GNU Affero General Public License
-   along with Best Management. If not, see <http://www.gnu.org/licenses/>.
+   along with Supportcontract. If not, see <http://www.gnu.org/licenses/>.
 
    ------------------------------------------------------------------------
 
-   @package   Best Management
-   @author    David Durieux
-   @co-author 
-   @copyright Copyright (c) 2011-2013 Best Management team
+   @package   Supportcontract
+   @author    David Durieux, Nicolas Mercier
+   @co-author
+   @copyright Copyright (c) 2014-2014 Supportcontract team
    @license   AGPL License 3.0 or (at your option) any later version
               http://www.gnu.org/licenses/agpl-3.0-standalone.html
-   @link      https://forge.indepnet,net
-   @since     2013
- 
+   @link      https://github.com/ddurieux/bestmanagement
+   @since     2014
+
    ------------------------------------------------------------------------
  */
 
@@ -43,7 +43,7 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
-class PluginBestmanagementContract extends CommonDBTM {
+class PluginSupportcontractContract extends CommonDBTM {
    
    /**
    * Get name of this type
@@ -51,53 +51,50 @@ class PluginBestmanagementContract extends CommonDBTM {
    * @return text name of this type by language of the user connected
    *
    **/
-   static function getTypeName() {
-      global $LANG;
-
-      return $LANG['Menu'][25];
+   static function getTypeName($nb=0) {
+      return _n('Contract', 'Contracts', $nb);
    }
 
 
 
-   function canCreate() {
+   static function canCreate() {
       return true;
    }
 
 
-   function canView() {
+   static function canView() {
       return true;
    }
 
    
    
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
-      global $LANG;
 
       $itemtype = $item->getType();
       if ($itemtype == 'Contract') {
          if ($withtemplate == 0) {
-            return $LANG["bestmanagement"]["title"][0];
+            return __('Support contract', 'supportcontract');
          }
-      } else if ($itemtype == 'PluginBestmanagementContract') {
+      } else if ($itemtype == 'PluginSupportcontractContract') {
          if (countElementsInTable($this->getTable(), 
                                   "`id`='".$item->getID()."'") > 0) {
-            return array(10 => $LANG["bestmanagement"]["tabs"][1],
-                         11 => $LANG["bestmanagement"]["tabs"][2],
-                         12 => $LANG["bestmanagement"]["tabs"][3],
-                         13 => $LANG["bestmanagement"]["tabs"][4],
-                         14 => $LANG["bestmanagement"]["tabs"][5],
-                         15 => $LANG["bestmanagement"]["tabs"][6],
-                         16 => $LANG["bestmanagement"]["tabs"][7],
-                         17 => $LANG["bestmanagement"]["tabs"][8]);
+            return array(10 => __('Summary' ,'supportcontract'),
+                         11 => __('Purchase history' ,'supportcontract'),
+                         12 => __('Historical period' ,'supportcontract'),
+                         13 => __('Purchase' ,'supportcontract'),
+                         14 => __('Renewal' ,'supportcontract'),
+                         15 => __('Invoice' ,'supportcontract'),
+                         16 => __('Tickets' ,'supportcontract'),
+                         17 => __('Sub entities' ,'supportcontract'));
          } else if ($item->fields['id'] == -1) {
-            return array(10 => $LANG["bestmanagement"]["tabs"][1],
-                         11 => $LANG["bestmanagement"]["tabs"][2],
-                         12 => $LANG["bestmanagement"]["tabs"][3],
-                         13 => $LANG["bestmanagement"]["tabs"][4],
-                         14 => $LANG["bestmanagement"]["tabs"][5],
-                         15 => $LANG["bestmanagement"]["tabs"][6],
-                         16 => $LANG["bestmanagement"]["tabs"][7],
-                         17 => $LANG["bestmanagement"]["tabs"][8]);
+            return array(10 => __('Summary' ,'supportcontract'),
+                         11 => __('Purchase history' ,'supportcontract'),
+                         12 => __('Historical period' ,'supportcontract'),
+                         13 => __('Purchase' ,'supportcontract'),
+                         14 => __('Renewal' ,'supportcontract'),
+                         15 => __('Invoice' ,'supportcontract'),
+                         16 => __('Tickets' ,'supportcontract'),
+                         17 => __('Sub entities' ,'supportcontract'));
          }
       }
       return '';
@@ -107,38 +104,38 @@ class PluginBestmanagementContract extends CommonDBTM {
    
    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
       
-      $pbContract = new self();
+      $psContract = new self();
       if ($item->getID() > 0) {
          $itemtype = $item->getType();
          if ($itemtype == 'Contract') {
-           $pbContract->showGeneralForm($item->getID());
+           $psContract->showGeneralForm($item->getID());
          } else {
             switch ($tabnum) {
                
                case 10:
-                  $pbContract->showSummary();
+                  $psContract->showSummary();
                   break;
                
                case 11:
-                  $pbPurchase = new PluginBestmanagementPurchase();                  
-                  $pbPurchase->showHistory($item->fields['contracts_id'], $item->fields);
+                  $psPurchase = new PluginSupportcontractPurchase();                  
+                  $psPurchase->showHistory($item->fields['contracts_id'], $item->fields);
                   break;
                
                case 12:
-                  $pbPurchase = new PluginBestmanagementPurchase();                  
-                  $pbPurchase->showHistoryByPeriod($item->fields['contracts_id'], $item->fields);
+                  $psPurchase = new PluginSupportcontractPurchase();                  
+                  $psPurchase->showHistoryByPeriod($item->fields['contracts_id'], $item->fields);
                   break;
                
                case 13:
-                  $pbPurchase = new PluginBestmanagementPurchase();
-                  $pbPurchase->showform($item);
+                  $psPurchase = new PluginSupportcontractPurchase();
+                  $psPurchase->showform($item);
                   break;
                
                case 14:
                   // reconduction
-                  $pbReconduction = new PluginBestmanagementContract_Period();
-                  $pbReconduction->showList($item);
-                  $pbReconduction->showForm($item);
+                  $psReconduction = new PluginSupportcontractContract_Period();
+                  $psReconduction->showList($item);
+                  $psReconduction->showForm($item);
                   break;
                
                case 15:
@@ -146,8 +143,8 @@ class PluginBestmanagementContract extends CommonDBTM {
                   break;
                
                case 16:
-                  $pbTicket_Contract = new PluginBestmanagementTicket_Contract();
-                  $pbTicket_Contract->showTickets($item->fields['contracts_id']);
+                  $psTicket_Contract = new PluginSupportcontractTicket_Contract();
+                  $psTicket_Contract->showTickets($item->fields['contracts_id']);
                   break;
                
                case 17:
@@ -164,17 +161,16 @@ class PluginBestmanagementContract extends CommonDBTM {
 
    
    function defineTabs($options=array()) {
-      global $LANG, $CFG_GLPI;
 
       $ong = array();
-      $this->addStandardTab('PluginBestmanagementContract', $ong, $options); // All devices : use one to define tab
+      $this->addStandardTab('PluginSupportcontractContract', $ong, $options);
       return $ong;
    }
 
    
    
    function showGeneralForm($contracts_id) {
-      global $LANG, $CFG_GLPI;
+      global $CFG_GLPI;
      
       $a_contracts = $this->find("`contracts_id`='".$contracts_id."'", "", 1);
       if (count($a_contracts) == 1) {
@@ -186,14 +182,7 @@ class PluginBestmanagementContract extends CommonDBTM {
       }
       
       $options = array();
-      /*
-       * showTabs function of core modified
-       */
       $this->showTabs();
-      /*
-       * End showTabs function of core modified
-       */      
-      
          
       echo "<div id='tabcontent2'>&nbsp;</div>";
       echo "<script type='text/javascript'>loadDefaultTab();</script>";
@@ -203,7 +192,7 @@ class PluginBestmanagementContract extends CommonDBTM {
    
    
    function showForm($items_id, $options=array()) {
-      global $LANG, $CFG_GLPI;
+      global $CFG_GLPI;
 
       if ($items_id > 0) {
          $this->getFromDB($items_id);
@@ -214,18 +203,18 @@ class PluginBestmanagementContract extends CommonDBTM {
       $this->showFormHeader($options);
 
       echo "<tr class='tab_bg_1'>";
-      echo "<td>".$LANG["bestmanagement"]["sort"][9]."&nbsp;:</td>";
+      echo "<td>".__('Unit', 'supportcontract')."&nbsp;:</td>";
       echo "<td>";
       $a_input = array(
           ''          => Dropdown::EMPTY_VALUE,
-          'hour'      => $LANG["bestmanagement"]["sort"][6],
-          'nbtickets' => $LANG["bestmanagement"]["sort"][7],
-          'nbhalfday' => $LANG["bestmanagement"]["sort"][8],
+          'hour'      => __('Hours number', 'supportcontract'),
+          'nbtickets' => __('Tickets number', 'supportcontract'),
+          'nbhalfday' => __('Half days number', 'supportcontract'),
       );
       $rand = Dropdown::showFromArray('unit_type', $a_input);
       echo '<input type="hidden" name="contracts_id" value="'.$_POST['id'].'" />';
       echo "</td>";
-      echo "<td>".$LANG["bestmanagement"]["sort"][10]."&nbsp;:</td>";
+      echo "<td>".__('Defined on', 'supportcontract')."&nbsp;:</td>";
       echo "<td align='center'>";
       
       $params=array('unit_type'=>'__VALUE__',
@@ -236,7 +225,7 @@ class PluginBestmanagementContract extends CommonDBTM {
       Ajax::updateItemOnEvent(
               'dropdown_unit_type'.$rand,
               'show_value',
-              $CFG_GLPI["root_doc"]."/plugins/bestmanagement/ajax/dropdowndefinition.php",
+              $CFG_GLPI["root_doc"]."/plugins/supportcontract/ajax/dropdowndefinition.php",
               $params);
       echo "<div id='show_value'></div>";
 
@@ -251,9 +240,8 @@ class PluginBestmanagementContract extends CommonDBTM {
    
    
    function showSummary($id=0) {
-      global $LANG;
 
-      $pbContract_Period = new PluginBestmanagementContract_Period();
+      $psContract_Period = new PluginSupportcontractContract_Period();
       
       if ($id > 0) {
          $this->getFromDB($id);
@@ -264,7 +252,7 @@ class PluginBestmanagementContract extends CommonDBTM {
       $contract = new Contract();
       $contract->getFromDB($this->fields['contracts_id']);
 
-      $a_period = $pbContract_Period->getCurrentPeriod($this->fields['contracts_id']);
+      $a_period = $psContract_Period->getCurrentPeriod($this->fields['contracts_id']);
       
       echo "<table class='tab_cadre_fixe'>";
       echo "<tr class='tab_bg_1'>";
@@ -275,16 +263,16 @@ class PluginBestmanagementContract extends CommonDBTM {
       } else {
          echo "<th colspan='5'>";
       }
-      echo $LANG["bestmanagement"]["tabrecap"][0]." - ".
-              PluginBestmanagementContract::getUnit_typeNameForContract($this->fields['contracts_id'])."</th>";
+      echo __('Dashboard', 'supportcontract')." - ".
+              PluginSupportcontractContract::getUnit_typeNameForContract($this->fields['contracts_id'])."</th>";
       echo "</tr>";
       
       if ($id > 0) {
          echo "<tr class='tab_bg_1'>";
          echo "<th>";
-         echo ucfirst($LANG['pager'][6])." ";
+         echo __('From')." ";
          echo Html::convDate($contract->fields['begin_date']);
-         echo " ".$LANG['pager'][7]." ";
+         echo " ".__('To')." ";
          echo Html::convDate(Infocom::getWarrantyExpir($contract->fields["begin_date"],
                                                        $contract->fields["duration"],
                                                        $contract->fields["notice"]));
@@ -299,25 +287,25 @@ class PluginBestmanagementContract extends CommonDBTM {
       } else if ($this->fields['definition'] == "ItilCategory") {
          echo ItilCategory::getTypeName();
       } else if ($this->fields['definition'] == "priority") {
-         echo $LANG['joblist'][2];
+         echo __('Priority');
       }
       echo "</th>";
       if ($this->fields['illimite'] == 1) {
          echo "<th colspan='4'>";
-         echo $LANG['bestmanagement']['tabrecap'][15];
+         echo __('Used units', 'supportcontract');
          echo "</th>";
       } else {
          echo "<th>";
-         echo $LANG['bestmanagement']['tabrecap'][16];
+         echo __('Purchassed units', 'supportcontract');
          echo "</th>";
          echo "<th>";
-         echo $LANG['bestmanagement']['tabrecap'][17];
+         echo __('Reported units', 'supportcontract');
          echo "</th>";
          echo "<th>";
-         echo $LANG['bestmanagement']['tabrecap'][15];
+         echo __('Used units', 'supportcontract');
          echo "</th>";
          echo "<th>";
-         echo $LANG['bestmanagement']['tabrecap'][18];
+         echo __('Remaining units', 'supportcontract');
          echo "</th>";
       }
       echo "</tr>";
@@ -380,24 +368,24 @@ class PluginBestmanagementContract extends CommonDBTM {
       
       $a_elements = array();
       
-      $pbPurchase = new PluginBestmanagementPurchase();
+      $psPurchase = new PluginSupportcontractPurchase();
 
-      $cnt = countElementsInTable("glpi_plugin_bestmanagement_purchases", 
+      $cnt = countElementsInTable("glpi_plugin_supportcontract_purchases", 
                                   "`contracts_id`='".$this->fields['contracts_id']."'
                                     AND `definitions_id`='".$id."'
-                                    AND `plugin_bestmanagement_contracts_periods_id`='".$a_period['id']."' ");
+                                    AND `plugin_supportcontract_contracts_periods_id`='".$a_period['id']."' ");
 
       $nb_units_used = 0;
       if ($this->fields['unit_type'] == "hour") {
          $query = "SELECT SUM(`glpi_tickettasks`.`actiontime`) as cnt 
                FROM `glpi_tickettasks`
             LEFT JOIN `glpi_tickets` ON `glpi_tickets`.`id` = `glpi_tickettasks`.`tickets_id`
-            LEFT JOIN `glpi_plugin_bestmanagement_tickets_contracts`
-               ON `glpi_tickets`.`id`=`glpi_plugin_bestmanagement_tickets_contracts`.`tickets_id`
+            LEFT JOIN `glpi_plugin_supportcontract_tickets_contracts`
+               ON `glpi_tickets`.`id`=`glpi_plugin_supportcontract_tickets_contracts`.`tickets_id`
             LEFT JOIN `glpi_contracts` ON `contracts_id` = `glpi_contracts`.`id` 
             WHERE `glpi_contracts`.`id`='".$this->fields['contracts_id']."' 
                AND `invoice_state`='1'
-               AND `plugin_bestmanagement_contracts_periods_id`='".$a_period['id']."' ";
+               AND `plugin_supportcontract_contracts_periods_id`='".$a_period['id']."' ";
          if ($type == "priority") {
             $query .=  "AND `glpi_tickets`.`priority`='".$id."'";
          } else if ($type == "TaskCategory") {
@@ -410,12 +398,12 @@ class PluginBestmanagementContract extends CommonDBTM {
          }
       } else {
          $query = "SELECT SUM(`unit_number`) as cnt 
-               FROM `glpi_plugin_bestmanagement_tickets_contracts`
+               FROM `glpi_plugin_supportcontract_tickets_contracts`
             LEFT JOIN `glpi_tickets` 
-               ON `glpi_tickets`.`id` = `glpi_plugin_bestmanagement_tickets_contracts`.`tickets_id` 
+               ON `glpi_tickets`.`id` = `glpi_plugin_supportcontract_tickets_contracts`.`tickets_id` 
             WHERE `contracts_id`='".$this->fields['contracts_id']."'  
                AND `invoice_state`='1' 
-               AND `plugin_bestmanagement_contracts_periods_id`='".$a_period['id']."' ";
+               AND `plugin_supportcontract_contracts_periods_id`='".$a_period['id']."' ";
          if ($type == "priority") {
             $query .=  "AND `glpi_tickets`.`priority`='".$id."'";
          } else if ($type == "ItilCategory") {
@@ -430,9 +418,9 @@ class PluginBestmanagementContract extends CommonDBTM {
       if ($cnt > 0
               || $nb_units_used > 0) {
 
-         $a_purchases = $pbPurchase->find("`contracts_id`='".$this->fields['contracts_id']."'
+         $a_purchases = $psPurchase->find("`contracts_id`='".$this->fields['contracts_id']."'
                                           AND `definitions_id`='".$id."'
-                                          AND `plugin_bestmanagement_contracts_periods_id`='".$a_period['id']."'");
+                                          AND `plugin_supportcontract_contracts_periods_id`='".$a_period['id']."'");
          $total_unit_bought = 0;
          foreach ($a_purchases as $a_purchase) {
             $total_unit_bought += $a_purchase['unit'];
@@ -475,10 +463,9 @@ class PluginBestmanagementContract extends CommonDBTM {
       return $a_elements;
    }
    
-   
+
    
    function showSummaryPDF(PluginPdfSimplePDF $pdf, CommonGLPI $item) {
-      global $LANG;
 
       $this->getFromDB($_POST['id']);
 
@@ -486,8 +473,8 @@ class PluginBestmanagementContract extends CommonDBTM {
       $this->getFromDB($a_contracts['id']);
  
       $pdf->setColumnsSize(100);
-      $pdf->displayTitle($LANG["bestmanagement"]["tabrecap"][0]." - ".
-              PluginBestmanagementContract::getUnit_typeNameForContract($this->fields['contracts_id']));
+      $pdf->displayTitle(__('Dashboard', 'supportcontract')." - ".
+              PluginSupportcontractContract::getUnit_typeNameForContract($this->fields['contracts_id']));
       
       $pdf->setColumnsSize(20, 20, 20, 20, 20);
       $col = array();
@@ -496,14 +483,14 @@ class PluginBestmanagementContract extends CommonDBTM {
       } else if ($this->fields['definition'] == "ItilCategory") {
          $col = ItilCategory::getTypeName();
       } else if ($this->fields['definition'] == "priority") {
-         $col = $LANG['joblist'][2];
+         $col = __('Priority');
       }
       
       $pdf->displayTitle($col, 
-                         $LANG['bestmanagement']['tabrecap'][16],
-                         $LANG['bestmanagement']['tabrecap'][17],
-                         $LANG['bestmanagement']['tabrecap'][15],
-                         $LANG['bestmanagement']['tabrecap'][18]);
+                         __('Purchassed units', 'supportcontract'),
+                         __('Reported units', 'supportcontract'),
+                         __('Used units', 'supportcontract'),
+                         __('Remaining units', 'supportcontract'));
       
       $a_elements = array();
       $a_entities = getSonsOf('glpi_entities', $contract->fields['entities_id']);
@@ -551,7 +538,7 @@ class PluginBestmanagementContract extends CommonDBTM {
     * showTabs function of core modified
     */
    function showTabs($options = array()) {
-      global $LANG, $CFG_GLPI;
+      global $CFG_GLPI;
 
       // for objects not in table like central
       if (isset($this->fields['id'])) {
@@ -586,107 +573,9 @@ class PluginBestmanagementContract extends CommonDBTM {
             $glpilisturl = $this->getSearchURL();
          }
 
-/* Modification for plugin Best Management
-         echo "<div id='menu_navigate'>";
-
-         $next = $prev = $first = $last = -1;
-         $current = false;
-         if (is_array($glpilistitems)) {
-            $current = array_search($ID,$glpilistitems);
-            if ($current !== false) {
-
-               if (isset($glpilistitems[$current+1])) {
-                  $next = $glpilistitems[$current+1];
-               }
-
-               if (isset($glpilistitems[$current-1])) {
-                  $prev = $glpilistitems[$current-1];
-               }
-
-               $first = $glpilistitems[0];
-               if ($first == $ID) {
-                  $first = -1;
-               }
-
-               $last = $glpilistitems[count($glpilistitems)-1];
-               if ($last == $ID) {
-                  $last = -1;
-               }
-
-            }
-         }
-         $cleantarget = HTML::cleanParametersURL($target);
-         echo "<ul>";
-         echo "<li><a href=\"javascript:showHideDiv('tabsbody','tabsbodyimg','".$CFG_GLPI["root_doc"].
-                    "/pics/deplier_down.png','".$CFG_GLPI["root_doc"]."/pics/deplier_up.png')\">";
-         echo "<img alt='' name='tabsbodyimg' src=\"".$CFG_GLPI["root_doc"]."/pics/deplier_up.png\">";
-         echo "</a></li>";
-
-         echo "<li><a href=\"".$glpilisturl."\">";
-
-         if ($glpilisttitle) {
-            if (Toolbox::strlen($glpilisttitle) > $_SESSION['glpidropdown_chars_limit']) {
-               $glpilisttitle = Toolbox::substr($glpilisttitle, 0,
-                                                $_SESSION['glpidropdown_chars_limit'])
-                                . "&hellip;";
-            }
-            echo $glpilisttitle;
-
-         } else {
-            echo $LANG['common'][53];
-         }
-         echo "</a>&nbsp;:&nbsp;</li>";
-
-         if ($first > 0) {
-            echo "<li><a href='$cleantarget?id=$first$extraparamhtml'><img src='".
-                       $CFG_GLPI["root_doc"]."/pics/first.png' alt=\"".$LANG['buttons'][55].
-                       "\" title=\"".$LANG['buttons'][55]."\"></a></li>";
-         } else {
-            echo "<li><img src='".$CFG_GLPI["root_doc"]."/pics/first_off.png' alt=\"".
-                       $LANG['buttons'][55]."\" title=\"".$LANG['buttons'][55]."\"></li>";
-         }
-
-         if ($prev > 0) {
-            echo "<li><a href='$cleantarget?id=$prev$extraparamhtml'><img src='".
-                       $CFG_GLPI["root_doc"]."/pics/left.png' alt=\"".$LANG['buttons'][12].
-                       "\" title=\"".$LANG['buttons'][12]."\"></a></li>";
-         } else {
-            echo "<li><img src='".$CFG_GLPI["root_doc"]."/pics/left_off.png' alt=\"".
-                       $LANG['buttons'][12]."\" title=\"".$LANG['buttons'][12]."\"></li>";
-         }
-
-         if ($current !== false) {
-            echo "<li>".($current+1) . "/" . count($glpilistitems)."</li>";
-         }
-
-         if ($next > 0) {
-            echo "<li><a href='$cleantarget?id=$next$extraparamhtml'><img src='".
-                       $CFG_GLPI["root_doc"]."/pics/right.png' alt=\"".$LANG['buttons'][11].
-                       "\" title=\"".$LANG['buttons'][11]."\"></a></li>";
-         } else {
-            echo "<li><img src='".$CFG_GLPI["root_doc"]."/pics/right_off.png' alt=\"".
-                       $LANG['buttons'][11]."\" title=\"".$LANG['buttons'][11]."\"></li>";
-         }
-
-         if ($last > 0) {
-            echo "<li><a href='$cleantarget?id=$last$extraparamhtml'><img src=\"".
-                       $CFG_GLPI["root_doc"]."/pics/last.png\" alt=\"".$LANG['buttons'][56].
-                       "\" title=\"".$LANG['buttons'][56]."\"></a></li>";
-         } else {
-            echo "<li><img src='".$CFG_GLPI["root_doc"]."/pics/last_off.png' alt=\"".
-                       $LANG['buttons'][56]."\" title=\"".$LANG['buttons'][56]."\"></li>";
-         }
-         echo "</ul></div>";
-*/
-// End of modification         
-
          echo "<div class='sep'></div>";
       }
-/* Modification for plugin Best Management
-      echo "<div id='tabspanel' class='center-h'></div>";
-*/
       echo "<div id='tabspanel2' class='center-h'></div>";
-// End of modification         
 
       $active      = 0;
       $onglets = $this->defineAllTabs($options);
@@ -704,7 +593,7 @@ class PluginBestmanagementContract extends CommonDBTM {
               || in_array($class, $CFG_GLPI["infocom_types"])
               || in_array($class, $CFG_GLPI["reservation_types"]))) {
 
-            $onglets[-2] = $LANG['setup'][137];
+            $onglets[-2] = __('Debug');
       }
 
       if (count($onglets)) {
@@ -724,17 +613,13 @@ class PluginBestmanagementContract extends CommonDBTM {
 
          // Not all tab for templates and if only 1 tab
          if ($display_all && empty($withtemplate) && count($tabs)>1) {
-            $tabs[-1] = array('title'  => $LANG['common'][66],
+            $tabs[-1] = array('title'  => __('All'),
                               'url'    => $tabpage,
                               'params' => "target=$target&itemtype=".$this->getType().
                                           "&glpi_tab=-1&id=$ID$extraparam");
          }
 
-/* Modification for plugin Best Management
-         Ajax::createTabs('tabspanel', 'tabcontent', $tabs, $this->getType());
-*/
          Ajax::createTabs('tabspanel2', 'tabcontent2', $tabs, $this->getType());
-// End of modification         
       }
    }
 
@@ -742,8 +627,8 @@ class PluginBestmanagementContract extends CommonDBTM {
    
    static function getDefinitionForContract($contracts_id) {
       
-      $pbContract = new self();
-      $a_contracts = $pbContract->find("`contracts_id`='".$contracts_id."'", "", 1);
+      $psContract = new self();
+      $a_contracts = $psContract->find("`contracts_id`='".$contracts_id."'", "", 1);
       if (count($a_contracts) == 1) {
          $a_contract = current($a_contracts);
          return $a_contract['definition'];
@@ -755,8 +640,8 @@ class PluginBestmanagementContract extends CommonDBTM {
    
    static function getUnit_typeForContract($contracts_id) {
       
-      $pbContract = new self();
-      $a_contracts = $pbContract->find("`contracts_id`='".$contracts_id."'", "", 1);
+      $psContract = new self();
+      $a_contracts = $psContract->find("`contracts_id`='".$contracts_id."'", "", 1);
       if (count($a_contracts) == 1) {
          $a_contract = current($a_contracts);
          return $a_contract['unit_type'];
@@ -767,18 +652,17 @@ class PluginBestmanagementContract extends CommonDBTM {
    
    
    static function getUnit_typeNameForContract($contracts_id) {
-      global $LANG;
       
-      $pbContract = new self();
-      $a_contracts = $pbContract->find("`contracts_id`='".$contracts_id."'", "", 1);
+      $psContract = new self();
+      $a_contracts = $psContract->find("`contracts_id`='".$contracts_id."'", "", 1);
       if (count($a_contracts) == 1) {
          $a_contract = current($a_contracts);
          if ($a_contract['unit_type'] == 'hour') {
-            return $LANG["bestmanagement"]["sort"][6];
+            return __('Hours number', 'supportcontract');
          } else if ($a_contract['unit_type'] == 'nbtickets') {
-            return $LANG["bestmanagement"]["sort"][7];
+            return __('Ticket number', 'supportcontract');
          } else if ($a_contract['unit_type'] == 'nbhalfday') {
-            return $LANG["bestmanagement"]["sort"][8];
+            return __('Half days number', 'supportcontract');
          }
       }
       return '';
@@ -789,7 +673,7 @@ class PluginBestmanagementContract extends CommonDBTM {
    function displayUnits($unit, $display=1) {
       $val = '';
       if ($this->fields['unit_type'] == "hour") {
-         $val =  PluginBestmanagementToolbox::displayHours($unit);
+         $val =  PluginSupportcontractToolbox::displayHours($unit);
       } else {
          $val =  $unit;
       }
@@ -803,33 +687,33 @@ class PluginBestmanagementContract extends CommonDBTM {
    
    
    function displayMenu() {
-      global $LANG, $CFG_GLPI;
+      global $CFG_GLPI;
       
       echo "<table class='tab_cadre_fixe'>";
       echo "<tr class='tab_bg_1'>";
       echo "<th>";
       if ($_GET['display'] != 'summary') {
-         echo "<a href='".$CFG_GLPI['root_doc']."/plugins/bestmanagement/front/contract.php?display=summary'>";
+         echo "<a href='".$CFG_GLPI['root_doc']."/plugins/supportcontract/front/contract.php?display=summary'>";
       }
-      echo $LANG["bestmanagement"]["tabs_global"][1];
+      echo __('Contracts summary', 'supportcontract');
       if ($_GET['display'] != 'summary') {
          echo "</a>";
       }
       echo "</th>";
       echo "<th>";
       if ($_GET['display'] != 'unaffectedtickets') {
-         echo "<a href='".$CFG_GLPI['root_doc']."/plugins/bestmanagement/front/contract.php?display=unaffectedtickets'>";
+         echo "<a href='".$CFG_GLPI['root_doc']."/plugins/supportcontract/front/contract.php?display=unaffectedtickets'>";
       }
-      echo $LANG["bestmanagement"]["tabs_global"][2];
+      echo __('Tickets to affect', 'supportcontract');
       if ($_GET['display'] != 'unaffectedtickets') {
          echo "</a>";
       }
       echo "</th>";
       echo "<th>";
-      echo "<a href=''>".$LANG["bestmanagement"]["tabs_global"][3]."</a>";
+      echo "<a href=''>".__('Tickets for invoices', 'supportcontract')."</a>";
       echo "</th>";
       echo "<th>";
-      echo "<a href=''>".$LANG["bestmanagement"]["tabs_global"][4]."</a>";
+      echo "<a href=''>".__('Contracts for invoices', 'supportcontract')."</a>";
       echo "</th>";
       echo "</tr>";
       echo "</table>";  
@@ -858,12 +742,12 @@ class PluginBestmanagementContract extends CommonDBTM {
    
    static function purgeContract($item) {
       
-      $pbContract = new self();
+      $psContract = new self();
       
-      $a_contracts = getAllDatasFromTable($pbContract->getTable(), 
+      $a_contracts = getAllDatasFromTable($psContract->getTable(), 
                                 "`contracts_id`='".$item->getID()."'");
       foreach ($a_contracts as $data) {
-         $pbContract->delete($data, 1);
+         $psContract->delete($data, 1);
       }
    }
    
@@ -872,17 +756,17 @@ class PluginBestmanagementContract extends CommonDBTM {
    function post_addItem() {
       global $DB;
 
-      $Contract_Period = new PluginBestmanagementContract_Period();
+      $Contract_Period = new PluginSupportcontractContract_Period();
 
-      $input = array();
-      $input['contracts_id'] = $_POST['contracts_id'];
-      $input['begin'] = date('Y-m-d');
-      $input['date_save'] = date('Y-m-d');
-      $input['report_credit'] = 0;
+      $input = array(
+          'contracts_id'  => $_POST['contracts_id'],
+          'begin'         => date('Y-m-d'),
+          'date_save'     => date('Y-m-d'),
+          'report_credit' => 0
+      );
       $Contract_Period->add($input);
 
    }
-
 }
 
 ?>

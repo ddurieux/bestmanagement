@@ -2,40 +2,40 @@
 
 /*
    ------------------------------------------------------------------------
-   Best Management
-   Copyright (C) 2011-2013 by the Best Management Development Team.
+   Supportcontract
+   Copyright (C) 2014-2014 by the Supportcontract Development Team.
 
-   https://forge.indepnet.net/
+   https://github.com/ddurieux/bestmanagement   
    ------------------------------------------------------------------------
 
    LICENSE
 
-   This file is part of Best Management project.
+   This file is part of Supportcontract project.
 
-   Best Management is free software: you can redistribute it and/or modify
+   Supportcontract is free software: you can redistribute it and/or modify
    it under the terms of the GNU Affero General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
-   Best Management is distributed in the hope that it will be useful,
+   Supportcontract is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    GNU Affero General Public License for more details.
 
    You should have received a copy of the GNU Affero General Public License
-   along with Best Management. If not, see <http://www.gnu.org/licenses/>.
+   along with Supportcontract. If not, see <http://www.gnu.org/licenses/>.
 
    ------------------------------------------------------------------------
 
-   @package   Best Management
-   @author    David Durieux
-   @co-author 
-   @copyright Copyright (c) 2011-2013 Best Management team
+   @package   Supportcontract
+   @author    David Durieux, Nicolas Mercier
+   @co-author
+   @copyright Copyright (c) 2014-2014 Supportcontract team
    @license   AGPL License 3.0 or (at your option) any later version
               http://www.gnu.org/licenses/agpl-3.0-standalone.html
-   @link      https://forge.indepnet,net
-   @since     2013
- 
+   @link      https://github.com/ddurieux/bestmanagement
+   @since     2014
+
    ------------------------------------------------------------------------
  */
 
@@ -43,7 +43,7 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
-class PluginBestmanagementEntity extends CommonDBTM {
+class PluginSupportcontractEntity extends CommonDBTM {
    
    /**
    * Get name of this type
@@ -51,31 +51,28 @@ class PluginBestmanagementEntity extends CommonDBTM {
    * @return text name of this type by language of the user connected
    *
    **/
-   static function getTypeName() {
-      global $LANG;
-
-      return '';
+   static function getTypeName($nb=0) {
+      return _n('Entity', 'Entities', $nb);
    }
 
 
 
-   function canCreate() {
+   static function canCreate() {
       return true;
    }
 
 
-   function canView() {
+   static function canView() {
       return true;
    }
 
    
    
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
-      global $LANG;
       
       $itemtype = $item->getType();
       if ($itemtype == 'Entity') {
-         return $LANG["bestmanagement"]["title"][0];
+         return __('Support contract', 'supportcontract');
       }
       return '';
    }
@@ -84,9 +81,9 @@ class PluginBestmanagementEntity extends CommonDBTM {
    
    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
       
-      $pbProfile = new self();
+      $psProfile = new self();
       if ($item->getID() > 0) {
-         $pbProfile->showForm($item->getID());
+         $psProfile->showForm($item->getID());
       }
 
       return true;
@@ -95,7 +92,6 @@ class PluginBestmanagementEntity extends CommonDBTM {
    
 
    function showForm($entities_id, $options=array()) {
-      global $LANG;
 
       $a_entities = $this->find("`entities_id`='".$entities_id."'", "", 1);
       $id = 0;
@@ -129,21 +125,20 @@ class PluginBestmanagementEntity extends CommonDBTM {
       $inpupt_YesNo = array();
       
       if ($entities_id != '0') {
-         $inpupt_YesNo['-1'] = $LANG['common'][102];
+         $inpupt_YesNo['-1'] = __('Inheritance of the parent entity');
       }
-      $inpupt_YesNo[0] = $LANG['choice'][0];
-      $inpupt_YesNo[1] = $LANG['choice'][1];
-      
+      $inpupt_YesNo[0] = __('No');
+      $inpupt_YesNo[1] = __('Yes');
       
       echo "<tr class='tab_bg_1'>";
       echo "<td>";
-      echo $LANG["bestmanagement"]["propriete_pdf"][0]."&nbsp;:";
+      echo __('En-tête', 'supportcontract')."&nbsp;:";
       echo "</td>";
       echo "<td>";
       Dropdown::showFromArray('entete', $inpupt_YesNo, array('value'=>$this->fields['entete']));
       echo "</td>";
       echo "<td>";
-      echo $LANG["bestmanagement"]["propriete_pdf"][1]."&nbsp;:";
+      echo __('Logo', 'supportcontract')."&nbsp;:";
       echo "</td>";
       echo "<td>";
       echo "<input type='file' />";
@@ -153,7 +148,7 @@ class PluginBestmanagementEntity extends CommonDBTM {
       echo "<tr class='tab_bg_1'>";
       if ($this->fields['entete'] == '-1') {
             echo "<td colspan='2' class='green center'>";
-            echo $LANG['common'][102]."&nbsp;:&nbsp;";
+            echo __('Inheritance of the parent entity')."&nbsp;:&nbsp;";
             echo Dropdown::getYesNo($this->getValueAncestor("entete", $entities_id));
             echo "</td>";
          } else {
@@ -170,13 +165,13 @@ class PluginBestmanagementEntity extends CommonDBTM {
 
       echo "<tr class='tab_bg_1'>";
       echo "<td>";
-      echo $LANG["bestmanagement"]["propriete_pdf"][3]."&nbsp;:";
+      echo __('Title', 'supportcontract')."&nbsp;:";
       echo "</td>";
       echo "<td>";
       
       echo "</td>";
       echo "<td>";
-      echo $LANG["bestmanagement"]["propriete_pdf"][4]."&nbsp;:";
+      echo __('Author', 'supportcontract')."&nbsp;:";
       echo "</td>";
       echo "<td>";
 
@@ -268,7 +263,6 @@ class PluginBestmanagementEntity extends CommonDBTM {
          }
       }
    }
-
 }
 
 ?>

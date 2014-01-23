@@ -45,7 +45,7 @@ include (GLPI_ROOT . "/inc/includes.php");
 
 $psPurchase = new PluginSupportcontractPurchase();
 
-Html::header($LANG["supportcontract"]["title"][0],$_SERVER["PHP_SELF"], "plugins", 
+Html::header(__('Support contract', 'supportcontract'), $_SERVER["PHP_SELF"], "plugins", 
              "supportcontract", "purchase");
 
 if (isset ($_POST["add"])) {

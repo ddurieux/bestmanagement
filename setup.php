@@ -146,14 +146,13 @@ function plugin_supportcontract_check_prerequisites()
 
 
 function plugin_supportcontract_check_config($verbose=false) {
-	global $LANG;
 
 	if (true) {
 		return true;
    }
    
 	if ($verbose) {
-		echo $LANG["plugins"][2];
+		echo __('Installed / not configured');
    }
 	return false;
 }

@@ -2,40 +2,40 @@
 
 /*
    ------------------------------------------------------------------------
-   Best Management
-   Copyright (C) 2011-2013 by the Best Management Development Team.
+   Supportcontract
+   Copyright (C) 2014-2014 by the Supportcontract Development Team.
 
-   https://forge.indepnet.net/
+   https://github.com/ddurieux/bestmanagement   
    ------------------------------------------------------------------------
 
    LICENSE
 
-   This file is part of Best Management project.
+   This file is part of Supportcontract project.
 
-   Best Management is free software: you can redistribute it and/or modify
+   Supportcontract is free software: you can redistribute it and/or modify
    it under the terms of the GNU Affero General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
-   Best Management is distributed in the hope that it will be useful,
+   Supportcontract is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
    GNU Affero General Public License for more details.
 
    You should have received a copy of the GNU Affero General Public License
-   along with Best Management. If not, see <http://www.gnu.org/licenses/>.
+   along with Supportcontract. If not, see <http://www.gnu.org/licenses/>.
 
    ------------------------------------------------------------------------
 
-   @package   Best Management
-   @author    David Durieux
-   @co-author 
-   @copyright Copyright (c) 2011-2013 Best Management team
+   @package   Supportcontract
+   @author    David Durieux, Nicolas Mercier
+   @co-author
+   @copyright Copyright (c) 2014-2014 Supportcontract team
    @license   AGPL License 3.0 or (at your option) any later version
               http://www.gnu.org/licenses/agpl-3.0-standalone.html
-   @link      https://forge.indepnet,net
-   @since     2013
- 
+   @link      https://github.com/ddurieux/bestmanagement
+   @since     2014
+
    ------------------------------------------------------------------------
  */
 
@@ -43,7 +43,7 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
-class PluginBestmanagementPurchase extends CommonDBTM {
+class PluginSupportcontractPurchase extends CommonDBTM {
    
    /**
    * Get name of this type
@@ -51,27 +51,25 @@ class PluginBestmanagementPurchase extends CommonDBTM {
    * @return text name of this type by language of the user connected
    *
    **/
-   static function getTypeName() {
-      global $LANG;
-
-      return $LANG['bestmanagement']['achat'][9];
+   static function getTypeName($nb=0) {
+      return __('Purchase', 'supportcontract');
    }
 
 
 
-   function canCreate() {
+   static function canCreate() {
       return true;
    }
 
+   
 
-   function canView() {
+   static function canView() {
       return true;
    }
 
    
    
-   function showForm(PluginBestmanagementContract $pbContract) {
-      global $LANG;
+   function showForm(PluginSupportcontractContract $psContract) {
       
       $this->check(-1,'w');
       $options = array();
@@ -80,25 +78,25 @@ class PluginBestmanagementPurchase extends CommonDBTM {
       
       echo "<tr class='tab_bg_1'>";
       echo "<td>";
-      if ($pbContract->fields['definition'] == "TaskCategory") {
+      if ($psContract->fields['definition'] == "TaskCategory") {
          echo TaskCategory::getTypeName()."&nbsp;:";
-      } else if ($pbContract->fields['definition'] == "ItilCategory") {
+      } else if ($psContract->fields['definition'] == "ItilCategory") {
          echo ItilCategory::getTypeName()."&nbsp;:";
-      } else if ($pbContract->fields['definition'] == "priority") {
-         echo $LANG['joblist'][2]."&nbsp;:";
+      } else if ($psContract->fields['definition'] == "priority") {
+         echo __('Priority')."&nbsp;:";
       }
       echo "</td>";
       echo "<td>";
-      if ($pbContract->fields['definition'] == "TaskCategory") {
+      if ($psContract->fields['definition'] == "TaskCategory") {
          Dropdown::show('TaskCategory', array('name' => 'definitions_id'));
-      } else if ($pbContract->fields['definition'] == "ItilCategory") {
+      } else if ($psContract->fields['definition'] == "ItilCategory") {
          Dropdown::show('ItilCategory', array('name' => 'definitions_id'));
-      } else if ($pbContract->fields['definition'] == "priority") {
+      } else if ($psContract->fields['definition'] == "priority") {
          Ticket::dropdownPriority('definitions_id');
       }
       echo "</td>";
       echo "<td>";
-      echo $LANG['bestmanagement']['tabrecap'][16]."&nbsp;:";
+      echo __('Unit bought', 'supportcontract')."&nbsp;:";
       echo "</td>";
       echo "<td>";
       echo Dropdown::showInteger("unit", 1, 1);
@@ -107,19 +105,19 @@ class PluginBestmanagementPurchase extends CommonDBTM {
       
       echo "<tr class='tab_bg_1'>";
       echo "<td>";
-      echo $LANG["bestmanagement"]["historical"][2]."&nbsp;:";
+      echo __('Avenant', 'supportcontract')."&nbsp;:";
       echo "</td>";
       echo "<td>";
       Dropdown::showYesNo('amendment');
       echo "</td>";
       echo "<td>";
-      echo $LANG["bestmanagement"]["tabs"][6]."&nbsp;:";
+      echo __('Purchase log', 'supportcontract')."&nbsp;:";
       echo "</td>";
       echo "<td>";
       $a_input = array(
-          0 => $LANG["bestmanagement"]["facturation_contrat"][0],
-          1 => $LANG["bestmanagement"]["facturation_contrat"][1],
-          2 => $LANG["bestmanagement"]["facturation_contrat"][2]
+          0 => __('Invoiced', 'supportcontract'),
+          1 => __('To be invoiced', 'supportcontract'),
+          2 => __('Not be invoiced', 'supportcontract')
       );
       Dropdown::showFromArray("invoice_state", $a_input, array('value'=>1));
       echo "</td>";
@@ -127,18 +125,18 @@ class PluginBestmanagementPurchase extends CommonDBTM {
       
       echo "<tr class='tab_bg_1'>";
       echo "<td>";
-      echo $LANG['common'][25]."&nbsp;";
+      echo __('Comment')."&nbsp;";
       echo "</td>";
       echo "<td colspan='3'>";
       echo "<input type='text' name='comment' size='40' maxlength='255' value='' />";
-      echo "<input type='hidden' name='contracts_id' value='".$pbContract->fields['contracts_id']."' />";
+      echo "<input type='hidden' name='contracts_id' value='".$psContract->fields['contracts_id']."' />";
       $contract = new Contract();
-      $contract->getFromDB($pbContract->fields['contracts_id']);
+      $contract->getFromDB($psContract->fields['contracts_id']);
       echo "<input type='hidden' name='begin_date' value='".$contract->fields['begin_date']."' />";
       
-      $pbContract_Period = new PluginBestmanagementContract_Period();
-      $a_period = $pbContract_Period->getCurrentPeriod($pbContract->fields['contracts_id']);
-      echo "<input type='hidden' name='plugin_bestmanagement_contracts_periods_id' 
+      $psContract_Period = new PluginSupportcontractContract_Period();
+      $a_period = $psContract_Period->getCurrentPeriod($psContract->fields['contracts_id']);
+      echo "<input type='hidden' name='plugin_supportcontract_contracts_periods_id' 
          value='".$a_period['id']."' />";
       
       echo "</td>";
@@ -152,12 +150,12 @@ class PluginBestmanagementPurchase extends CommonDBTM {
    /**
     * Display purchase history
     */
-   function showHistory($contracts_id, $a_pbContracts, $periods_id=0) {
-      global $DB, $CFG_GLPI, $LANG;
+   function showHistory($contracts_id, $a_psContracts, $periods_id=0) {
+      global $DB, $CFG_GLPI;
 
-      $pbContract_Period = new PluginBestmanagementContract_Period();
+      $psContract_Period = new PluginSupportcontractContract_Period();
       if ($periods_id > 0) {
-         $pbContract_Period->getFromDB($periods_id);
+         $psContract_Period->getFromDB($periods_id);
       }
       
       $onlyone=false;
@@ -167,54 +165,54 @@ class PluginBestmanagementPurchase extends CommonDBTM {
       
       echo "<tr class='tab_bg_1'>";
       echo "<th colspan='7'>";
-      echo $LANG["bestmanagement"]["tabs"][2];
+      echo __('purchase log', 'supportcontract');
       if ($periods_id > 0) {
-         echo " ".Html::convDate($pbContract_Period->fields['begin'])." - ".
-              Html::convDate($pbContract_Period->fields['end']);
+         echo " ".Html::convDate($psContract_Period->fields['begin'])." - ".
+              Html::convDate($psContract_Period->fields['end']);
       }
       echo "</th>";
       echo "</tr>";
       
       if ($periods_id > 0) {
-         $a_period = $pbContract_Period->fields;
+         $a_period = $psContract_Period->fields;
       } else {
-         $a_period = $pbContract_Period->getCurrentPeriod($contracts_id);
+         $a_period = $psContract_Period->getCurrentPeriod($contracts_id);
       }
       
       $a_purchases = $this->find("`contracts_id`='".$contracts_id."'
-         AND `plugin_bestmanagement_contracts_periods_id`='".$a_period['id']."'");
+         AND `plugin_supportcontract_contracts_periods_id`='".$a_period['id']."'");
      
       if (count($a_purchases) == 0) {
          echo "<tr class='tab_bg_1'>";
          echo "<td colspan='7'>";
-         echo $LANG["bestmanagement"]["msg"][16];
+         echo __('Not have yet purchase', 'supportcontract');
          echo "</td>";
          echo "</tr>";
       } else {
          echo "<tr class='tab_bg_1'>";
          echo "<th>";
-         echo $LANG['common'][27];
+         echo __('Date');
          echo "</th>";
          echo "<th>";
-         echo $LANG["bestmanagement"]["historical"][0];
+         echo __('Details', 'supportcontract');
          echo "</th>";
          echo "<th>";         
-         if ($a_pbContracts['definition'] == "TaskCategory") {
+         if ($a_psContracts['definition'] == "TaskCategory") {
             echo TaskCategory::getTypeName();
-         } else if ($a_pbContracts['definition'] == "ItilCategory") {
+         } else if ($a_psContracts['definition'] == "ItilCategory") {
             echo ItilCategory::getTypeName();
-         } else if ($a_pbContracts['definition'] == "priority") {
-            echo $LANG['joblist'][2];
+         } else if ($a_psContracts['definition'] == "priority") {
+            echo __('Priority', 'supportcontract');
          }
          echo "</th>";
          echo "<th>";
-         echo $LANG['bestmanagement']['tabrecap'][16];
+         echo __('Purchased units', 'supportcontract');
          echo "</th>";
          echo "<th>";
-         echo $LANG['common'][25];
+         echo __('Comment');
          echo "</th>";
          echo "<th>";
-         echo $LANG["bestmanagement"]["facturation_contrat"][3];         
+         echo __('Invoice number', 'supportcontract');         
          echo "</th>";
          echo "<th>";
          echo "</th>";
@@ -227,34 +225,34 @@ class PluginBestmanagementPurchase extends CommonDBTM {
             echo "</td>";
             echo "<td>";
             if ($a_purchase['amendment'] == 1) {
-               echo $LANG["bestmanagement"]["historical"][2]." - ";
+               echo __('Avenant', 'supportcontract')." - ";
             }
             switch ($a_purchase["invoice_state"]) {
                
                case 0:
-                  echo $LANG["bestmanagement"]["facturation_contrat"][0];
+                  echo __('Have invoice', 'supportcontract');
                   break;
                
                case 1:
-                  echo $LANG["bestmanagement"]["facturation_contrat"][1];
+                  echo __('To be invoiced', 'supportcontract');
                   break;
                
                case 2:
-                  echo $LANG["bestmanagement"]["facturation_contrat"][2];
+                  echo __('Cannot be invoiced', 'supportcontract');
                   break;
             }
             echo "</td>";
             echo "<td>";
-            if ($a_pbContracts['definition'] == "priority") {
+            if ($a_psContracts['definition'] == "priority") {
                echo Ticket::getPriorityName($a_purchase['definitions_id']);
             } else {
-               echo Dropdown::getDropdownName(getTableForItemType($a_pbContracts['definition']), 
+               echo Dropdown::getDropdownName(getTableForItemType($a_psContracts['definition']), 
                                               $a_purchase['definitions_id']);
             }
             echo "</td>";
             echo "<td>";
-            if ($a_pbContracts['unit_type'] == "hour") {
-               echo PluginBestmanagementToolbox::displayHours($a_purchase['unit']);
+            if ($a_psContracts['unit_type'] == "hour") {
+               echo PluginSupportcontractToolbox::displayHours($a_purchase['unit']);
             } else {
                echo $a_purchase['unit'];
             }
@@ -266,13 +264,13 @@ class PluginBestmanagementPurchase extends CommonDBTM {
             echo $a_purchase['invoice_number'];
             echo "</td>";            
             echo "<td>";
-            if (countElementsInTable("glpi_plugin_bestmanagement_tickets_contracts", 
+            if (countElementsInTable("glpi_plugin_supportcontract_tickets_contracts", 
                                      "`contracts_id`='".$contracts_id."'
-                                     AND `plugin_bestmanagement_contracts_periods_id`='".$a_period['id']."'") == 0) {
-               echo "<form method='post' action=\"".$CFG_GLPI['root_doc'] . "/plugins/bestmanagement/front/purchase.form.php\">";
+                                     AND `plugin_supportcontract_contracts_periods_id`='".$a_period['id']."'") == 0) {
+               echo "<form method='post' action=\"".$CFG_GLPI['root_doc'] . "/plugins/supportcontract/front/purchase.form.php\">";
                echo "<input type='hidden' name='id' value='".$a_purchase['id']."'/>";
-               echo "<input type='submit' name='delete' value=\"".$LANG['buttons'][22]."\"
-                         class='submit' ".Html::addConfirmationOnAction($LANG['common'][50]).">";
+               echo "<input type='submit' name='delete' value=\"".__('Permanently delete')."\"
+                         class='submit' ".Html::addConfirmationOnAction(__('Confirm the final deletion ?')).">";
                Html::closeForm();
             }
             echo "</td>";            
@@ -287,19 +285,18 @@ class PluginBestmanagementPurchase extends CommonDBTM {
    /**
     * Display purchase history by period
     */
-   function showHistoryByPeriod($contracts_id, $a_pbContracts) {
-      global $DB, $CFG_GLPI, $LANG;
+   function showHistoryByPeriod($contracts_id, $a_psContracts) {
 
-      $pbContract_Period = new PluginBestmanagementContract_Period();
+      $psContract_Period = new PluginSupportcontractContract_Period();
       
       $onlyone=false;
       $presentcontrat=null;
       
-      $a_periods = $pbContract_Period->find("`contracts_id`='".$contracts_id."'
+      $a_periods = $psContract_Period->find("`contracts_id`='".$contracts_id."'
          AND `end` IS NOT NULL");
       
       foreach ($a_periods as $a_period) {
-         $this->showHistory($contracts_id, $a_pbContracts, $a_period['id']);
+         $this->showHistory($contracts_id, $a_psContracts, $a_period['id']);
          echo "<br/>";
       }
       
@@ -307,11 +304,11 @@ class PluginBestmanagementPurchase extends CommonDBTM {
    
    
    
-   static function getUnusedUnits($pbcontract_periods_id) {
+   static function getUnusedUnits($pscontract_periods_id) {
       global $DB;
       
-      $query = "SELECT SUM(`unit_number`) FROM `glpi_plugin_bestmanagement_tickets_contracts`
-         WHERE `plugin_bestmanagement_contracts_periods_id`='".$pbcontract_periods_id."'
+      $query = "SELECT SUM(`unit_number`) FROM `glpi_plugin_supportcontract_tickets_contracts`
+         WHERE `plugin_supportcontract_contracts_periods_id`='".$pscontract_periods_id."'
             AND `invoice_state`='1'";
       
       if ($result = $DB->query($query)) {
@@ -325,11 +322,11 @@ class PluginBestmanagementPurchase extends CommonDBTM {
 
    
    
-   static function getUninvoicedUnits($pbcontract_periods_id) {
+   static function getUninvoicedUnits($pscontract_periods_id) {
       global $DB;
       
-      $query = "SELECT SUM(`unit_number`) FROM `glpi_plugin_bestmanagement_tickets_contracts`
-         WHERE `plugin_bestmanagement_contracts_periods_id`='".$pbcontract_periods_id."'
+      $query = "SELECT SUM(`unit_number`) FROM `glpi_plugin_supportcontract_tickets_contracts`
+         WHERE `plugin_supportcontract_contracts_periods_id`='".$pscontract_periods_id."'
             AND `invoice_state`='0'";
       
       if ($result = $DB->query($query)) {
