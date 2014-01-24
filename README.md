@@ -1,4 +1,4 @@
-bestmanagement
+supportcontract
 ==============
 
-Plugin bestmanagement 
+Plugin supportcontract 
