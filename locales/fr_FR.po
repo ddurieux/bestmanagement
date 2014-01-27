@@ -1,0 +1,389 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-01-23 08:25+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: hook.php:58 hook.php:193
+msgid "Begin date not set"
+msgstr "Date de début non réglé"
+
+#: hook.php:62 hook.php:197
+msgid "Duration not set"
+msgstr "Durée non réglé"
+
+#: hook.php:67
+msgid "You may define a contract type"
+msgstr "Vous de vez définir un type de contrat"
+
+#: hook.php:86 hook.php:221
+msgid "Contract not set"
+msgstr "Contrat non rélgé"
+
+#: hook.php:90
+msgid "Category not set"
+msgstr "Catégorie non réglé"
+
+#: hook.php:93
+msgid "Impossible to invoice under contract a ticket not managed in a contract"
+msgstr "Impossible de facturer sous contrat un ticket non géré dans un contrat"
+
+#: hook.php:97
+msgid "Impossible to invoice out of contract a ticket under contract"
+msgstr "Impossible de facturer hors contrat un ticket sous contrat"
+
+#: hook.php:131
+msgid "Contract updated for ticket"
+msgstr "Contrat mis à jour pour le ticket"
+
+#: hook.php:139
+msgid "Invoice added"
+msgstr "Facture ajouté"
+
+#: hook.php:146
+msgid "Invoice updated"
+msgstr "Facture mise à jour"
+
+#: hook.php:156 hook.php:235
+msgid "Be careful, there is no category for the task"
+msgstr "Attention, il n'y a aucune catégorie pour la tâche"
+
+#: hook.php:163 hook.php:240
+msgid "Be careful, contract hasn't be reconducted"
+msgstr "Attention, le contrat n'a pas été reconduit"
+
+#: hook.php:201
+msgid "Contract type is not set"
+msgstr "Le type de contart n'est pas réglé"
+
+#: hook.php:218
+msgid "You may not set time at creation"
+msgstr "Vous ne pouvez pas régler le temps lors de la création"
+
+#: hook.php:346
+msgid "Date too old to be used"
+msgstr "Date trop vieille pour être utilisé"
+
+#: hook.php:362 hook.php:378 front/contract.form.php:48 front/contract.php:48
+#: front/contract_period.form.php:48 front/purchase.form.php:48
+#: front/ticket_contract.form.php:48 inc/contract.class.php:76
+#: inc/entity.class.php:75 inc/profile.class.php:60
+#: inc/ticket_contract.class.php:78
+msgid "Support contract"
+msgstr "Support contrat"
+
+#: hook.php:451
+msgid "Generate intervention rapport in PDF"
+msgstr "Générer le rapport d'intervention en PDF"
+
+#: hook.php:468
+msgid "Save"
+msgstr "Sauver"
+
+#: hook.php:516
+msgid "A report can contain only tickets of same contract"
+msgstr "Un report ne peut contenir que des tickets d'un même contrat"
+
+#: ajax/dropdownunitnumber.php:59
+msgid "Automatic (task duration)"
+msgstr "Automatique (durée de tâche)"
+
+#: inc/contract.class.php:81 inc/contract.class.php:90
+msgid "Summary"
+msgstr "Résumé"
+
+#: inc/contract.class.php:82 inc/contract.class.php:91
+#: inc/profile.class.php:119
+msgid "Purchase history"
+msgstr "Historique d'achat"
+
+#: inc/contract.class.php:83 inc/contract.class.php:92
+msgid "Historical period"
+msgstr "Historique période"
+
+#: inc/contract.class.php:84 inc/contract.class.php:93
+#: inc/purchase.class.php:55
+msgid "Purchase"
+msgstr "Achat"
+
+#: inc/contract.class.php:85 inc/contract.class.php:94
+msgid "Renewal"
+msgstr "Renouvellement"
+
+#: inc/contract.class.php:86 inc/contract.class.php:95
+msgid "Invoice"
+msgstr "Facture"
+
+#: inc/contract.class.php:87 inc/contract.class.php:96
+msgid "Tickets"
+msgstr "Tickets"
+
+#: inc/contract.class.php:88 inc/contract.class.php:97
+msgid "Sub entities"
+msgstr "Sous entités"
+
+#: inc/contract.class.php:206 inc/contract_period.class.php:89
+msgid "Unit"
+msgstr "Unités"
+
+#: inc/contract.class.php:210 inc/contract.class.php:661
+msgid "Hours number"
+msgstr "Nombre d'heures"
+
+#: inc/contract.class.php:211
+msgid "Tickets number"
+msgstr "Nombre de tickets"
+
+#: inc/contract.class.php:212 inc/contract.class.php:665
+msgid "Half days number"
+msgstr "Nombre de demi journées"
+
+#: inc/contract.class.php:217
+msgid "Defined on"
+msgstr "Défini sur"
+
+#: inc/contract.class.php:266 inc/contract.class.php:476
+msgid "Dashboard"
+msgstr "Tableau de bord"
+
+#: inc/contract.class.php:295 inc/contract.class.php:305
+#: inc/contract.class.php:492
+msgid "Used units"
+msgstr "Unités utilisés"
+
+#: inc/contract.class.php:299 inc/contract.class.php:490
+msgid "Purchassed units"
+msgstr "Unités achetés"
+
+#: inc/contract.class.php:302 inc/contract.class.php:491
+msgid "Reported units"
+msgstr "Unités reportés"
+
+#: inc/contract.class.php:308 inc/contract.class.php:493
+msgid "Remaining units"
+msgstr "Unités restantes"
+
+#: inc/contract.class.php:663
+msgid "Ticket number"
+msgstr "Ticket numéro"
+
+#: inc/contract.class.php:698
+msgid "Contracts summary"
+msgstr "Résumé des contrats"
+
+#: inc/contract.class.php:707
+msgid "Tickets to affect"
+msgstr "Tickets à affecter"
+
+#: inc/contract.class.php:713
+msgid "Tickets for invoices"
+msgstr "Tickets à affecter"
+
+#: inc/contract.class.php:716
+msgid "Contracts for invoices"
+msgstr "Contrats à facturer"
+
+#: inc/contract_period.class.php:55
+msgid "Contracts period"
+msgstr "Période des contrats"
+
+#: inc/contract_period.class.php:83
+msgid "Contract begin date"
+msgstr "Date de début du contrat"
+
+#: inc/contract_period.class.php:100
+msgid "Reported units from previous period"
+msgstr "Unités reportés de la période précédente"
+
+#: inc/contract_period.class.php:109 inc/purchase.class.php:209
+msgid "Purchased units"
+msgstr "Unités achetés"
+
+#: inc/contract_period.class.php:124
+msgid "Not used units"
+msgstr "Unités non utilisés"
+
+#: inc/contract_period.class.php:137
+msgid "Unable to close this period because not all tickets closed"
+msgstr "Impossible de fermer cette période car tous les tickets ne sont pas clos"
+
+#: inc/contract_period.class.php:146
+msgid "Closed + reconduction without report units"
+msgstr "Clôturer + reconduir sans reporter les unités"
+
+#: inc/contract_period.class.php:206
+msgid "Start"
+msgstr "Début"
+
+#: inc/contract_period.class.php:209
+msgid "End"
+msgstr "Fin"
+
+#: inc/contract_period.class.php:212
+msgid "Reported units fron previous period"
+msgstr "Reporter les unités de la préiode précédente"
+
+#: inc/entity.class.php:135
+msgid "En-tête"
+msgstr "En-tête"
+
+#: inc/entity.class.php:141
+msgid "Logo"
+msgstr "Logo"
+
+#: inc/entity.class.php:168
+msgid "Title"
+msgstr "Titre"
+
+#: inc/entity.class.php:174
+msgid "Author"
+msgstr "Auteur"
+
+#: inc/profile.class.php:98
+msgid "Summary of all contracts"
+msgstr "Résumé de tous les contrats"
+
+#: inc/profile.class.php:104
+msgid "Add a purchase"
+msgstr "Ajouter un achat"
+
+#: inc/profile.class.php:113
+msgid "Contract summary"
+msgstr "Résumé du contrat"
+
+#: inc/profile.class.php:128
+msgid "Contract invoice"
+msgstr "Facture du contrat"
+
+#: inc/profile.class.php:134
+msgid "History by period"
+msgstr "Historique par période"
+
+#: inc/profile.class.php:143
+msgid "Ticket invoice"
+msgstr "Facture du ticket"
+
+#: inc/profile.class.php:149
+msgid "Mailling"
+msgstr ""
+
+#: inc/profile.class.php:158
+msgid "Affect a ticket to a contract"
+msgstr "Affecter un ticket à un contrat"
+
+#: inc/profile.class.php:164
+msgid "Reconduction"
+msgstr "Reconduction"
+
+#: inc/profile.class.php:173
+msgid "Edit mailing"
+msgstr "Editer le mail"
+
+#: inc/purchase.class.php:99
+msgid "Unit bought"
+msgstr "Unités achetés"
+
+#: inc/purchase.class.php:108 inc/purchase.class.php:228
+msgid "Avenant"
+msgstr "Avenant"
+
+#: inc/purchase.class.php:114
+msgid "Purchase log"
+msgstr "Journal des achats"
+
+#: inc/purchase.class.php:118
+msgid "Invoiced"
+msgstr "Facturés"
+
+#: inc/purchase.class.php:119 inc/purchase.class.php:237
+#: inc/ticket_contract.class.php:491
+msgid "To be invoiced"
+msgstr "A facturer"
+
+#: inc/purchase.class.php:120
+msgid "Not be invoiced"
+msgstr "N'a pas été facturé"
+
+#: inc/purchase.class.php:168
+msgid "purchase log"
+msgstr "Journal des achats"
+
+#: inc/purchase.class.php:188
+msgid "Not have yet purchase"
+msgstr "Aucun achat pour le moment"
+
+#: inc/purchase.class.php:197
+msgid "Details"
+msgstr "Détails"
+
+#: inc/purchase.class.php:205
+msgid "Priority"
+msgstr "Priorité"
+
+#: inc/purchase.class.php:215 inc/ticket_contract.class.php:167
+#: inc/ticket_contract.class.php:315 inc/ticket_contract.class.php:358
+#: inc/ticket_contract.class.php:477
+msgid "Invoice number"
+msgstr "Facture numéro"
+
+#: inc/purchase.class.php:233
+msgid "Have invoice"
+msgstr "Dispose d'une facture"
+
+#: inc/purchase.class.php:241
+msgid "Cannot be invoiced"
+msgstr "N'a pas pu être facturé"
+
+#: inc/ticket_contract.class.php:78 inc/ticket_contract.class.php:94
+#: inc/ticket_contract.class.php:507
+msgid "Intervention report"
+msgstr "Report d'intervention"
+
+#: inc/ticket_contract.class.php:80
+msgid "Plugin configuration"
+msgstr "Configuration du plugin"
+
+#: inc/ticket_contract.class.php:162 inc/ticket_contract.class.php:290
+msgid "Unit number"
+msgstr "Nombre d'unités"
+
+#: inc/ticket_contract.class.php:288
+msgid "Not in contract"
+msgstr "N'est pas dans le contrat"
+
+#: inc/ticket_contract.class.php:310 inc/ticket_contract.class.php:357
+msgid "Invoice state"
+msgstr "Etat de facture"
+
+#: inc/ticket_contract.class.php:350
+msgid "Linked contract"
+msgstr "Contrat lié"
+
+#: inc/ticket_contract.class.php:356
+msgid "Units"
+msgstr "Unités"
+
+#: inc/ticket_contract.class.php:492
+msgid "Invoiced under contract"
+msgstr "Facturés sous contrat"
+
+#: inc/ticket_contract.class.php:493
+msgid "Invoiced out of contract"
+msgstr "Facturés hors contrat"
+
+#: inc/ticket_contract.class.php:494
+msgid "Hotline (no unit)"
+msgstr "Hotline (pas d'unités)"
