@@ -39,11 +39,11 @@
    ------------------------------------------------------------------------
  */
 
-function pluginSupportcontractInstall($version, $migration='') {
+function pluginSupportcontractInstall($migration='') {
    global $DB;
 
    if ($migration == '') {
-      $migration = new Migration($version);
+      $migration = new Migration(PLUGIN_SUPPORTCONTRACT_VERSION);
    }
    
    $migration->displayMessage("Installation of plugin Supportcontract");

@@ -39,6 +39,7 @@
    ------------------------------------------------------------------------
  */
 
+define ("PLUGIN_SUPPORTCONTRACT_VERSION","0.80+1.0");
 
 // Initialise les hooks du plugin
 function plugin_init_supportcontract() {
@@ -126,7 +127,7 @@ function plugin_init_supportcontract() {
 
 function plugin_version_supportcontract() {
    return array("name"           => "Support Contract",
-                "version"        => "0.84+1.0",
+                "version"        => PLUGIN_SUPPORTCONTRACT_VERSION,
                 "author"         => "David Durieux",
                 "homepage"       => "",
                 "minGlpiVersion" => "0.84");
